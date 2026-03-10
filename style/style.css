@@ -8,3 +8,56 @@ html,
 body {
 	font-family: 'Poppins', sans-serif;
 }
+
+:root {
+	--rosa: #f981aa;
+	--azul: #8cd9de;
+}
+.vh-80 {
+	height: 80vh;
+}
+
+/* Gradiente que escurece do centro para as bordas (ou de baixo para cima) */
+.overlay {
+	background: linear-gradient(
+		0deg,
+		rgba(0, 0, 0, 0.7) 0%,
+		rgba(0, 0, 0, 0.3) 50%,
+		rgba(0, 0, 0, 0.7) 100%
+	);
+}
+
+/* Garante que a imagem cubra tudo sem distorcer */
+.object-fit-cover {
+	object-fit: cover;
+}
+
+.btn-pet {
+	background-color: var(--rosa);
+	border-color: var(--rosa);
+	color: white;
+	transition: 0.3s ease;
+}
+
+.btn-pet:hover {
+	background-color: var(--rosa);
+	border-color: var(--rosa);
+	color: white;
+	transform: scale(1.05);
+}
+
+@keyframes pulsar {
+	0% {
+		box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+	}
+	70% {
+		box-shadow: 0 0 0 15px rgba(255, 107, 107, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+	}
+}
+
+.btn-pet {
+	animation: pulsar 2s infinite;
+}
