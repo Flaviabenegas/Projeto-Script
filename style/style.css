@@ -101,3 +101,11 @@ a {
 .texto-azul {
 	color: var(--azul);
 }
+
+.transparente {
+	background-color: transparent;
+	border: none;
+	color: black;
+	font-size: small;
+	text-transform: uppercase;
+}

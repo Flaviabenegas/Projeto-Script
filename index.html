@@ -259,7 +259,7 @@
 							<!--Grid column-->
 							<div class="col-auto">
 								<!-- Submit button -->
-								<button type="submit" class="btn btn-pet mb-4">SE INSCREVA</button>
+								<button type="submit" class="btn btn-pet mb-4" id="enviar">SE INSCREVA</button>
 							</div>
 							<!--Grid column-->
 						</div>
@@ -276,6 +276,15 @@
 				<a class="text-dark" href="https://apaixonadosporfocinhos.com.br/"
 					>apaixonadosporfocinhos.com.br</a
 				>
+				<p>
+					<button
+						type="button"
+						class="btn transparente rounded-pill px-4"
+						data-bs-toggle="modal"
+						data-bs-target="#modalLogin">
+						Login
+					</button>
+				</p>
 			</div>
 			<!-- Copyright -->
 		</footer>
@@ -284,5 +293,64 @@
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 			crossorigin="anonymous"></script>
+
+		<div
+			class="modal fade"
+			id="modalLogin"
+			tabindex="-1"
+			aria-labelledby="modalLoginLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header azul-claro border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold" id="modalLoginLabel">Painel Administrativo</h5>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+
+					<div class="modal-body p-4">
+						<form>
+							<div class="mb-3">
+								<label for="email" class="form-label fw-medium">E-mail</label>
+								<input
+									type="email"
+									class="form-control rounded-3"
+									id="email"
+									placeholder="nome@exemplo.com"
+									id="email" />
+							</div>
+
+							<div class="mb-3">
+								<label for="senha" class="form-label fw-medium">Senha</label>
+								<input
+									type="password"
+									class="form-control rounded-3"
+									id="senha"
+									placeholder="Sua senha secreta"
+									id="senha" />
+							</div>
+
+							<button
+								type="submit"
+								class="btn btn-pet w-100 rounded-pill py-2 fw-bold"
+								id="btn-login">
+								Entrar na conta
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="loader" class="d-none opacity-0" style="transition: opacity 0.5s ease">
+			<div class="d-flex flex-column align-items-center my-3">
+				<div class="spinner-border text-primary" role="status"></div>
+				<span class="mt-2">Autenticando...</span>
+			</div>
+		</div>
+		<script src="script/painel.js"></script>
+		<script src="script/email.js"></script>
 	</body>
 </html>
