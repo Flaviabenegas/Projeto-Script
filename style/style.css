@@ -4,6 +4,11 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 160px;
+}
 html,
 body {
 	font-family: 'Poppins', sans-serif;
@@ -12,6 +17,8 @@ body {
 :root {
 	--rosa: #f981aa;
 	--azul: #8cd9de;
+	--azul-claro: #caeaf4;
+	--rosa-claro: #f8e3e9;
 }
 .vh-80 {
 	height: 80vh;
@@ -45,6 +52,13 @@ body {
 	color: white;
 	transform: scale(1.05);
 }
+.azul-claro {
+	background-color: var(--azul-claro) !important;
+}
+
+.rosa-claro {
+	background-color: var(--rosa-claro) !important;
+}
 
 @keyframes pulsar {
 	0% {
@@ -60,4 +74,30 @@ body {
 
 .btn-pet {
 	animation: pulsar 2s infinite;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+	text-transform: uppercase;
+}
+
+.titulos {
+	font-weight: 600;
+	text-transform: uppercase;
+	color: var(--azul);
+}
+
+.titulos-rosa {
+	font-weight: 600;
+	text-transform: uppercase;
+	color: var(--rosa);
+}
+
+.texto-rosa {
+	color: var(--rosa);
+}
+
+.texto-azul {
+	color: var(--azul);
 }
