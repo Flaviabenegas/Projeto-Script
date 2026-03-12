@@ -1,9 +1,9 @@
 document.getElementById('enviar').addEventListener('submit', async function (event) {
     event.preventDefault()
 
-    const nome = document.getElementById('nome').value
-    const email = document.getElementById('email').value
-    const botao = document.getElementById('enviar')
+    //const nome = document.getElementById('nome').value
+    const email = document.getElementById('e-mail').value
+    const botao = document.getElementById('botao')
 
     botao.innerText = 'Enviando...'
 
@@ -14,7 +14,7 @@ document.getElementById('enviar').addEventListener('submit', async function (eve
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ nome, email })
+            body: JSON.stringify({ email })
         });
 
         if (response.ok) {

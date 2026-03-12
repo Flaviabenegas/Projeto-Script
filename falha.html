@@ -1,16 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="src/styles/style.css" />
-		<title>Falha na Inscrição</title>
+		<title>Falha na inscrição - Apaixonados por Focinhos</title>
+
+		<meta name="description" content="Apaixonados por Focinhos, loja para apaixonados por pet..." />
+		<meta property="og:title" content="Apaixonados por Focinhos" />
+		<meta
+			property="og:image"
+			content="https://www.apaixonadosporfocinhos.com.br/src/img/favicon.png" />
+
+		<link
+			rel="icon"
+			href="https://www.apaixonadosporfocinhos.com.br/src/img/favicon.png"
+			type="image/png" />
+
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous" />
+
+		<link rel="stylesheet" href="style/style.css" />
+
+		<style>
+			/* Garantindo que o azul-claro funcione se não carregar o CSS externo */
+			.azul-claro {
+				background-color: #add8e6 !important;
+			}
+		</style>
 	</head>
-	<body class="triste">
-		<div class="mensagem">
-			<h2>Falha na inscrição. Por favor, tente novamente.</h2>
-			<img src="src/img/tristes.png" alt="Cachorras Tristes" /><br />
-			<a href="index.html" class="voltar">Tentar novamente</a>
+
+	<body class="bg-light d-flex align-items-center justify-content-center vh-100">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-11 col-sm-8 col-md-6 col-lg-4 text-center">
+					<div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+						<div class="azul-claro" style="height: 10px"></div>
+
+						<div class="card-body p-4 p-md-5 bg-white">
+							<div class="mb-4">
+								<img
+									src="img/tristes.png"
+									alt="Cachorras Tristes"
+									class="img-fluid rounded-circle mx-auto d-block shadow-sm"
+									style="
+										width: 150px;
+										height: 150px;
+										object-fit: cover;
+										border: 4px solid #f8f9fa;
+									" />
+							</div>
+
+							<h2 class="h4 fw-bold text-dark mb-3">Ops! Algo deu errado.</h2>
+							<p class="text-secondary mb-4">
+								Não conseguimos concluir sua inscrição. Por favor, tente novamente para garantir o
+								passaporte do seu pet!
+							</p>
+
+							<div class="d-grid">
+								<a href="index.html" class="btn btn-pet rounded-pill py-2 fw-bold shadow-sm">
+									Tentar novamente
+								</a>
+							</div>
+
+							<div class="mt-4 pt-3 border-top">
+								<small class="text-muted">
+									Ainda com problemas?
+									<a href="#" class="text-primary fw-bold text-decoration-none">Fale conosco</a>
+								</small>
+							</div>
+						</div>
+					</div>
+
+					<div class="mt-4">
+						<a href="index.html" class="text-muted small text-decoration-none"
+							>← Voltar para a página inicial</a
+						>
+					</div>
+				</div>
+			</div>
 		</div>
+
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"></script>
 	</body>
 </html>
