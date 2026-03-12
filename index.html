@@ -55,7 +55,7 @@
 								<a class="nav-link" href="#depoimentos">Depoimentos</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="formulario.html">Comprar</a>
+								<a class="nav-link" href="#compra">Comprar</a>
 							</li>
 						</ul>
 					</div>
@@ -68,15 +68,15 @@
 				src="img/principal.jpg"
 				class="img-fluid w-100 h-100 position-absolute top-0 start-0 object-fit-cover"
 				style="z-index: 1"
-				alt="Pet seguro" />
+				alt="Cachorro e Gato com coleiras e pingente de identificação" />
 
 			<div class="overlay position-absolute top-0 start-0 w-100 h-100" style="z-index: 2"></div>
 
 			<div class="container position-relative text-center" style="z-index: 3">
 				<div class="row justify-content-center">
 					<div class="col-lg-8">
-						<h1 class="display-3 fw-bold mb-3">O AMOR DELES É ETERNO</h1>
-						<h2 class="h3 mb-4 fw-light">A SEGURANÇA TAMBÉM DEVE SER</h2>
+						<h1 class="display-3 fw-bold mb-3 texto-rosa">O AMOR DELES É ETERNO</h1>
+						<h2 class="h3 mb-4 fw-bold texto-azul">A SEGURANÇA TAMBÉM DEVE SER</h2>
 						<p class="lead mb-5">
 							Milhares de pets se perdem todos os dias. Não deixe o seu ser apenas uma saudade.
 						</p>
@@ -98,7 +98,7 @@
 					<h1 class="titulos display-5 fw-bold mb-4">Identificação Salva Vidas 🐾</h1>
 
 					<p
-						class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 rosa-claro border-start border-5 border-primary">
+						class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 bg-light border-start border-5 border-custom">
 						Um pet com identificação tem
 						<span class="text-decoration-underline fw-bold titulos-rosa">90% mais chances</span>
 						de retornar ao lar em menos de 24 horas.
@@ -109,7 +109,7 @@
 					</p>
 
 					<div class="row g-4 mt-2">
-						<div class="col-md-4 shadow-sm">
+						<div class="col-md-4">
 							<div class="p-3 border-0 rounded-3">
 								<span class="fs-2">✅</span>
 								<p class="fw-medium mt-2">Agilidade no contato com o tutor</p>
@@ -134,13 +134,13 @@
 		<section class="container py-5" id="apaixonados">
 			<div class="row align-items-center justify-content-center">
 				<div class="col-lg-9 text-center">
-					<h2 class="display-6 fw-bold mb-4 titulos-rosa">
+					<h2 class="display-6 fw-bold mb-4 titulos">
 						Por que escolher
-						<span class="titulos text-decoration-underline">Apaixonados por Focinhos</span>?
+						<span class="titulos-rosa text-decoration-underline">Apaixonados por Focinhos</span>?
 					</h2>
 
 					<div
-						class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 azul-claro border-start border-5 border-primary">
+						class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 bg-light border-start border-5 border-custom">
 						<p class="lead fw-medium mb-0 text-dark">
 							Na Apaixonados por Focinhos, acreditamos que a identificação
 							<span class="fw-bold">não é um acessório</span>, é o passaporte de volta para casa.
@@ -153,7 +153,7 @@
 							<div
 								class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
 								<div class="fs-1 mb-2">✅</div>
-								<h5 class="fw-bold texto-rosa">Durabilidade Extrema</h5>
+								<h5 class="fw-bold titulos-rosa">Durabilidade Extrema</h5>
 								<p class="text-secondary mb-0">
 									Nomes e telefones sempre legíveis que não desbotam com o tempo. Tecnologia pensada
 									para durar.
@@ -165,7 +165,7 @@
 							<div
 								class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
 								<div class="fs-1 mb-2">✅</div>
-								<h5 class="fw-bold texto-rosa">À Prova de Aventuras</h5>
+								<h5 class="fw-bold titulos-rosa">À Prova de Aventuras</h5>
 								<p class="text-secondary mb-0">
 									Feitas para aguentar corridas, brincadeiras na terra e banhos de chuva. Seu pet
 									livre para ser pet.
@@ -220,14 +220,147 @@
 					</div>
 				</div>
 			</div>
+			<section class="comprar">
+				<div class="container mt-5">
+					<div class="card shadow">
+						<div class="card-header bg-custom">
+							<h4 class="mb-0" id="compra">Formulário de Pedido</h4>
+						</div>
+						<div class="card-body">
+							<form>
+								<h5 class="text-secondary mb-3">Informações do Tutor</h5>
+								<div class="row g-3">
+									<div class="col-md-6">
+										<label for="nome" class="form-label">Nome Completo</label>
+										<input
+											type="text"
+											class="form-control"
+											id="nome"
+											placeholder="Digite seu nome"
+											required />
+									</div>
+									<div class="col-md-6">
+										<label for="cpf" class="form-label">CPF</label
+										><span
+											class="tooltip-icon"
+											data-tooltip="Precisamos do seu CPF para para garantir que você é uma pessoa real fazendo pedido"
+											>?</span
+										>
+										<input
+											type="text"
+											class="form-control"
+											id="cpf"
+											placeholder="000.000.000-00"
+											required />
+									</div>
+									<div class="col-md-6">
+										<label for="telefone" class="form-label">Telefone de Contato</label>
+										<input
+											type="tel"
+											class="form-control"
+											id="telefone"
+											placeholder="(00) 00000-0000"
+											required />
+									</div>
+									<div class="col-md-6">
+										<label for="email" class="form-label">E-mail</label>
+										<input
+											type="email"
+											class="form-control"
+											id="email"
+											placeholder="nome@exemplo.com"
+											required />
+									</div>
+								</div>
+
+								<hr class="my-4" />
+
+								<h5 class="text-secondary mb-3">Detalhes das Plaquinhas</h5>
+								<div class="row g-3">
+									<div class="col-12 mb-3">
+										<label class="form-label d-block">Tipo da Plaquinha</label>
+										<div class="form-check form-check-inline">
+											<input
+												class="form-check-input"
+												type="radio"
+												name="tipoPet"
+												id="tipoCao"
+												value="cao"
+												checked />
+											<label class="form-check-label" for="tipoCao">🐶 Cão</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input
+												class="form-check-input"
+												type="radio"
+												name="tipoPet"
+												id="tipoGato"
+												value="gato" />
+											<label class="form-check-label" for="tipoGato">🐱 Gato</label>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label for="quantidade" class="form-label">Quantidade de Plaquinhas</label>
+										<input
+											type="number"
+											class="form-control"
+											id="quantidade"
+											min="1"
+											value="1"
+											required />
+									</div>
+									<div class="col-md-8">
+										<label for="nomePets" class="form-label">Nome(s) do(s) Pet(s)</label>
+										<input
+											type="text"
+											class="form-control"
+											id="nomePets"
+											placeholder="Ex: Rex, Luna, Thor"
+											required />
+									</div>
+									<div class="col-12">
+										<label for="telGravacao" class="form-label"
+											>Telefone para Gravação (na plaquinha)</label
+										>
+										<input
+											type="tel"
+											class="form-control"
+											id="telGravacao"
+											placeholder="Qual número deve ser gravado?"
+											required />
+										<div class="form-text">
+											Este é o número que aparecerá no verso da plaquinha.
+										</div>
+									</div>
+								</div>
+
+								<div class="mt-4 d-grid">
+									<button
+										type="submit"
+										class="btn btn-pedido btn-lg fw-bold rounded-pill"
+										id="btn-comprar">
+										<span id="btn-text">ENVIAR PEDIDO</span>
+
+										<div
+											id="loader"
+											class="spinner-border spinner-border-sm d-none"
+											role="status"
+											aria-hidden="true"></div>
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
 			<a
 				href=""
-				class="btn btn-lg btn-pet fw-bold mb-4 position-relative start-50 translate-middle-x mt-4"
+				class="btn btn-lg btn-pet fw-bold rounded-pill mb-4 position-relative start-50 translate-middle-x mt-4"
 				>Identifique seu pet AGORA</a
 			>
 		</section>
 		<!-- Footer -->
-		<footer class="rosa-claro text-center">
+		<footer class="bg-light text-center">
 			<!-- Grid container -->
 			<div class="container p-4">
 				<!-- Section: Form -->
@@ -251,7 +384,8 @@
 										type="email"
 										id="e-mail"
 										class="form-control"
-										placeholder="seuemail@provedor.com" />
+										placeholder="seuemail@provedor.com"
+										required />
 								</div>
 							</div>
 							<!--Grid column-->
@@ -259,7 +393,7 @@
 							<!--Grid column-->
 							<div class="col-auto">
 								<!-- Submit button -->
-								<button class="btn btn-pet mb-4" id="botao">SE INSCREVA</button>
+								<button class="btn btn-pet mb-4 rounded-pill" id="botao">SE INSCREVA</button>
 							</div>
 							<!--Grid column-->
 						</div>
@@ -306,7 +440,7 @@
 						<h5 class="modal-title fw-bold" id="modalLoginLabel">Painel Administrativo</h5>
 						<button
 							type="button"
-							class="btn-close"
+							class="btn-close rounded-pill"
 							data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -319,7 +453,8 @@
 									type="email"
 									class="form-control rounded-3"
 									id="email"
-									placeholder="nome@exemplo.com" />
+									placeholder="nome@exemplo.com"
+									required />
 							</div>
 
 							<div class="mb-3">
@@ -328,7 +463,8 @@
 									type="password"
 									class="form-control rounded-3"
 									id="senha"
-									placeholder="Sua senha secreta" />
+									placeholder="Sua senha secreta"
+									required />
 							</div>
 
 							<button
@@ -350,5 +486,6 @@
 		</div>
 		<script src="script/painel.js"></script>
 		<script src="script/email.js"></script>
+		<script src="script/validar.js"></script>
 	</body>
 </html>
