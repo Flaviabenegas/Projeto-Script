@@ -15,6 +15,11 @@ body {
 }
 
 :root {
+	--destaque: #eeb1cd;
+	--titulos: #3a4750;
+	--fundo: #f9fbfd;
+	--cards: #f4e3ed;
+	--secundario: #a5c9e1;
 	--rosa: #f981aa;
 	--azul: #8cd9de;
 	--azul-claro: #caeaf4;
@@ -40,8 +45,8 @@ body {
 }
 
 .btn-pet {
-	background-color: var(--rosa);
-	border-color: var(--rosa);
+	background-color: var(--destaque);
+	border: none;
 	color: white;
 	transition: 0.3s ease;
 }
@@ -58,6 +63,11 @@ body {
 
 .rosa-claro {
 	background-color: var(--rosa-claro) !important;
+}
+
+.cards {
+	background-color: var(--cards);
+	color: var(--titulos);
 }
 
 @keyframes pulsar {
@@ -85,7 +95,7 @@ a {
 .titulos {
 	font-weight: 600;
 	text-transform: uppercase;
-	color: var(--azul);
+	color: var(--titulos);
 }
 
 .titulos-rosa {
