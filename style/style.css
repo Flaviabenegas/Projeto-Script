@@ -179,3 +179,21 @@ a {
 	visibility: visible;
 	opacity: 1;
 }
+
+.accordion-button:focus {
+	box-shadow: 0 0 0 0.25rem rgba(249, 129, 170, 0.25); /* Usa o var(--rosa) com transparência */
+	border-color: var(--rosa);
+}
+
+.accordion-button:not(.collapsed) {
+	color: var(--rosa);
+	background-color: var(--cards);
+}
+
+.accordion-item {
+	transition: transform 0.2s ease;
+}
+
+.accordion-item:hover {
+	transform: translateY(-2px);
+}

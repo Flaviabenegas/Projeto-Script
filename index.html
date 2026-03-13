@@ -55,6 +55,9 @@
 								<a class="nav-link" href="#depoimentos">Depoimentos</a>
 							</li>
 							<li class="nav-item">
+								<a class="nav-link" href="#faq">Dúvidas</a>
+							</li>
+							<li class="nav-item">
 								<a class="nav-link" href="#compra">Comprar</a>
 							</li>
 						</ul>
@@ -197,6 +200,11 @@
 								o reencontro foi emocionante. Hoje eu não saio de casa sem conferir se a medalhinha
 								está no pescoço dela. Salvou a nossa família
 							</p>
+							<a
+								href="#compra"
+								class="btn btn-lg btn-pet fw-bold rounded-pill mb-4 position-relative start-50 translate-middle-x mt-4"
+								>Identifique seu pet AGORA</a
+							>
 						</div>
 					</div>
 				</div>
@@ -216,10 +224,128 @@
 								dormindo no sofá hoje. É um investimento minúsculo perto da paz de espírito que
 								traz.
 							</p>
+							<a
+								href="#compra"
+								class="btn btn-lg btn-pet fw-bold rounded-pill mb-4 position-relative start-50 translate-middle-x mt-4"
+								>Identifique seu pet AGORA</a
+							>
 						</div>
 					</div>
 				</div>
 			</div>
+			<section class="container py-5" id="faq">
+				<h2 class="titulos text-center mb-4 display-6">Dúvidas Frequentes</h2>
+
+				<div class="row justify-content-center">
+					<div class="col-lg-8">
+						<div class="accordion accordion-flush" id="accordionFAQ">
+							<div
+								class="accordion-item border border-1 border-light-subtle mb-3 rounded-4 shadow-sm bg-white overflow-hidden">
+								<h2 class="accordion-header" id="faq-headingOne">
+									<button
+										class="accordion-button collapsed fw-bold titulos bg-white"
+										type="button"
+										data-bs-toggle="collapse"
+										data-bs-target="#faq-collapseOne"
+										aria-expanded="false"
+										aria-controls="faq-collapseOne">
+										Por que é tão importante identificar meu pet?
+									</button>
+								</h2>
+								<div
+									id="faq-collapseOne"
+									class="accordion-collapse collapse"
+									aria-labelledby="faq-headingOne"
+									data-bs-parent="#accordionFAQ">
+									<div class="accordion-body text-secondary">
+										Um pet com identificação tem
+										<span class="fw-bold titulos-rosa">90% mais chances</span> de retornar ao lar em
+										menos de 24 horas. É a forma mais ágil de quem encontrou seu pet entrar em
+										contato com você, garantindo a segurança dele em fugas ou passeios.
+									</div>
+								</div>
+							</div>
+
+							<div
+								class="accordion-item border border-1 border-light-subtle mb-3 rounded-4 shadow-sm bg-white overflow-hidden">
+								<h2 class="accordion-header" id="faq-headingTwo">
+									<button
+										class="accordion-button collapsed fw-bold titulos bg-white"
+										type="button"
+										data-bs-toggle="collapse"
+										data-bs-target="#faq-collapseTwo"
+										aria-expanded="false"
+										aria-controls="faq-collapseTwo">
+										As plaquinhas são duráveis?
+									</button>
+								</h2>
+								<div
+									id="faq-collapseTwo"
+									class="accordion-collapse collapse"
+									aria-labelledby="faq-headingTwo"
+									data-bs-parent="#accordionFAQ">
+									<div class="accordion-body text-secondary">
+										Sim! Nossas identificações possuem durabilidade extrema. A gravação com o seu
+										número e o nome do pet não desbota com o tempo e é totalmente à prova de
+										aventuras, seja chuva, brincadeiras na terra ou corridas.
+									</div>
+								</div>
+							</div>
+
+							<div
+								class="accordion-item border border-1 border-light-subtle mb-3 rounded-4 shadow-sm bg-white overflow-hidden">
+								<h2 class="accordion-header" id="faq-headingThree">
+									<button
+										class="accordion-button collapsed fw-bold titulos bg-white"
+										type="button"
+										data-bs-toggle="collapse"
+										data-bs-target="#faq-collapseThree"
+										aria-expanded="false"
+										aria-controls="faq-collapseThree">
+										Serve tanto para cachorros quanto para gatos?
+									</button>
+								</h2>
+								<div
+									id="faq-collapseThree"
+									class="accordion-collapse collapse"
+									aria-labelledby="faq-headingThree"
+									data-bs-parent="#accordionFAQ">
+									<div class="accordion-body text-secondary">
+										Com certeza! Temos modelos que ficam perfeitos e confortáveis tanto para
+										cãeszinhos de porte mini, como a Chihuahua Millie, quanto para gatinhas cheias
+										de personalidade, como a Lola e a Charlotte.
+									</div>
+								</div>
+							</div>
+
+							<div
+								class="accordion-item border border-1 border-light-subtle mb-3 rounded-4 shadow-sm bg-white overflow-hidden">
+								<h2 class="accordion-header" id="faq-headingFour">
+									<button
+										class="accordion-button collapsed fw-bold titulos bg-white"
+										type="button"
+										data-bs-toggle="collapse"
+										data-bs-target="#faq-collapseFour"
+										aria-expanded="false"
+										aria-controls="faq-collapseFour">
+										O que será gravado na plaquinha?
+									</button>
+								</h2>
+								<div
+									id="faq-collapseFour"
+									class="accordion-collapse collapse"
+									aria-labelledby="faq-headingFour"
+									data-bs-parent="#accordionFAQ">
+									<div class="accordion-body text-secondary">
+										Gravamos o nome do seu pet em destaque e, no verso, o número de telefone de
+										contato que você informar no formulário de pedido.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 			<section class="comprar">
 				<div class="container mt-5">
 					<div class="card shadow">
@@ -263,11 +389,11 @@
 											required />
 									</div>
 									<div class="col-md-6">
-										<label for="email" class="form-label">E-mail</label>
+										<label for="form-email" class="form-label">E-mail</label>
 										<input
 											type="email"
 											class="form-control"
-											id="email"
+											id="form-email"
 											placeholder="nome@exemplo.com"
 											required />
 									</div>
@@ -353,11 +479,6 @@
 					</div>
 				</div>
 			</section>
-			<a
-				href=""
-				class="btn btn-lg btn-pet fw-bold rounded-pill mb-4 position-relative start-50 translate-middle-x mt-4"
-				>Identifique seu pet AGORA</a
-			>
 		</section>
 		<!-- Footer -->
 		<footer class="bg-light text-center">
