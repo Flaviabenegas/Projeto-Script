@@ -1,13 +1,13 @@
 const spinner = document.getElementById('spinner')
 const login = document.getElementById('btn-login')
 const senha = document.getElementById('senha')
-const email = document.getElementById('email')
+const emailform = document.getElementById('email')
 
 login.addEventListener('click', (e) => {
     e.preventDefault()
-    console.log("Email digitado:", email.value);
+    console.log("Email digitado:", emailform.value);
     console.log("Senha digitada:", senha.value);
-    if (email.value.trim() === "teste@teste.com" && senha.value === "teste") {
+    if (emailform.value.trim() === "teste@teste" && senha.value === "teste") {
         login.disabled = true;
         login.innerText = "Aguarde...";
         spinner.classList.remove('d-none');

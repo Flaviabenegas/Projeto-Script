@@ -13,7 +13,7 @@ comprar.addEventListener('click', (e) => {
         loader.classList.remove('d-none');
         setTimeout(() => {
             alert('Pedido enviado com sucesso! 🎉');
-            //inserir lógica do envio de formulário
+            //aqui vai a lógica do meu formulário quando for enviar para o backend.
         }, 2000);
 
     } else {
@@ -24,14 +24,24 @@ comprar.addEventListener('click', (e) => {
 
 
 function validarCPF(cpfDigitado) {
+
     const cpfLimpo = String(cpfDigitado).replace(/[^\d]+/g, '');
     if (cpfLimpo.length !== 11 || !!cpfLimpo.match(/(\d)\1{10}/)) return false;
-    const cpfsplit = cpfLimpo.split('').map(el => +el);
-    const rest = (count) => {
-        return (((cpfsplit
-            .slice(0, count - 12)
-            .reduce((soma, el, index) => (soma + el * (count - index)), 0)
-        ) * 10) % 11) % 10;
-    };
-    return rest(10) === cpfsplit[9] && rest(11) === cpfsplit[10];
+
+    const cpfsplit = cpfLimpo.split('').map(Number);
+    const novePrimeiros = cpfsplit.slice(0, 9);
+
+    let somaB1 = 0;
+    for (let i = 0; i < 9; i++) {
+        somaB1 += novePrimeiros[i] * (i + 1);
+    }
+    let b1 = somaB1 % 11;
+    if (b1 === 10) b1 = 0;
+    let somaB2 = 0;
+    for (let i = 0; i < 9; i++) {
+        somaB2 += novePrimeiros[i] * (9 - i);
+    }
+    let b2 = somaB2 % 11;
+    if (b2 === 10) b2 = 0;
+    return b1 === cpfsplit[9] && b2 === cpfsplit[10];
 }
