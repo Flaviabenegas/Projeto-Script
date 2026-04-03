@@ -4,6 +4,8 @@ document.getElementById('enviar').addEventListener('submit', async function (eve
     //const nome = document.getElementById('nome').value
     const email = document.getElementById('e-mail').value
     const botao = document.getElementById('botao')
+    const modalEmailSucesso = new bootstrap.Modal(document.getElementById('modalEmailSucesso'));
+    const modalEmailErro = new bootstrap.Modal(document.getElementById('modalEmailErro'));
 
     botao.innerText = 'Enviando...'
 
@@ -19,10 +21,12 @@ document.getElementById('enviar').addEventListener('submit', async function (eve
 
         if (response.ok) {
 
-            window.location.href = '/sucesso.html'
+            modalEmailSucesso.show();
+            botao.innerText = 'Se Inscreva'
         } else {
 
-            window.location.href = '/falha.html'
+            modalEmailErro.show();
+            botao.innerText = 'Se Inscreva'
 
         }
     } catch (error) {

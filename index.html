@@ -114,6 +114,7 @@
 							<div class="col-md-4">
 								<div class="p-3 border-0 rounded-4">
 									<img
+										loading="lazy"
 										src="img/agilidade.png"
 										alt="Ilustração de um tutor fazendo uma ligação"
 										class="img-fluid" />
@@ -123,6 +124,7 @@
 							<div class="col-md-4">
 								<div class="p-3 border-0 rounded-4">
 									<img
+										loading="lazy"
 										src="img/stress.png"
 										alt="ilustração de um tutor e seu pet zen"
 										class="img-fluid" />
@@ -132,6 +134,7 @@
 							<div class="col-md-4">
 								<div class="p-3 border-0 rounded-4">
 									<img
+										loading="lazy"
 										src="img/seguranca.png"
 										alt="ilustração de um tutor e seu pet usando cinto de segurança"
 										class="img-fluid" />
@@ -164,6 +167,7 @@
 								<div
 									class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
 									<img
+										loading="lazy"
 										src="img/plaquinhas resistentes.png"
 										alt="Plaquinhas sujas de terra"
 										class="img-fluid" />
@@ -183,6 +187,7 @@
 								<div
 									class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
 									<img
+										loading="lazy"
 										src="img/mkt.png"
 										alt="Plaquinhas em coleiras, em formato redondo e formato de osso"
 										class="img-fluid" />
@@ -208,6 +213,7 @@
 					<div class="col">
 						<div class="card cards shadow-sm">
 							<img
+								loading="lazy"
 								src="img/lua.jpeg"
 								class="card-img-top"
 								alt="vira lata de cor preta usando identificação com nome de Lua" />
@@ -233,6 +239,7 @@
 					<div class="col">
 						<div class="card cards shadow-sm">
 							<img
+								loading="lazy"
 								src="img/simbav.jpeg"
 								class="card-img-top"
 								alt="vira lata caramelo usando identificação com nome de Sol" />
@@ -259,6 +266,7 @@
 					<div class="col">
 						<div class="card cards shadow-sm">
 							<img
+								loading="lazy"
 								src="img/sol.jpeg"
 								class="card-img-top"
 								alt="vira lata caramelo usando identificação com nome de Sol" />
@@ -402,7 +410,7 @@
 								<h4 class="mb-0" id="compra">Formulário de Pedido</h4>
 							</div>
 							<div class="card-body">
-								<form>
+								<form id="formPedido">
 									<fieldset class="mb-4">
 										<legend class="text-secondary h5 mb-3">Informações do Tutor</legend>
 										<div class="row g-3">
@@ -430,6 +438,7 @@
 													>
 												</label>
 												<input
+													aria-describedby="CPF"
 													type="text"
 													class="form-control"
 													id="cpf"
@@ -655,8 +664,111 @@
 				<span class="mt-2">Autenticando...</span>
 			</div>
 		</div>
-		<script src="script/painel.js"></script>
-		<script src="script/email.js"></script>
-		<script src="script/validar.js"></script>
+		<div class="modal fade" id="modalSucesso" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
+						<button
+							type="button"
+							class="btn-close btn-close-white"
+							data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4 text-center">
+						<p class="fs-5 mb-0 text-secondary">Pedido enviado com sucesso!</p>
+					</div>
+					<div class="modal-footer border-0 justify-content-center pb-4">
+						<button
+							type="button"
+							class="btn btn-success rounded-pill px-4 fw-bold"
+							data-bs-dismiss="modal">
+							Entendi
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalErro" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header bg-danger text-white border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold">Atenção ❌</h5>
+						<button
+							type="button"
+							class="btn-close btn-close-white"
+							data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4 text-center">
+						<p class="fs-5 mb-0 text-secondary">CPF Inválido. Por favor, verifique os dados.</p>
+					</div>
+					<div class="modal-footer border-0 justify-content-center pb-4">
+						<button
+							type="button"
+							class="btn btn-danger rounded-pill px-4 fw-bold"
+							data-bs-dismiss="modal">
+							Tentar novamente
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="modalEmailSucesso" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
+						<button
+							type="button"
+							class="btn-close btn-close-white"
+							data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4 text-center">
+						<p class="fs-5 mb-0 text-secondary">Inscrita com sucesso!</p>
+					</div>
+					<div class="modal-footer border-0 justify-content-center pb-4">
+						<button
+							type="button"
+							class="btn btn-success rounded-pill px-4 fw-bold"
+							data-bs-dismiss="modal">
+							Entendi
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalEmailErro" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header bg-danger text-white border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold">Atenção ❌</h5>
+						<button
+							type="button"
+							class="btn-close btn-close-white"
+							data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4 text-center">
+						<p class="fs-5 mb-0 text-secondary">Houve alguma erro no cadastro, tente novamente</p>
+					</div>
+					<div class="modal-footer border-0 justify-content-center pb-4">
+						<button
+							type="button"
+							class="btn btn-danger rounded-pill px-4 fw-bold"
+							data-bs-dismiss="modal">
+							Tentar novamente
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="script/painel.js" defer></script>
+		<script src="script/email.js" defer></script>
+		<script src="script/validar.js" defer></script>
 	</body>
 </html>
