@@ -2,6 +2,9 @@ const spinner = document.getElementById('spinner')
 const login = document.getElementById('btn-login')
 const senha = document.getElementById('senha')
 const emailform = document.getElementById('email')
+const modalEmailErro = new bootstrap.Modal(document.getElementById('modalEmailErro'));
+const modalSucessoPainel = new bootstrap.Modal(document.getElementById('modalSucessoPainel'));
+const painelLogin = document.getElementById('loginPainel');
 
 login.addEventListener('click', (e) => {
     e.preventDefault()
@@ -16,10 +19,13 @@ login.addEventListener('click', (e) => {
             spinner.classList.add('opacity-100');
         }, 10);
         setTimeout(() => {
-            window.location.href = "painel.html";
+            modalSucessoPainel.show();
+            painelLogin.reset();
+            window.location.href = '/painel.html';
+
         }, 2500);
 
     } else {
-        alert("Dados incorretos!");
+        modalEmailErro.show();
     }
 })

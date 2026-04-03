@@ -31,6 +31,7 @@ document.getElementById('enviar').addEventListener('submit', async function (eve
         }
     } catch (error) {
         console.error('Erro de rede:', error)
-        window.location.href = '/falha.html'
+        modalEmailErro.show();
+        botao.innerText = 'Se Inscreva'
     }
 })
