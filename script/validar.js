@@ -1,28 +1,97 @@
-const comprar = document.getElementById('btn-comprar');
+
+const formPedido = document.getElementById('formPedido');
+const btnComprar = document.getElementById('btn-comprar');
 const btnText = document.getElementById('btn-text');
 const inputCpf = document.getElementById('cpf');
 const loader = document.getElementById('loader');
-const formPedido = document.getElementById('formPedido');
-
 
 const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
-const modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
+const modalErroCep = new bootstrap.Modal(document.getElementById('modalErro'));
 
-comprar.addEventListener('click', (e) => {
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const inputQtdCao = document.getElementById('qtdCao');
+    const inputQtdGato = document.getElementById('qtdGato');
+    const inputValorTotal = document.getElementById('valorTotal');
+    const precoUnitario = 15.00;
+    inputQtdCao.value = 0;
+    inputQtdGato.value = 0;
+    inputValorTotal.value = (0).toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    function atualizarValorTotal() {
+
+        let qtdCao = parseInt(inputQtdCao.value);
+        let qtdGato = parseInt(inputQtdGato.value);
+
+        if (isNaN(qtdCao) || qtdCao < 0) qtdCao = 0;
+        if (isNaN(qtdGato) || qtdGato < 0) qtdGato = 0;
+
+
+        const totalPlacas = qtdCao + qtdGato;
+
+
+        const valorTotal = totalPlacas * precoUnitario;
+
+
+        inputValorTotal.value = valorTotal.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+
+    inputQtdCao.addEventListener('input', atualizarValorTotal);
+    inputQtdGato.addEventListener('input', atualizarValorTotal);
+
+
+    const form = document.getElementById('formPedido');
+    if (form) {
+        form.addEventListener('submit', (event) => {
+            let totalPedidos = (parseInt(inputQtdCao.value) || 0) + (parseInt(inputQtdGato.value) || 0);
+            if (totalPedidos === 0) {
+                event.preventDefault();
+                alert('Você precisa pedir pelo menos 1 plaquinha (Cão ou Gato) para continuar!');
+
+
+                const spinner = document.getElementById('spinner');
+                if (spinner && !spinner.classList.contains('d-none')) {
+                    spinner.classList.add('d-none');
+                }
+            }
+        });
+    }
+});
+
+
+
+
+function resetarQuantidade() {
+    if (parseInt(inputQuantidade.value) === 2) {
+        inputQuantidade.value = 1;
+        inputQuantidade.dispatchEvent(new Event('input'));
+    }
+}
+
+
+formPedido.addEventListener('submit', (e) => {
+
     e.preventDefault();
+
     const ehValido = validarCPF(inputCpf.value);
 
     if (ehValido) {
-
-        comprar.disabled = true;
+        btnComprar.disabled = true;
         btnText.innerText = "Processando...";
         loader.classList.remove('d-none');
 
         setTimeout(() => {
             loader.classList.add('d-none');
-            comprar.disabled = false;
+            btnComprar.disabled = false;
             btnText.innerText = "ENVIAR PEDIDO";
-
 
             modalSucesso.show();
             formPedido.reset();
@@ -30,13 +99,10 @@ comprar.addEventListener('click', (e) => {
         }, 2000);
 
     } else {
-
         modalErro.show();
-
         inputCpf.focus();
     }
 });
-
 
 function validarCPF(cpfDigitado) {
     const cpfLimpo = String(cpfDigitado).replace(/[^\d]+/g, '');
