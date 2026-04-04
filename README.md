@@ -1,6 +1,6 @@
 # 🐾 Apaixonados por Focinhos - Identificação Pet
 
-![Status](https://img.shields.io/badge/Status-Conclu%C3%ADdo-success)
+![Status](https://img.shields.io/badge/Status-Em%20andamento-yellow)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
@@ -12,6 +12,7 @@
 ## 🚀 Sobre o Projeto
 
 A página foi desenvolvida para apresentar a importância da identificação pet e facilitar a navegação e a conversão dos clientes através de secções informativas e de um fluxo de pedido simples.
+O projeto ainda está em desenvolvimento, faltando o backend do pedido.
 
 ### ✨ Funcionalidades Principais
 
