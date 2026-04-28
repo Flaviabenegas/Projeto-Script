@@ -7,7 +7,7 @@
 ![Bootstrap](https://img.shields.io/badge/Bootstrap_5-7952B3?style=flat&logo=bootstrap&logoColor=white)
 ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=flat&logo=netlify&logoColor=white)
 
-> Landing page responsiva para a **Apaixonados por Focinhos**, uma loja especializada em produtos de identificação, bandanas e mimos para pets e os seus tutores.
+> Landing page responsiva para a **Apaixonados por Focinhos**, feita pela Aluna Flávia Benegas da Fatec de Mogi Mogi Mirim, uma loja especializada em produtos de identificação, bandanas e mimos para pets e os seus tutores.
 
 ## 🚀 Sobre o Projeto
 
