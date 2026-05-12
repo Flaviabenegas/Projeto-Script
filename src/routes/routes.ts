@@ -9,6 +9,6 @@ router.get('/api/status', statusSite);
 
 router.get('/api/usuarios/:nome', getUsuario);
 
-router.get('/api/comprar', comprar);
+router.post('/api/comprar', comprar);
 
 export default router;

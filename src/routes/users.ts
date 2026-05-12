@@ -26,8 +26,9 @@ export const visualizarSite = (req: Request, res: Response) => {
 };
 
 export const comprar = (req: Request, res: Response) => {
+	console.log('Compra recebida:', req.body);
 	res.json({
-		mensagem: 'Compra realizada com sucesso!',
-		status: 'sucesso',
+		statuscode: 200,
+		message: 'Compra realizada com sucesso!',
 	});
 };

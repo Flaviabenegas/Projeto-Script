@@ -2,9 +2,11 @@ const spinner = document.getElementById('spinner')
 const login = document.getElementById('btn-login')
 const senha = document.getElementById('senha')
 const emailform = document.getElementById('email')
+const textoErro = document.getElementById('modalText')
 const modalEmailErro = new bootstrap.Modal(document.getElementById('modalEmailErro'));
 const modalSucessoPainel = new bootstrap.Modal(document.getElementById('modalSucessoPainel'));
 const painelLogin = document.getElementById('loginPainel');
+
 
 login.addEventListener('click', (e) => {
     e.preventDefault()
@@ -21,11 +23,12 @@ login.addEventListener('click', (e) => {
         setTimeout(() => {
             modalSucessoPainel.show();
             painelLogin.reset();
-            window.location.href = '/painel.html';
+            window.location.href = 'painel.html';
 
         }, 2500);
 
     } else {
+        textoErro.innerText = "Email ou senha incorretos. Por favor, tente novamente.";
         modalEmailErro.show();
     }
 })

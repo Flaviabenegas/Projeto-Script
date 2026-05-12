@@ -4,6 +4,7 @@
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap_5-7952B3?style=flat&logo=bootstrap&logoColor=white)
 ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=flat&logo=netlify&logoColor=white)
 
@@ -26,10 +27,10 @@ O projeto ainda está em desenvolvimento, faltando o backend do pedido.
 
 O projeto utiliza tecnologias modernas para garantir performance, responsividade e interatividade:
 
-* **Front-end:** HTML5, CSS3 (Variáveis e Custom Properties), JavaScript Vanilla (ES6+) e Bootstrap 5.
-* **Back-end/Serverless:** Netlify Functions (Node.js).
-* **Integrações (APIs):** BrasilAPI (para moradas) e Mailchimp API (para leads).
-* **Design:** Fontes do Google Fonts (Poppins) e uma paleta de cores personalizada.
+- **Front-end:** HTML5, CSS3 (Variáveis e Custom Properties), JavaScript Vanilla (ES6+) e Bootstrap 5.
+- **Back-end/Serverless:** Netlify Functions (Node.js).
+- **Integrações (APIs):** BrasilAPI (para moradas) e Mailchimp API (para leads).
+- **Design:** Fontes do Google Fonts (Poppins) e uma paleta de cores personalizada.
 
 ## 📁 Estrutura de Arquivos
 
@@ -49,3 +50,4 @@ O projeto utiliza tecnologias modernas para garantir performance, responsividade
 │   └── functions/
 │       └── subscribe.js     # Função Serverless para envio ao Mailchimp
 └── img/                     # Imagens e logotipos
+```
