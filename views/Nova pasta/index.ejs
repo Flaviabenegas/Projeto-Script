@@ -6,9 +6,9 @@
 	<body>
 		<header><%- include ('partials/header') %></header>
 		<main>
+
 			<!-- ── HERO ─────────────────────────────────────────── -->
-			<section
-				class="hero position-relative vh-80 overflow-hidden text-white d-flex align-items-center py-6 py-md-5">
+			<section class="hero position-relative vh-80 overflow-hidden text-white d-flex align-items-center py-6 py-md-5">
 				<img
 					src="img/principal.webp"
 					class="img-fluid w-100 h-100 position-absolute top-0 start-0 object-fit-cover"
@@ -39,8 +39,7 @@
 					<div class="col-lg-8">
 						<h1 class="titulos display-5 fw-bold mb-4">A Identificação Pet Salva Vidas 🐾</h1>
 						<article>
-							<p
-								class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 bg-light border-start border-5 border-custom">
+							<p class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 bg-light border-start border-5 border-custom">
 								Um pet com identificação tem
 								<span class="text-decoration-underline fw-bold titulos-rosa">90% mais chances</span>
 								de retornar ao lar em menos de 24 horas.
@@ -95,8 +94,7 @@
 							<span class="titulos-rosa text-decoration-underline">Apaixonados por Focinhos</span>?
 						</h2>
 
-						<div
-							class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 bg-light border-start border-5 border-custom">
+						<div class="lead mb-4 fs-4 text-dark shadow-sm p-4 rounded-4 bg-light border-start border-5 border-custom">
 							<p class="lead fw-medium mb-0 text-dark">
 								Na Apaixonados por Focinhos, acreditamos que a identificação
 								<span class="fw-bold">não é um acessório</span>, é o passaporte de volta para casa.
@@ -106,8 +104,7 @@
 
 						<div class="row g-4 text-start">
 							<div class="col-md-6">
-								<div
-									class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
+								<div class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
 									<img
 										loading="lazy"
 										src="img/plaquinhas resistentes.webp"
@@ -126,8 +123,7 @@
 							</div>
 
 							<div class="col-md-6">
-								<div
-									class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
+								<div class="h-100 p-4 border border-1 border-light-subtle rounded-4 shadow-sm bg-white">
 									<img
 										loading="lazy"
 										src="img/mkt.webp"
@@ -157,6 +153,7 @@
 					</div>
 				</div>
 			</section>
+
 		</main>
 		<footer class="bg-light text-center"><%- include ('partials/footer') %></footer>
 
@@ -165,7 +162,115 @@
 			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 			crossorigin="anonymous"></script>
 
-		<%- include ('partials/modal') %>
+		<!-- Modal: Login Administrativo -->
+		<div
+			class="modal fade"
+			id="modalLogin"
+			tabindex="-1"
+			aria-labelledby="modalLoginLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header azul-claro border-0 rounded-4 p-4">
+						<h5 class="modal-title fw-bold" id="modalLoginLabel">Painel Administrativo</h5>
+						<button
+							type="button"
+							class="btn-close rounded-pill titulos"
+							data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4">
+						<form id="loginPainel">
+							<div class="mb-3">
+								<label for="email" class="form-label fw-medium">E-mail</label>
+								<input
+									type="email"
+									class="form-control rounded-4"
+									id="email"
+									placeholder="nome@exemplo.com"
+									required />
+							</div>
+							<div class="mb-3">
+								<label for="senha" class="form-label fw-medium">Senha</label>
+								<input
+									type="password"
+									class="form-control rounded-4"
+									id="senha"
+									placeholder="Sua senha secreta"
+									required />
+							</div>
+							<button
+								type="submit"
+								class="btn btn-pet w-100 rounded-pill py-2 fw-bold"
+								id="btn-login">
+								Entrar na conta
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="loader" class="d-none opacity-0" style="transition: opacity 0.5s ease">
+			<div class="d-flex flex-column align-items-center my-3">
+				<div class="spinner-border text-primary" role="status"></div>
+				<span class="mt-2">Autenticando...</span>
+			</div>
+		</div>
+
+		<!-- Modal: Sucesso Login -->
+		<div class="modal fade" id="modalSucessoPainel" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
+						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4 text-center">
+						<p class="fs-5 mb-0 text-secondary">Login realizado com sucesso!</p>
+					</div>
+					<div class="modal-footer border-0 justify-content-center pb-4">
+						<button type="button" class="btn btn-success rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Entendi</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal: E-mail Inscrito -->
+		<div class="modal fade" id="modalEmailSucesso" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
+						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4 text-center">
+						<p class="fs-5 mb-0 text-secondary">Inscrita com sucesso!</p>
+					</div>
+					<div class="modal-footer border-0 justify-content-center pb-4">
+						<button type="button" class="btn btn-success rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Entendi</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal: Erro E-mail -->
+		<div class="modal fade" id="modalEmailErro" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow-lg">
+					<div class="modal-header bg-danger text-white border-0 rounded-top-4 p-4">
+						<h5 class="modal-title fw-bold">Atenção ❌</h5>
+						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4 text-center">
+						<p class="fs-5 mb-0 text-secondary" id="modalText">Houve algum erro, tente novamente</p>
+					</div>
+					<div class="modal-footer border-0 justify-content-center pb-4">
+						<button type="button" class="btn btn-danger rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Tentar novamente</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script src="script/painel.js" defer></script>
 		<script src="script/email.js" defer></script>

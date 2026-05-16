@@ -113,3 +113,57 @@ function validarCPF(cpfDigitado) {
 
     return b1 === cpfsplit[9] && b2 === cpfsplit[10];
 }
+
+// Exemplo de como interceptar o formulário no seu validar.js
+document.getElementById('formPedido').addEventListener('submit', async function(event) {
+  event.preventDefault(); // Evita que a página recarregue
+
+  // Mostra o spinner e muda o texto do botão
+  document.getElementById('spinner').classList.remove('d-none');
+  document.getElementById('btn-text').textContent = 'ENVIANDO...';
+
+  // Monta o objeto com os dados dos inputs do EJS
+  const dadosDoPedido = {
+    nome: document.getElementById('nome').value,
+    cpf: document.getElementById('cpf').value,
+    telefone: document.getElementById('telefone').value,
+    email: document.getElementById('form-email').value,
+    cep: document.getElementById('cep').value,
+    logradouro: document.getElementById('logradouro').value,
+    numero: document.getElementById('numero').value,
+    complemento: document.getElementById('complemento').value,
+    bairro: document.getElementById('bairro').value,
+    cidade: document.getElementById('cidade').value,
+    uf: document.getElementById('uf').value,
+    qtdCao: parseInt(document.getElementById('qtdCao').value),
+    qtdGato: parseInt(document.getElementById('qtdGato').value),
+    valorTotal: document.getElementById('valorTotal').value,
+    nomePets: document.getElementById('nomePets').value,
+    telGravacao: document.getElementById('telGravacao').value
+  };
+
+  try {
+    const resposta = await fetch('http://localhost:3000/api/pedidos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dadosDoPedido)
+    });
+
+    if (resposta.ok) {
+      // Abre o Modal de Sucesso que já existe no seu EJS
+      var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
+      modalSucesso.show();
+      this.reset(); // Limpa o formulário
+    } else {
+      throw new Error('Erro ao salvar');
+    }
+  } catch (error) {
+    // Abre o Modal de Erro
+    var modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
+    modalErro.show();
+  } finally {
+    // Restaura o botão
+    document.getElementById('spinner').classList.add('d-none');
+    document.getElementById('btn-text').textContent = 'ENVIAR PEDIDO';
+  }
+});
