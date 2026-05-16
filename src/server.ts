@@ -1,4 +1,5 @@
-import express, { type Request, type Response } from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
+import 'dotenv/config';
 import cors from 'cors';
 import { sequelize } from './config/database.js';
 import rotas from './routes/routes.js';
@@ -17,7 +18,23 @@ sequelize.sync().then(() => {
 
 app.use(rotas);
 
-const PORT = 3000;
-app.listen(PORT, () => {
-	console.log(`🚀 Servidor rodando na porta http://localhost:${PORT}`);
+app.use((req: Request, res: Response, next: NextFunction) => {
+	res.status(404).render('404', {
+		url: req.originalUrl,
+		mensagem: 'Ops! A página que você procura não foi encontrada.',
+	});
+});
+
+app.use((erro: any, req: Request, res: Response, next: NextFunction) => {
+	console.error('Erro interno capturado pelo middleware:', erro);
+	const status = erro.status || 500;
+
+	res.status(status).render('erro', {
+		status,
+		mensagem: erro.message || 'Desculpe, ocorreu um erro interno no servidor.',
+	});
+});
+
+app.listen(process.env.PORT, () => {
+	console.log(`🚀 Servidor rodando na porta http://localhost:${process.env.PORT}`);
 });
