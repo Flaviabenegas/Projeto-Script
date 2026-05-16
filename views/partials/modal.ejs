@@ -1,0 +1,130 @@
+<!-- Modal: Login Administrativo -->
+<div
+	class="modal fade"
+	id="modalLogin"
+	tabindex="-1"
+	aria-labelledby="modalLoginLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 rounded-4 shadow-lg">
+			<div class="modal-header azul-claro border-0 rounded-4 p-4">
+				<h5 class="modal-title fw-bold" id="modalLoginLabel">Painel Administrativo</h5>
+				<button
+					type="button"
+					class="btn-close rounded-pill titulos"
+					data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body p-4">
+				<form id="loginPainel">
+					<div class="mb-3">
+						<label for="email-login" class="form-label fw-medium">E-mail</label>
+						<input
+							type="email"
+							class="form-control rounded-4"
+							id="email-login"
+							placeholder="nome@exemplo.com"
+							required />
+					</div>
+					<div class="mb-3">
+						<label for="senha" class="form-label fw-medium">Senha</label>
+						<input
+							type="password"
+							class="form-control rounded-4"
+							id="senha"
+							placeholder="Sua senha secreta"
+							required />
+					</div>
+					<button type="submit" class="btn btn-pet w-100 rounded-pill py-2 fw-bold" id="btn-login">
+						Entrar na conta
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="loader" class="d-none opacity-0" style="transition: opacity 0.5s ease">
+	<div class="d-flex flex-column align-items-center my-3">
+		<div class="spinner-border text-primary" role="status"></div>
+		<span class="mt-2">Autenticando...</span>
+	</div>
+</div>
+<!-- Modal: E-mail Inscrito -->
+<div class="modal fade" id="modalEmailSucesso" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 rounded-4 shadow-lg">
+			<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
+				<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
+				<button
+					type="button"
+					class="btn-close btn-close-white"
+					data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body p-4 text-center">
+				<p class="fs-5 mb-0 text-secondary">Inscrita com sucesso!</p>
+			</div>
+			<div class="modal-footer border-0 justify-content-center pb-4">
+				<button
+					type="button"
+					class="btn btn-success rounded-pill px-4 fw-bold"
+					data-bs-dismiss="modal">
+					Entendi
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal: Sucesso Login -->
+<div class="modal fade" id="modalSucessoPainel" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 rounded-4 shadow-lg">
+			<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
+				<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
+				<button
+					type="button"
+					class="btn-close btn-close-white"
+					data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body p-4 text-center">
+				<p class="fs-5 mb-0 text-secondary">Login realizado com sucesso!</p>
+			</div>
+			<div class="modal-footer border-0 justify-content-center pb-4">
+				<button
+					type="button"
+					class="btn btn-success rounded-pill px-4 fw-bold"
+					data-bs-dismiss="modal">
+					Entendi
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal: Erro E-mail -->
+<div class="modal fade" id="modalEmailErro" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 rounded-4 shadow-lg">
+			<div class="modal-header bg-danger text-white border-0 rounded-top-4 p-4">
+				<h5 class="modal-title fw-bold">Atenção ❌</h5>
+				<button
+					type="button"
+					class="btn-close btn-close-white"
+					data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body p-4 text-center">
+				<p class="fs-5 mb-0 text-secondary" id="modalText">Houve algum erro, tente novamente</p>
+			</div>
+			<div class="modal-footer border-0 justify-content-center pb-4">
+				<button
+					type="button"
+					class="btn btn-danger rounded-pill px-4 fw-bold"
+					data-bs-dismiss="modal">
+					Tentar novamente
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

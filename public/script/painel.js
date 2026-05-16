@@ -1,34 +1,54 @@
-const spinner = document.getElementById('spinner')
-const login = document.getElementById('btn-login')
-const senha = document.getElementById('senha')
-const emailform = document.getElementById('email')
-const textoErro = document.getElementById('modalText')
-const modalEmailErro = new bootstrap.Modal(document.getElementById('modalEmailErro'));
-const modalSucessoPainel = new bootstrap.Modal(document.getElementById('modalSucessoPainel'));
+const login = document.getElementById('btn-login');
+const senha = document.getElementById('senha');
+const emailform = document.getElementById('email') || document.getElementById('email-login');
+const textoErro = document.getElementById('modalText');
 const painelLogin = document.getElementById('loginPainel');
+const loader = document.getElementById('loader'); 
 
+if (login && emailform && senha) {
+    
+    const modalEmailErroEl = document.getElementById('modalEmailErro');
+    const modalSucessoPainelEl = document.getElementById('modalSucessoPainel');
+    
+    const modalEmailErro = modalEmailErroEl ? new bootstrap.Modal(modalEmailErroEl) : null;
+    const modalSucessoPainel = modalSucessoPainelEl ? new bootstrap.Modal(modalSucessoPainelEl) : null;
 
-login.addEventListener('click', (e) => {
-    e.preventDefault()
-    console.log("Email digitado:", emailform.value);
-    console.log("Senha digitada:", senha.value);
-    if (emailform.value.trim() === "teste@teste" && senha.value === "teste") {
-        login.disabled = true;
-        login.innerText = "Aguarde...";
-        spinner.classList.remove('d-none');
-        setTimeout(() => {
-            spinner.classList.remove('opacity-0');
-            spinner.classList.add('opacity-100');
-        }, 10);
-        setTimeout(() => {
-            modalSucessoPainel.show();
-            painelLogin.reset();
-            window.location.href = 'painel.html';
+    login.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (emailform.value.trim() === "teste@teste" && senha.value === "teste") {
+            login.disabled = true;
+            login.innerText = "Aguarde...";
+            
+            if (loader) {
+                loader.classList.remove('d-none');
+                setTimeout(() => {
+                    loader.classList.remove('opacity-0');
+                    loader.classList.add('opacity-100');
+                }, 10);
+            }
+            
+           
+            setTimeout(() => {
+                if (loader) {
+                    loader.classList.add('d-none');
+                }
+                
+                if (modalSucessoPainel) {
+                    modalSucessoPainel.show(); 
+                }
+                if (painelLogin) painelLogin.reset();
+                
+                
+                setTimeout(() => {
+                    window.location.href = '/painel'; 
+                }, 2000); 
 
-        }, 2500);
+            }, 2000); 
 
-    } else {
-        textoErro.innerText = "Email ou senha incorretos. Por favor, tente novamente.";
-        modalEmailErro.show();
-    }
-})
+        } else {
+            if (textoErro) textoErro.innerText = "Email ou senha incorretos. Por favor, tente novamente.";
+            if (modalEmailErro) modalEmailErro.show();
+        }
+    });
+}
