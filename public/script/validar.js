@@ -6,16 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputCpf = document.getElementById('cpf');
     const inputQtdCao = document.getElementById('qtdCao');
     const inputQtdGato = document.getElementById('qtdGato');
-    const inputValorTotal = document.getElementById('valorTotal');
+    const valorFreteInput = document.getElementById('valorFrete');
+    let inputValorTotal = document.getElementById('valorTotal');
+    
 
    
     const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
     const modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
 
     const precoUnitario = 15.00;
+   
     
-    
-    inputQtdCao.value = 1; 
+    inputQtdCao.value = 0; 
     inputQtdGato.value = 0;
 
 
@@ -27,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isNaN(qtdGato) || qtdGato < 0) qtdGato = 0;
 
         const totalPlacas = qtdCao + qtdGato;
-        const valorTotal = totalPlacas * precoUnitario;
+        const valorTotal = totalPlacas * precoUnitario + (valorFreteInput.value ? parseFloat(valorFreteInput.value.replace(',', '.')) : 0);
 
         inputValorTotal.value = valorTotal.toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
@@ -87,7 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 qtdGato: parseInt(inputQtdGato.value),
                 valorTotal: inputValorTotal.value,
                 nomePets: document.getElementById('nomePets').value,
-                telGravacao: document.getElementById('telGravacao').value
+                telGravacao: document.getElementById('telGravacao').value,
+                valorFrete: valorFreteInput.value ? parseFloat(valorFreteInput.value.replace(',', '.')) : 0
             };
 
          

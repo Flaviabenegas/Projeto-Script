@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database.js';
+import fa from 'zod/v4/locales/fa.cjs';
 
 export class Pedido extends Model {}
 
@@ -40,7 +41,7 @@ Pedido.init(
 		},
 		complemento: {
 			type: DataTypes.STRING,
-			allowNull: true, // Pode ser nulo, pois nem todo endereço tem complemento
+			allowNull: true,
 		},
 		bairro: {
 			type: DataTypes.STRING,
@@ -64,8 +65,12 @@ Pedido.init(
 			allowNull: false,
 			defaultValue: 0,
 		},
+		valorFrete: {
+			type: DataTypes.NUMBER,
+			allowNull: false,
+		},
 		valorTotal: {
-			type: DataTypes.STRING,
+			type: DataTypes.NUMBER,
 			allowNull: false,
 		},
 		nomePets: {

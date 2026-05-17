@@ -5,6 +5,7 @@ const cidadeInput = document.getElementById('cidade');
 const buscarCEPBtn = document.getElementById('buscarCep');
 const ufInput = document.getElementById('uf');
 const textoModal = document.getElementById('modalText');
+const valorFreteInput = document.getElementById('valorFrete');
 
 
 const modalErro = new bootstrap.Modal(document.getElementById('modalEmailErro'));
@@ -45,6 +46,12 @@ buscarCEPBtn.addEventListener('click', async (e) => {
         bairroInput.value = data.neighborhood || '';
         cidadeInput.value = data.city || '';
         ufInput.value = data.state || '';
+        if (data.city != 'Mogi Mirim' && data.city != 'Mogi Guaçu') {
+            valorFreteInput.value = parseFloat('25,00'.replace(',', '.')).toFixed(2);
+        } else {
+            valorFreteInput.value = parseFloat('0,00'.replace(',', '.')).toFixed(2);
+        }
+        
 
     } catch (error) {
         console.error('Erro na requisição:', error);

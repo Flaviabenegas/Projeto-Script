@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { Pedido } from '../config/database.js';
+import Pedido from '../controllers/PedidoController.js';
 
 export const visualizarSite = (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -34,21 +34,6 @@ export const painel = (req: Request, res: Response, next: NextFunction) => {
 	} catch (erro) {
 		next(erro);
 		console.error('Erro ao acessar o painel:', erro);
-	}
-};
-
-export const pedidos = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-	try {
-		const novoPedido = await Pedido.create(req.body);
-
-		res.status(201).json({
-			sucesso: true,
-			mensagem: 'Pedido salvo com sucesso!',
-			pedido: novoPedido,
-		});
-	} catch (erro) {
-		next(erro);
-		console.error('Erro ao salvar o pedido:', erro);
 	}
 };
 

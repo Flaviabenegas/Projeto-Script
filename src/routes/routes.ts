@@ -1,5 +1,6 @@
 import express from 'express';
-import { comprar, visualizarSite, depoimentos, painel, pedidos, listarPedidos } from './users.js';
+import { comprar, visualizarSite, depoimentos, painel, listarPedidos } from './users.js';
+import { criarPedido } from '../controllers/PedidoController.js';
 
 const router = express.Router();
 
@@ -9,6 +10,6 @@ router.get('/depoimentos', depoimentos);
 router.get('/painel', painel);
 
 router.get('/api/pedidos', listarPedidos);
-router.post('/api/pedidos', pedidos);
+router.post('/api/pedidos', criarPedido);
 
 export default router;
