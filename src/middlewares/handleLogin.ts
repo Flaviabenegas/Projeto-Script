@@ -3,10 +3,22 @@ import bcrypt from 'bcrypt';
 import Pedido from '../controllers/PedidoController.js';
 import User from '../models/User.js';
 
+// Estende a sessão para evitar os 'as any'
+declare module 'express-session' {
+	interface SessionData {
+		adminId: number;
+	}
+}
+
+interface LoginBody {
+	usuario: string;
+	senha: string;
+}
+
 export const visualizarSite = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('index');
-	} catch (erro) {
+	} catch (erro: unknown) {
 		console.error('Erro ao visualizar o site:', erro);
 		next(erro);
 	}
@@ -15,7 +27,7 @@ export const visualizarSite = (req: Request, res: Response, next: NextFunction):
 export const comprar = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('comprar');
-	} catch (erro) {
+	} catch (erro: unknown) {
 		console.error('Erro ao acessar a página de compra:', erro);
 		next(erro);
 	}
@@ -24,7 +36,7 @@ export const comprar = (req: Request, res: Response, next: NextFunction): void =
 export const depoimentos = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('depoimentos');
-	} catch (erro) {
+	} catch (erro: unknown) {
 		console.error('Erro ao acessar a página de depoimentos:', erro);
 		next(erro);
 	}
@@ -33,7 +45,7 @@ export const depoimentos = (req: Request, res: Response, next: NextFunction): vo
 export const painel = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('painel');
-	} catch (erro) {
+	} catch (erro: unknown) {
 		console.error('Erro ao acessar o painel:', erro);
 		next(erro);
 	}
@@ -51,14 +63,14 @@ export const listarPedidos = async (
 			quantidade: todosPedidos.length,
 			pedidos: todosPedidos,
 		});
-	} catch (erro) {
+	} catch (erro: unknown) {
 		console.error('Erro ao buscar os pedidos:', erro);
 		next(erro);
 	}
 };
 
 export const handleLogin = async (
-	req: Request,
+	req: Request<object, object, LoginBody>,
 	res: Response,
 	next: NextFunction,
 ): Promise<void> => {
@@ -84,9 +96,9 @@ export const handleLogin = async (
 			return;
 		}
 
-		(req.session as any).adminId = user.id;
+		req.session.adminId = user.id; // sem 'as any' graças ao declare module
 		res.status(200).json({ sucesso: true });
-	} catch (erro) {
+	} catch (erro: unknown) {
 		console.error('Erro ao fazer login:', erro);
 		next(erro);
 	}

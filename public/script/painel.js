@@ -16,39 +16,37 @@ if (login && emailform && senha) {
     login.addEventListener('click', (e) => {
         e.preventDefault();
         
-        if (emailform.value.trim() === "teste@teste" && senha.value === "teste") {
-            login.disabled = true;
-            login.innerText = "Aguarde...";
-            
-            if (loader) {
-                loader.classList.remove('d-none');
-                setTimeout(() => {
-                    loader.classList.remove('opacity-0');
-                    loader.classList.add('opacity-100');
-                }, 10);
-            }
-            
-           
-            setTimeout(() => {
-                if (loader) {
-                    loader.classList.add('d-none');
-                }
-                
-                if (modalSucessoPainel) {
-                    modalSucessoPainel.show(); 
-                }
-                if (painelLogin) painelLogin.reset();
-                
-                
-                setTimeout(() => {
-                    window.location.href = '/painel'; 
-                }, 2000); 
+       const credenciais = {
+    usuario: emailform.value.trim(),
+    senha: senha.value
+};
 
-            }, 2000); 
-
-        } else {
-            if (textoErro) textoErro.innerText = "Email ou senha incorretos. Por favor, tente novamente.";
-            if (modalEmailErro) modalEmailErro.show();
+fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credenciais)
+})
+.then(resposta => resposta.json()) 
+.then(dados => {
+    if (dados.sucesso) {
+        if (loader) {
+            loader.classList.remove('d-none');
+            setTimeout(() => loader.classList.add('opacity-100'), 10);
         }
-    });
-}
+        setTimeout(() => {
+            loader.classList.add('d-none');
+            modalSucessoPainel?.show();
+            painelLogin?.reset();
+            setTimeout(() => { window.location.href = '/painel'; }, 2000);
+        }, 2000);
+    } else {
+        textoErro.innerText = dados.mensagem || 'Email ou senha incorretos.';
+        modalEmailErro?.show();
+    }
+})
+.catch(erro => {
+    console.error('Erro na comunicação:', erro);
+    textoErro.innerText = 'Erro ao conectar com o servidor.';
+    modalEmailErro?.show();
+});
+    })}
