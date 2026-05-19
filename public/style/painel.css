@@ -1,0 +1,29 @@
+.stat-card {
+	border-left: 4px solid;
+}
+.stat-card.pedidos {
+	border-color: #5ebbd6;
+}
+.stat-card.clientes {
+	border-color: #e07b6a;
+}
+.stat-card.receita {
+	border-color: #4caf7d;
+}
+.stat-card.hoje {
+	border-color: #f5a623;
+}
+.table-hover tbody tr:hover {
+	background-color: rgba(94, 187, 214, 0.06);
+}
+.badge-cao {
+	background-color: #5ebbd6;
+	color: #fff;
+}
+.badge-gato {
+	background-color: #e07b6a;
+	color: #fff;
+}
+#searchBar {
+	max-width: 320px;
+}

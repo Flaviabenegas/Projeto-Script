@@ -15,10 +15,9 @@ async function criarDados() {
     if (spinner) spinner.classList.remove('d-none');
 
     const dadosUsuario = {
-        nome: document.getElementById('usuario').value,
+        usuario: document.getElementById('usuario').value,
         senha: senha.value,
     };
-
     console.log('Dados enviados:', dadosUsuario);
 
     try {
@@ -28,16 +27,23 @@ async function criarDados() {
             body: JSON.stringify(dadosUsuario)
         });
 
-        if (resposta.ok) {
-            if (modalSucesso) modalSucesso.show();
-            formCriar.reset();
-        } else if (resposta.status === 409) {
-            const textoModal = document.getElementById('modalText');
-            if (textoModal) textoModal.innerText = 'Este usuário já está cadastrado.';
-            if (modalErro) modalErro.show();
-        } else {
-            throw new Error('Erro ao salvar no servidor');
-        }
+     if (resposta.ok) {
+    const textoSucesso = document.getElementById('modalSucessoText');
+    if (textoSucesso) textoSucesso.innerText = 'Usuário criado com sucesso!';
+    if (modalSucesso) modalSucesso.show();
+    formCriar.reset();
+      setTimeout(() => {
+        window.location.href = '/';
+    }, 2000);
+
+} else if (resposta.status === 409) {
+    const textoModal = document.getElementById('modalText');
+    if (textoModal) textoModal.innerText = 'Este usuário já está cadastrado.';
+    if (modalErro) modalErro.show();
+
+} else {
+    throw new Error('Erro ao salvar no servidor');
+}
     } catch (error) {
         console.error('Erro na requisição:', error);
         const textoModal = document.getElementById('modalText');

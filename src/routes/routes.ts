@@ -8,6 +8,7 @@ import {
 	criarUsuario,
 	criarUser,
 	listarUsuarios,
+	logout,
 } from './users.js';
 import { criarPedido } from '../controllers/PedidoController.js';
 import verficarLogin from '../middlewares/checkLogin.js';
@@ -26,5 +27,6 @@ router.post('/api/criar', criarUser);
 router.post('/api/pedidos', criarPedido);
 router.post('/api/login/', handleLogin);
 router.get('/api/users', listarUsuarios);
+router.get('/api/logout', logout);
 
 export default router;
