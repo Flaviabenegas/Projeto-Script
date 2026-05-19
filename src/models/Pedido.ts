@@ -70,7 +70,7 @@ Pedido.init(
 			allowNull: false,
 		},
 		valorTotal: {
-			type: DataTypes.NUMBER,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		nomePets: {

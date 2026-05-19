@@ -64,7 +64,12 @@ function preencherEstatisticas(pedidos) {
     const hoje = new Date().toISOString().slice(0, 10);
 
     const clientesUnicos = new Set(pedidos.map(p => p.email)).size;
-    const receita = pedidos.reduce((acc, p) => acc + Number(p.valorTotal || 0), 0);
+
+    const receita = pedidos.reduce((acc, p) => {
+        const valor = parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
+        return acc + valor;
+    }, 0);
+
     const pedidosHoje = pedidos.filter(p => p.createdAt?.slice(0, 10) === hoje).length;
 
     document.getElementById('statPedidos').textContent = pedidos.length;
@@ -81,14 +86,11 @@ function linhaTabela(pedido, index) {
 
     const qtdCao = Number(pedido.qtdCao || 0);
     const qtdGato = Number(pedido.qtdGato || 0);
+    const valor = parseFloat(String(pedido.valorTotal).replace(',', '.')) || 0; // ← adiciona
 
     const badges = [
-        qtdCao > 0
-            ? `<span class="badge badge-cao rounded-pill me-1">🐶 ${qtdCao}</span>`
-            : '',
-        qtdGato > 0
-            ? `<span class="badge badge-gato rounded-pill">🐱 ${qtdGato}</span>`
-            : '',
+        qtdCao > 0 ? `<span class="badge badge-cao rounded-pill me-1">🐶 ${qtdCao}</span>` : '',
+        qtdGato > 0 ? `<span class="badge badge-gato rounded-pill">🐱 ${qtdGato}</span>` : '',
     ].join('');
 
     return `
@@ -99,11 +101,10 @@ function linhaTabela(pedido, index) {
             <td class="text-secondary small">${pedido.cidade || '—'} / ${pedido.uf || '—'}</td>
             <td>${pedido.nomePets || '—'}</td>
             <td>${badges || '—'}</td>
-            <td class="fw-bold titulos-rosa">R$ ${Number(pedido.valorTotal || 0).toFixed(2).replace('.', ',')}</td>
+            <td class="fw-bold titulos-rosa">R$ ${valor.toFixed(2).replace('.', ',')}</td>
             <td class="text-secondary small">${data}</td>
         </tr>`;
 }
-
 function preencherTabelaPedidos(pedidos) {
     const corpo = document.getElementById('corpoTabelaPedidos');
 
@@ -124,7 +125,7 @@ function preencherClientes(pedidos, usuarios) {
         if (!p.email) return;
         if (!mapa[p.email]) mapa[p.email] = { nome: p.nome, total: 0, pedidos: 0 };
         mapa[p.email].pedidos += 1;
-        mapa[p.email].total += Number(p.valorTotal || 0);
+        mapa[p.email].total += parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
     });
 
     const emails = Object.keys(mapa);

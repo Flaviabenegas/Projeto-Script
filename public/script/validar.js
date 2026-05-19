@@ -7,72 +7,81 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputQtdCao = document.getElementById('qtdCao');
     const inputQtdGato = document.getElementById('qtdGato');
     const valorFreteInput = document.getElementById('valorFrete');
-    let inputValorTotal = document.getElementById('valorTotal');
+    const inputValorTotal = document.getElementById('valorTotal');
     
-
-   
-    const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
-    const modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
+    const modalSucesso = document.getElementById('modalSucesso') ? new bootstrap.Modal(document.getElementById('modalSucesso')) : null;
+    const modalErro = document.getElementById('modalErro') ? new bootstrap.Modal(document.getElementById('modalErro')) : null;
 
     const precoUnitario = 15.00;
    
-    
-    inputQtdCao.value = 0; 
-    inputQtdGato.value = 0;
+    // Zera os inputs iniciais (se eles existirem)
+    if (inputQtdCao) inputQtdCao.value = 0; 
+    if (inputQtdGato) inputQtdGato.value = 0;
+    if (inputValorTotal) inputValorTotal.value = 0;
 
-
+    // 1. PRIMEIRO DECLARAMOS A FUNÇÃO
     function atualizarValorTotal() {
-        let qtdCao = parseInt(inputQtdCao.value);
-        let qtdGato = parseInt(inputQtdGato.value);
+        let qtdCao = parseInt(inputQtdCao.value) || 0;
+        let qtdGato = parseInt(inputQtdGato.value) || 0;
 
-        if (isNaN(qtdCao) || qtdCao < 0) qtdCao = 0;
-        if (isNaN(qtdGato) || qtdGato < 0) qtdGato = 0;
+        if (qtdCao < 0) qtdCao = 0;
+        if (qtdGato < 0) qtdGato = 0;
 
         const totalPlacas = qtdCao + qtdGato;
-        const valorTotal = totalPlacas * precoUnitario + (valorFreteInput.value ? parseFloat(valorFreteInput.value.replace(',', '.')) : 0);
+        
+        let valorFrete = 0;
+        if (valorFreteInput && valorFreteInput.value) {
+            valorFrete = parseFloat(valorFreteInput.value.replace(',', '.'));
+            if (isNaN(valorFrete)) valorFrete = 0;
+        }
 
-        inputValorTotal.value = valorTotal.toLocaleString('pt-BR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+        const valorTotal = (totalPlacas * precoUnitario) + valorFrete;
+
+        if (inputValorTotal) {
+            inputValorTotal.value = valorTotal.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+    }
+ 
+    // 2. DEPOIS ADICIONAMOS OS EVENTOS COM SEGURANÇA
+    if (inputQtdCao) inputQtdCao.addEventListener('input', atualizarValorTotal);
+    if (inputQtdGato) inputQtdGato.addEventListener('input', atualizarValorTotal);
+    if (valorFreteInput) {
+        valorFreteInput.addEventListener('input', atualizarValorTotal);
+        valorFreteInput.addEventListener('change', atualizarValorTotal);
     }
 
- 
-    inputQtdCao.addEventListener('input', atualizarValorTotal);
-    inputQtdGato.addEventListener('input', atualizarValorTotal);
-    atualizarValorTotal(); 
+    // 3. FAZEMOS A PRIMEIRA ATUALIZAÇÃO DA TELA
+    atualizarValorTotal();
 
+    // 4. LÓGICA DE ENVIO DO FORMULÁRIO
     if (formPedido) {
         formPedido.addEventListener('submit', async (event) => {
             event.preventDefault(); 
     
             let totalPedidos = (parseInt(inputQtdCao.value) || 0) + (parseInt(inputQtdGato.value) || 0);
             if (totalPedidos === 0) {
-                
                 const textoModal = document.getElementById('modalText');
                 if (textoModal) textoModal.innerText = "Você precisa pedir pelo menos 1 plaquinha para continuar.";
-                
-                modalErro.show();
+                if (modalErro) modalErro.show();
                 return;
             }
 
-            
             const ehValido = validarCPF(inputCpf.value);
             if (!ehValido) {
                 const textoModal = document.getElementById('modalText');
                 if (textoModal) textoModal.innerText = "CPF inválido. Por favor, verifique os números digitados.";
-                
-                modalErro.show();
+                if (modalErro) modalErro.show();
                 inputCpf.focus();
                 return;
             }
 
-        
             btnComprar.disabled = true;
             if (btnText) btnText.textContent = 'ENVIANDO...';
             if (spinner) spinner.classList.remove('d-none');
 
-           
             const dadosDoPedido = {
                 nome: document.getElementById('nome').value,
                 cpf: inputCpf.value,
@@ -87,13 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 uf: document.getElementById('uf').value,
                 qtdCao: parseInt(inputQtdCao.value),
                 qtdGato: parseInt(inputQtdGato.value),
-                valorTotal: inputValorTotal.value,
+                valorTotal: inputValorTotal.value, // Vai enviar como string (ex: "30,00")
                 nomePets: document.getElementById('nomePets').value,
                 telGravacao: document.getElementById('telGravacao').value,
                 valorFrete: valorFreteInput.value ? parseFloat(valorFreteInput.value.replace(',', '.')) : 0
             };
 
-         
             try {
                 const resposta = await fetch('http://localhost:3000/api/pedidos', {
                     method: 'POST',
@@ -102,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (resposta.ok) {
-                    modalSucesso.show();
+                    if (modalSucesso) modalSucesso.show();
                     formPedido.reset();     
                     atualizarValorTotal(); 
                 } else {
@@ -112,10 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Erro na requisição:", error);
                 const textoModal = document.getElementById('modalText');
                 if (textoModal) textoModal.innerText = "Houve um erro ao processar seu pedido. Tente novamente.";
-                
-                modalErro.show();
+                if (modalErro) modalErro.show();
             } finally {
-               
                 btnComprar.disabled = false;
                 if (btnText) btnText.textContent = 'ENVIAR PEDIDO';
                 if (spinner) spinner.classList.add('d-none');
@@ -123,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
 
 function validarCPF(cpfDigitado) {
     const cpfLimpo = String(cpfDigitado).replace(/[^\d]+/g, '');
