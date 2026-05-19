@@ -4,7 +4,6 @@ import cors from 'cors';
 import sessionMiddleware from './middlewares/session.js';
 import { sequelize } from './config/database.js';
 import rotas from './routes/routes.js';
-import { url } from 'inspector';
 
 const app = express();
 
@@ -40,6 +39,6 @@ app.use((erro: any, req: Request, res: Response, next: NextFunction) => {
 	});
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
 	console.log(`🚀 Servidor rodando na porta http://localhost:${process.env.PORT}`);
 });

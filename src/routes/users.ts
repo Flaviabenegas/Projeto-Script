@@ -91,3 +91,61 @@ export const handleLogin = async (
 		next(erro);
 	}
 };
+
+export const criarUsuario = (req: Request, res: Response, next: NextFunction): void => {
+	try {
+		res.render('users');
+	} catch (erro) {
+		next(erro);
+	}
+};
+
+export const criarUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+	try {
+		const { nome, senha } = req.body;
+
+		if (!nome || !senha) {
+			res.status(400).json({ sucesso: false, mensagem: 'Preencha usuário e senha.' });
+			return;
+		}
+		const usuarioExistente = await User.findOne({ where: { usuario: nome } });
+		if (usuarioExistente) {
+			res.status(409).json({ sucesso: false, mensagem: 'Usuário já cadastrado.' });
+			return;
+		}
+
+		const novoUsuario = await User.create({
+			usuario: nome,
+			senha,
+		});
+
+		res.status(201).json({
+			sucesso: true,
+			mensagem: 'Usuário criado com sucesso',
+		});
+	} catch (erro) {
+		console.error('Erro ao criar usuário:', erro);
+		next(erro);
+	}
+};
+
+export const listarUsuarios = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
+	try {
+		const todosUsuarios = await User.findAll({
+			attributes: ['id', 'usuario', 'senha'],
+		});
+
+		res.status(200).json({
+			sucesso: true,
+			quantidade: todosUsuarios.length,
+			usuarios: todosUsuarios,
+		});
+	} catch (erro) {
+		console.error('Erro ao buscar os usuarios:', erro);
+		next(erro);
+	}
+};
