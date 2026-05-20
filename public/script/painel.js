@@ -177,4 +177,4 @@ function ativarFiltro(pedidos) {
     });
 }
 
-carregarPainel();
+//carregarPainel();
