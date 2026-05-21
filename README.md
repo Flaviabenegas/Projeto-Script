@@ -62,17 +62,17 @@ O projeto utiliza tecnologias modernas para garantir uma excelente performance, 
 ## ⚙️ Como Executar o Projeto Localmente
 
 **1. Clone o repositório:**
-```bash
+```
 git clone [https://github.com/Flaviabenegas/Projeto-Script.git](https://github.com/Flaviabenegas/Projeto-Script.git)
-
+```
 **2. Instale as dependências:
 Navegue até o diretório do projeto e execute:
-```bash
+```
 npm install
-
+```
 **3.Inicie o servidor de desenvolvimento:
-```bash
+```
 npm run dev
-
+```
 ***4. Execute a aplicação:
 Abra o seu navegador e acesse http://localhost:3000 (ou a porta configurada no seu ambiente).
