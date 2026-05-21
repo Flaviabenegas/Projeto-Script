@@ -55,7 +55,7 @@ O projeto utiliza tecnologias modernas para garantir uma excelente performance, 
 │   ├── models/              # Modelos do Sequelize (User, Pedido)
 │   ├── routes/              # Definição das rotas da API e da aplicação
 │   └── server.ts            # Ponto de entrada do servidor
-├── views/                   # Ficheiros EJS (Páginas dinâmicas e componentes/partials)
+├── views/                   # Arquivos EJS (Páginas dinâmicas e componentes/partials)
 ├── package.json             # Dependências e scripts do projeto
 └── tsconfig.json            # Configuração do compilador TypeScript
 
