@@ -42,7 +42,7 @@ O projeto utiliza tecnologias modernas para garantir uma excelente performance, 
 - Autenticação e Segurança: *bcrypt* e *express-session*
 - Validação: *Zod*
 
-## 📁 Estrutura de Ficheiros
+## 📁 Estrutura de Arquivos
 
 ```text
 /
