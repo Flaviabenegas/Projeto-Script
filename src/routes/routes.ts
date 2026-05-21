@@ -9,7 +9,9 @@ import {
 	criarUser,
 	listarUsuarios,
 	logout,
+	pedidos,
 } from './users.js';
+
 import { criarPedido } from '../controllers/PedidoController.js';
 import verficarLogin from '../middlewares/checkLogin.js';
 import { handleLogin } from '../middlewares/handleLogin.js';
@@ -21,6 +23,7 @@ router.get('/comprar', comprar);
 router.get('/depoimentos', depoimentos);
 router.get('/users', criarUsuario);
 router.get('/painel', verficarLogin, painel);
+router.get('/pedidos', pedidos);
 
 router.get('/api/pedidos', listarPedidos);
 router.post('/api/criar', criarUser);

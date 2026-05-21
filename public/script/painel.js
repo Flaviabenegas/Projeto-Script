@@ -1,4 +1,6 @@
 // ── LOGIN ──────────────────────────────────────────────
+const ADMIN_EMAIL = 'teste@teste';
+
 const formLogin = document.getElementById('loginPainel');
 
 if (formLogin) {
@@ -22,6 +24,8 @@ if (formLogin) {
             });
 
             if (resposta.ok) {
+                // Salva o e-mail de quem logou para usar no painel
+                sessionStorage.setItem('emailLogado', usuario.toLowerCase().trim());
                 window.location.href = '/painel';
             } else {
                 const modalErroEl = document.getElementById('modalEmailErro');
@@ -40,7 +44,8 @@ if (formLogin) {
 
 carregarPainel();
 async function carregarPainel() {
-    if (!document.getElementById('statPedidos')) return
+    if (!document.getElementById('statPedidos')) return;
+
     try {
         const [resPedidos, resUsuarios] = await Promise.all([
             fetch('/api/pedidos'),
@@ -50,10 +55,19 @@ async function carregarPainel() {
         const { pedidos } = await resPedidos.json();
         const { usuarios } = await resUsuarios.json();
 
-        preencherEstatisticas(pedidos);
-        preencherTabelaPedidos(pedidos);
-        preencherClientes(pedidos, usuarios);
-        ativarFiltro(pedidos);
+        // ── Filtro por usuário logado ──────────────────
+        const emailLogado = sessionStorage.getItem('emailLogado') || '';
+        const isAdmin = emailLogado === ADMIN_EMAIL;
+
+        // Admin vê tudo; demais usuários veem apenas os próprios pedidos
+        const pedidosFiltrados = isAdmin
+            ? pedidos
+            : pedidos.filter(p => p.email?.toLowerCase().trim() === emailLogado);
+
+        preencherEstatisticas(pedidosFiltrados);
+        preencherTabelaPedidos(pedidosFiltrados);
+        preencherClientes(pedidosFiltrados, usuarios);
+        ativarFiltro(pedidosFiltrados);
 
     } catch (err) {
         console.error('Erro ao carregar painel:', err);
@@ -86,7 +100,7 @@ function linhaTabela(pedido, index) {
 
     const qtdCao = Number(pedido.qtdCao || 0);
     const qtdGato = Number(pedido.qtdGato || 0);
-    const valor = parseFloat(String(pedido.valorTotal).replace(',', '.')) || 0; // ← adiciona
+    const valor = parseFloat(String(pedido.valorTotal).replace(',', '.')) || 0;
 
     const badges = [
         qtdCao > 0 ? `<span class="badge badge-cao rounded-pill me-1">🐶 ${qtdCao}</span>` : '',
@@ -105,6 +119,7 @@ function linhaTabela(pedido, index) {
             <td class="text-secondary small">${data}</td>
         </tr>`;
 }
+
 function preencherTabelaPedidos(pedidos) {
     const corpo = document.getElementById('corpoTabelaPedidos');
 
@@ -119,7 +134,6 @@ function preencherTabelaPedidos(pedidos) {
 function preencherClientes(pedidos, usuarios) {
     const lista = document.getElementById('listaClientes');
 
-  
     const mapa = {};
     pedidos.forEach(p => {
         if (!p.email) return;
@@ -152,7 +166,6 @@ function preencherClientes(pedidos, usuarios) {
             </div>
         </div>`).join('');
 
-    
     document.querySelectorAll('.btn-filtrar').forEach(btn => {
         btn.addEventListener('click', () => {
             const email = btn.dataset.email;
@@ -176,5 +189,3 @@ function ativarFiltro(pedidos) {
         filtrarTabela(this.value.trim());
     });
 }
-
-//carregarPainel();

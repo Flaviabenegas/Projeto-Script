@@ -2,6 +2,13 @@ import { type Request, type Response, type NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import Pedido from '../controllers/PedidoController.js';
 import User from '../models/User.js';
+import 'express-session';
+
+declare module 'express-session' {
+	interface SessionData {
+		usuario: string;
+	}
+}
 
 export const visualizarSite = (req: Request, res: Response, next: NextFunction): void => {
 	try {
@@ -184,4 +191,20 @@ export const logout = (req: Request, res: Response, next: NextFunction): void =>
 	} catch (erro) {
 		next(erro);
 	}
+};
+
+export const pedidos = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+	if (!req.session?.usuario) {
+		res.status(401).json({ erro: 'Não autenticado' });
+		return;
+	}
+
+	const todosPedidos = await Pedido.findAll();
+
+	const pedidos =
+		req.session.usuario === 'teste@teste'
+			? todosPedidos
+			: todosPedidos.filter((p: Pedido) => p.getDataValue('email') === req.session.usuario);
+
+	res.json({ pedidos });
 };
