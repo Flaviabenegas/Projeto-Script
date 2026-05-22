@@ -1,53 +1,78 @@
 # 🐾 Apaixonados por Focinhos - Identificação Pet
 
-![Status](https://img.shields.io/badge/Status-Em%20andamento-yellow)
+![Status](https://img.shields.io/badge/Status-Concluído-success)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap_5-7952B3?style=flat&logo=bootstrap&logoColor=white)
-![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=flat&logo=netlify&logoColor=white)
 
-> Landing page responsiva para a **Apaixonados por Focinhos**, feita pela Aluna Flávia Benegas da Fatec de Mogi Mogi Mirim, uma loja especializada em produtos de identificação, bandanas e mimos para pets e os seus tutores.
+> Plataforma web para a **Apaixonados por Focinhos**, desenvolvida por Flávia Benegas (Fatec de Mogi Mirim). Trata-se de um sistema completo para uma loja especializada em produtos de identificação para cães e gatos.
 
 ## 🚀 Sobre o Projeto
 
-A página foi desenvolvida para apresentar a importância da identificação pet e facilitar a navegação e a conversão dos clientes através de secções informativas e de um fluxo de pedido simples.
-O projeto ainda está em desenvolvimento, faltando o backend do pedido.
+Este projeto consiste numa aplicação *full-stack* desenvolvida para apresentar a importância da identificação pet, facilitar a navegação, e processar pedidos de forma segura e eficiente. 
+A plataforma evoluiu de uma *landing page* estática para um sistema robusto com *backend* próprio, permitindo a gestão real de encomendas e de utilizadores através de um painel administrativo seguro.
 
 ### ✨ Funcionalidades Principais
 
-- **Formulário de Pedido Dinâmico:** Cálculo do valor total em tempo real com base na quantidade de plaquinhas para cães e gatos.
-- **Busca de CEP Automática:** Preenchimento automático do endereço ao consumidor, utilizando a [BrasilAPI](https://brasilapi.com.br/).
-- **Validação de CPF:** Algoritmo rigoroso de validação de CPF no front-end para garantir a autenticidade dos dados do cliente.
-- **Newsletter Segura:** Inscrição de e-mail integrada com o Mailchimp, processada de forma segura através de **Netlify Functions** (Serverless).
-- **Painel Administrativo:** Área restrita simulada, protegida por um modal de login e validação de credenciais.
+- **Fluxo de Pedido Completo:** Gestão e processamento de encomendas no *backend*, com armazenamento seguro na base de dados.
+- **Formulário de Pedido Dinâmico:** Cálculo do valor total em tempo real no *frontend* com base na quantidade de plaquinhas para cães e gatos.
+- **Painel Administrativo Real:** Área restrita para gestão da loja, protegida por sistema de *login* com autenticação de credenciais encriptadas (*bcrypt*) e gestão de sessões.
+- **Busca de CEP Automática:** Preenchimento automático da morada através da integração com a [BrasilAPI](https://brasilapi.com.br/).
+- **Validação Rigorosa:** Algoritmo de validação de CPF no *frontend* e validação de dados no *backend* (utilizando *Zod*).
+- **Templates Dinâmicos:** Renderização de páginas a partir do servidor utilizando a *template engine* EJS.
 
 ## 🛠️ Tecnologias Utilizadas
 
-O projeto utiliza tecnologias modernas para garantir performance, responsividade e interatividade:
+O projeto utiliza tecnologias modernas para garantir uma excelente performance, segurança e interatividade:
 
-- **Front-end:** HTML5, CSS3 (Variáveis e Custom Properties), JavaScript Vanilla (ES6+) e Bootstrap 5.
-- **Back-end/Serverless:** Netlify Functions (Node.js).
-- **Integrações (APIs):** BrasilAPI (para moradas) e Mailchimp API (para leads).
-- **Design:** Fontes do Google Fonts (Poppins) e uma paleta de cores personalizada.
+**Frontend (Views & Public):**
+- HTML5, CSS3 (Variáveis e Custom Properties)
+- JavaScript (ES6+)
+- Bootstrap 5
+- EJS (Embedded JavaScript templating)
+
+**Backend & Base de Dados:**
+- Node.js com Express
+- TypeScript
+- Sequelize (ORM) com SQLite
+- Autenticação e Segurança: *bcrypt* e *express-session*
+- Validação: *Zod*
 
 ## 📁 Estrutura de Arquivos
 
 ```text
 /
-├── index.html               # Landingpage principal
-├── painel.html              # Painel administrativo
-├── netlify.toml             # Configurações de deploy do Netlify
-├── style/
-│   └── style.css            # Estilos globais e paleta de cores
-├── script/
-│   ├── buscaCep.js          # Lógica da chamada à API de CEP
-│   ├── email.js             # Lógica de integração com Netlify Functions
-│   ├── painel.js            # Controle de acesso ao painel
-│   └── validar.js           # Validações de CPF e soma de valores
-├── netlify/
-│   └── functions/
-│       └── subscribe.js     # Função Serverless para envio ao Mailchimp
-└── img/                     # Imagens e logotipos
+├── public/                  # Ficheiros estáticos (CSS, scripts JS, imagens)
+├── src/                     # Código-fonte do Backend (TypeScript)
+│   ├── config/              # Configurações da base de dados
+│   ├── controllers/         # Controladores (Auth, Pedidos, Utilizadores, Painel)
+│   ├── database/            # Ficheiro SQLite da base de dados
+│   ├── middlewares/         # Middlewares (verificação de login, sessões)
+│   ├── models/              # Modelos do Sequelize (User, Pedido)
+│   ├── routes/              # Definição das rotas da API e da aplicação
+│   └── server.ts            # Ponto de entrada do servidor
+├── views/                   # Arquivos EJS (Páginas dinâmicas e componentes/partials)
+├── package.json             # Dependências e scripts do projeto
+└── tsconfig.json            # Configuração do compilador TypeScript
+
+## ⚙️ Como Executar o Projeto Localmente
+
+**1. Clone o repositório:**
 ```
+git clone [https://github.com/Flaviabenegas/Projeto-Script.git](https://github.com/Flaviabenegas/Projeto-Script.git)
+```
+**2. Instale as dependências:
+Navegue até o diretório do projeto e execute:
+```
+npm install
+```
+**3.Inicie o servidor de desenvolvimento:
+```
+npm run dev
+```
+***4. Execute a aplicação:
+Abra o seu navegador e acesse http://localhost:3000 (ou a porta configurada no seu ambiente).
