@@ -3,10 +3,11 @@ import bcrypt from 'bcrypt';
 import Pedido from '../controllers/PedidoController.js';
 import User from '../models/User.js';
 
-// Estende a sessão para evitar os 'as any'
+
 declare module 'express-session' {
 	interface SessionData {
 		adminId: number;
+		usuario: string;
 	}
 }
 
@@ -96,7 +97,8 @@ export const handleLogin = async (
 			return;
 		}
 
-		req.session.adminId = user.id; // sem 'as any' graças ao declare module
+		req.session.adminId = user.id; 
+		req.session.usuario = user.usuario;
 		res.status(200).json({ sucesso: true });
 	} catch (erro: unknown) {
 		console.error('Erro ao fazer login:', erro);

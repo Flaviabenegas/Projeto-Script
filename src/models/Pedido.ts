@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database.js';
-import fa from 'zod/v4/locales/fa.cjs';
 
 export class Pedido extends Model {}
 

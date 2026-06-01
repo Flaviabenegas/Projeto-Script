@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import Pedido from '../controllers/PedidoController.js';
 import User from '../models/User.js';
 import 'express-session';
+import { Depoimento } from '../models/Depoimentos.js';
 
 declare module 'express-session' {
 	interface SessionData {
@@ -28,34 +29,17 @@ export const comprar = (req: Request, res: Response, next: NextFunction): void =
 	}
 };
 
-export const depoimentos = (req: Request, res: Response, next: NextFunction): void => {
-	const listaDepoimentos = [
-		{
-			tutor: 'Jessica',
-			pet: 'Lua',
-			imagem: 'img/lua.webp',
-			alt: 'Vira-lata de cor preta usando identificação com nome de Lua',
-			texto:
-				'Durante um passeio no final de semana, a Lua se assustou com um barulho de escapamento e saiu em disparada para uma área de mata. Foram momentos de pânico  absoluto. Menos de 15 minutos depois, recebi uma notificação no meu celular: alguém tinha lido a identificação dela. Um casal a encontrou e, pelas informações gravadas na plaquinha, já sabiam o nome dela e que ela era medrosa. Eles me ligaram na hora e o reencontro foi emocionante. Hoje eu não saio de casa sem conferir se a medalhinha está no pescoço dela. Salvou a nossa família.',
-		},
-		{
-			tutor: 'Fernanda',
-			pet: 'Simba',
-			imagem: 'img/simba.webp',
-			alt: 'Gato laranja usando identificação',
-			texto:
-				'O Simba fugiu de casa duas vezes e, em ambas, o desespero durou pouco. Na primeira, ele se perdeu na vizinhança; na segunda, atravessou avenidas e foi parar em outro bairro. O que eu aprendi? Que amor e muros altos não bastam. Se não fosse pela placa de identificação, ele seria apenas mais um gato laranja anônimo na rua. Quem o encontrou não precisou de tecnologia ou postagens em redes sociais: bastou ler o nome dele e o meu telefone gravados ali. A plaquinha deu voz ao Simba quando ele estava perdido e garantiu que ele voltasse para os meus braços em minutos. É o investimento mais barato e vital que já fiz.',
-		},
-		{
-			tutor: 'Vanessa',
-			pet: 'Sol',
-			imagem: 'img/sol.webp',
-			alt: 'Vira-lata caramelo usando identificação com nome de Sol',
-			texto:
-				'A Sol aproveitou um descuido durante a mudança e saiu para a rua. Foram as duas horas mais desesperadoras da minha vida. Por sorte, ela estava com a medalhinha de identificação. Uma vizinha de dois quarteirões a encontrou e, em segundos, conseguiu acessar meu contato. Se não fosse por essa tecnologia, não sei se ela estaria dormindo no sofá hoje. É um investimento minúsculo perto da paz de espírito que traz.',
-		},
-	];
+export const depoimentos = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
 	try {
+		const listaDepoimentos = await Depoimento.findAll({
+			where: { ativo: true },
+			limit: 3,
+			order: [['id', 'DESC']],
+		});
 		res.render('depoimentos', { depoimentos: listaDepoimentos });
 	} catch (erro) {
 		console.error('Erro ao acessar a página de depoimentos:', erro);
@@ -136,7 +120,6 @@ export const criarUsuario = (req: Request, res: Response, next: NextFunction): v
 export const criarUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 	try {
 		const { usuario, senha } = req.body;
-		console.log('Body recebido:', req.body);
 		if (!usuario || !senha) {
 			res.status(400).json({ sucesso: false, mensagem: 'Preencha usuário e senha.' });
 			return;
@@ -207,4 +190,20 @@ export const pedidos = async (req: Request, res: Response, next: NextFunction): 
 			: todosPedidos.filter((p: Pedido) => p.getDataValue('email') === req.session.usuario);
 
 	res.json({ pedidos });
+};
+
+export const criarDepoimentoView = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
+	try {
+		const todosDepoimentos = await Depoimento.findAll({
+			order: [['id', 'DESC']],
+		});
+		res.render('criardepoimento', { depoimentos: todosDepoimentos });
+	} catch (erro) {
+		console.error('Erro ao acessar a página de criação de depoimento:', erro);
+		next(erro);
+	}
 };

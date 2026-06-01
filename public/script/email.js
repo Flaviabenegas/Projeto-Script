@@ -1,7 +1,7 @@
 document.getElementById('enviar').addEventListener('submit', async function (event) {
     event.preventDefault()
 
-    //const nome = document.getElementById('nome').value
+    
     const email = document.getElementById('e-mail').value
     const botao = document.getElementById('botao')
     const modalEmailSucesso = new bootstrap.Modal(document.getElementById('modalEmailSucesso'));

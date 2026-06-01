@@ -1,4 +1,4 @@
-// ── LOGIN ──────────────────────────────────────────────
+
 const ADMIN_EMAIL = 'teste@teste';
 
 const formLogin = document.getElementById('loginPainel');
@@ -24,7 +24,7 @@ if (formLogin) {
             });
 
             if (resposta.ok) {
-                // Salva o e-mail de quem logou para usar no painel
+                
                 sessionStorage.setItem('emailLogado', usuario.toLowerCase().trim());
                 window.location.href = '/painel';
             } else {
@@ -55,11 +55,11 @@ async function carregarPainel() {
         const { pedidos } = await resPedidos.json();
         const { usuarios } = await resUsuarios.json();
 
-        // ── Filtro por usuário logado ──────────────────
+        
         const emailLogado = sessionStorage.getItem('emailLogado') || '';
         const isAdmin = emailLogado === ADMIN_EMAIL;
 
-        // Admin vê tudo; demais usuários veem apenas os próprios pedidos
+        
         const pedidosFiltrados = isAdmin
             ? pedidos
             : pedidos.filter(p => p.email?.toLowerCase().trim() === emailLogado);

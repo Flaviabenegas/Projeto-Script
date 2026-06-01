@@ -10,9 +10,15 @@ import {
 	listarUsuarios,
 	logout,
 	pedidos,
+	criarDepoimentoView,
 } from './users.js';
 
 import { criarPedido } from '../controllers/PedidoController.js';
+import {
+	criarDepoimento,
+	atualizarDepoimento,
+	alternarStatusDepoimento,
+} from '../controllers/DepoimentoController.js';
 import verficarLogin from '../middlewares/checkLogin.js';
 import { handleLogin } from '../middlewares/handleLogin.js';
 
@@ -24,12 +30,21 @@ router.get('/depoimentos', depoimentos);
 router.get('/users', criarUsuario);
 router.get('/painel', verficarLogin, painel);
 router.get('/pedidos', pedidos);
+router.get('/criardepoimento', criarDepoimentoView);
 
 router.get('/api/pedidos', listarPedidos);
 router.post('/api/criar', criarUser);
 router.post('/api/pedidos', criarPedido);
+router.post('/api/depoimentos', criarDepoimento);
+router.put('/api/depoimentos/:id', atualizarDepoimento);
+router.patch('/api/depoimentos/:id/toggle', alternarStatusDepoimento);
 router.post('/api/login/', handleLogin);
 router.get('/api/users', listarUsuarios);
 router.get('/api/logout', logout);
 
 export default router;
+
+
+
+
+
