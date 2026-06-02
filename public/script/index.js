@@ -1,5 +1,5 @@
-// models/index.js
-// Sequelize 3 + SQLite
+
+
 
 'use strict';
 
@@ -12,7 +12,7 @@ const sequelize = new Sequelize({
   logging: false,
 });
 
-// ─── MODELOS ────────────────────────────────────────────────────
+
 
 const Cliente = sequelize.define('Cliente', {
   nome:      { type: Sequelize.STRING,  allowNull: false },
@@ -23,7 +23,7 @@ const Cliente = sequelize.define('Cliente', {
 
 const Produto = sequelize.define('Produto', {
   nome:     { type: Sequelize.STRING, allowNull: false },
-  material: { type: Sequelize.STRING },   // Aço inox, Alumínio, etc.
+  material: { type: Sequelize.STRING },   
   preco:    { type: Sequelize.FLOAT,  allowNull: false },
 });
 
@@ -39,8 +39,8 @@ const Endereco = sequelize.define('Endereco', {
 
 const Pedido = sequelize.define('Pedido', {
   nomePet:       { type: Sequelize.STRING,  allowNull: false },
-  tipoPet:       { type: Sequelize.STRING },                  // Cão, Gato
-  tamanho:       { type: Sequelize.STRING },                  // P, M, G
+  tipoPet:       { type: Sequelize.STRING },                  
+  tamanho:       { type: Sequelize.STRING },                  
   textoGravado:  { type: Sequelize.TEXT },
   status: {
     type: Sequelize.ENUM('pendente','confirmado','producao','enviado','entregue','cancelado'),
@@ -55,7 +55,7 @@ const HistoricoPedido = sequelize.define('HistoricoPedido', {
   descricao: { type: Sequelize.TEXT },
 });
 
-// ─── ASSOCIAÇÕES ─────────────────────────────────────────────────
+
 
 Cliente.hasMany(Pedido);
 Pedido.belongsTo(Cliente);
@@ -69,7 +69,7 @@ Pedido.belongsTo(Endereco);
 Pedido.hasMany(HistoricoPedido, { as: 'historico', foreignKey: 'PedidoId' });
 HistoricoPedido.belongsTo(Pedido);
 
-// ─── SYNC ────────────────────────────────────────────────────────
+
 
 sequelize.sync({ alter: true })
   .then(() => console.log('[DB] Sincronizado ✔'))

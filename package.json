@@ -5,14 +5,17 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "tsx watch src/server.ts"
+		"build": "tsc",
+		"start": "node dist/server.js",
+		"dev": "tsx watch src/server.ts",
+		"seed": "tsx src/database/seed.ts"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Flaviabenegas/Projeto-Script.git"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Flavia Benegas",
 	"license": "ISC",
 	"type": "module",
 	"bugs": {

@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const precoUnitario = 15.00;
    
-    // Zera os inputs iniciais (se eles existirem)
+    
     if (inputQtdCao) inputQtdCao.value = 0; 
     if (inputQtdGato) inputQtdGato.value = 0;
     if (inputValorTotal) inputValorTotal.value = 0;
 
-    // 1. PRIMEIRO DECLARAMOS A FUNÇÃO
+    
     function atualizarValorTotal() {
         let qtdCao = parseInt(inputQtdCao.value) || 0;
         let qtdGato = parseInt(inputQtdGato.value) || 0;
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
  
-    // 2. DEPOIS ADICIONAMOS OS EVENTOS COM SEGURANÇA
+    
     if (inputQtdCao) inputQtdCao.addEventListener('input', atualizarValorTotal);
     if (inputQtdGato) inputQtdGato.addEventListener('input', atualizarValorTotal);
     if (valorFreteInput) {
@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
         valorFreteInput.addEventListener('change', atualizarValorTotal);
     }
 
-    // 3. FAZEMOS A PRIMEIRA ATUALIZAÇÃO DA TELA
+    
     atualizarValorTotal();
 
-    // 4. LÓGICA DE ENVIO DO FORMULÁRIO
+    
     if (formPedido) {
         formPedido.addEventListener('submit', async (event) => {
             event.preventDefault(); 
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 uf: document.getElementById('uf').value,
                 qtdCao: parseInt(inputQtdCao.value),
                 qtdGato: parseInt(inputQtdGato.value),
-                valorTotal: inputValorTotal.value, // Vai enviar como string (ex: "30,00")
+                valorTotal: inputValorTotal.value, 
                 nomePets: document.getElementById('nomePets').value,
                 telGravacao: document.getElementById('telGravacao').value,
                 valorFrete: valorFreteInput.value ? parseFloat(valorFreteInput.value.replace(',', '.')) : 0

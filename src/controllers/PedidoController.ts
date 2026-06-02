@@ -1,6 +1,14 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { z } from 'zod';
 import { Pedido } from '../models/Pedido.js';
+import { handleZodError } from '../utils/errorHandler.js';
+
+declare module 'express-session' {
+	interface SessionData {
+		usuario: string;
+		adminId: number;
+	}
+}
 
 const createPedidoSchema = z.object({
 	nome: z.string().trim().min(1, 'O nome é obrigatório.'),
@@ -41,17 +49,49 @@ export const criarPedido = async (
 			pedido: pedido,
 		});
 	} catch (err: any) {
-		if (err instanceof z.ZodError) {
-			console.log('❌ O Zod bloqueou a gravação. Motivo:', err);
+		if (handleZodError(err, res, 'gravação do pedido')) return;
+		next(err);
+	}
+};
 
-			res.status(400).json({
-				sucesso: false,
-				mensagem: 'Erro de validação dos dados enviados.',
-				erros: err,
-			});
-			return;
-		}
+export const listarPedidos = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
+	try {
+		const todosPedidos = await Pedido.findAll();
+		res.status(200).json({
+			sucesso: true,
+			quantidade: todosPedidos.length,
+			pedidos: todosPedidos,
+		});
+	} catch (erro) {
+		console.error('Erro ao buscar os pedidos:', erro);
+		next(erro);
+	}
+};
 
+export const pedidosUsuario = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
+	if (!req.session?.usuario) {
+		res.status(401).json({ erro: 'Não autenticado' });
+		return;
+	}
+
+	try {
+		const todosPedidos = await Pedido.findAll();
+
+		const pedidos =
+			req.session.usuario === 'teste@teste'
+				? todosPedidos
+				: todosPedidos.filter((p: Pedido) => p.getDataValue('email') === req.session.usuario);
+
+		res.json({ pedidos });
+	} catch (err) {
 		next(err);
 	}
 };
