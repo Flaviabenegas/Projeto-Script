@@ -38,6 +38,7 @@
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
+		"@sonar/scan": "^4.3.6",
 		"@types/bcrypt": "^6.0.0",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.6",
