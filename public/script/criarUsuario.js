@@ -33,7 +33,7 @@ async function criarDados() {
             if (modalSucesso) modalSucesso.show();
             formCriar.reset();
             setTimeout(() => {
-                window.location.href = '/';
+                globalThis.location.href = '/';
             }, 2000);
 
         } else if (resposta.status === 409) {

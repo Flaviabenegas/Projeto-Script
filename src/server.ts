@@ -6,23 +6,20 @@ import { sequelize } from './config/database.js';
 import { injetarLocals } from './middlewares/locals.js';
 import rotas from './routes/routes.js';
 
-const app = express();
-
-app.set('view engine', 'ejs');
-
-app.use(express.static('public'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-app.use(sessionMiddleware);
-app.use(injetarLocals);
-app.use(rotas);
-
 sequelize.sync().then(() => {
 	console.log('📦 Banco de dados sincronizado.');
 });
 
+const app = express();
+
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
+app.use(injetarLocals);
+
 app.use(rotas);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
