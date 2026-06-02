@@ -6,7 +6,6 @@
 	<body>
 		<header><%- include ('partials/header') %></header>
 		<main>
-			
 			<section class="container text-center pt-6 pb-2 pt-md-5">
 				<div class="row justify-content-center">
 					<div class="col-lg-7">
@@ -23,7 +22,6 @@
 				</div>
 			</section>
 
-			
 			<section class="container py-4 py-md-5" id="modelos-e-valores">
 				<div class="row justify-content-center align-items-stretch g-4">
 					<div class="col-md-5 col-lg-4">
@@ -69,7 +67,6 @@
 					</div>
 				</div>
 
-				
 				<div class="row justify-content-center mt-5">
 					<div class="col-lg-6 text-center mb-3">
 						<div class="p-4 border-start border-5 border-custom rounded-4 bg-light shadow-sm">
@@ -99,7 +96,6 @@
 				</div>
 			</section>
 
-			
 			<section class="container py-4 py-md-5" id="faq">
 				<h2 class="titulos text-center mb-4 display-6">Dúvidas Frequentes</h2>
 				<div class="row justify-content-center">
@@ -213,7 +209,6 @@
 				</div>
 			</section>
 
-			
 			<section class="comprar py-4 py-md-5">
 				<div class="container mt-2">
 					<div class="card shadow">
@@ -232,6 +227,7 @@
 												class="form-control"
 												id="nome"
 												placeholder="Digite seu nome"
+												maxlength="50"
 												required />
 										</div>
 										<div class="col-md-6">
@@ -248,6 +244,7 @@
 												type="text"
 												class="form-control"
 												id="cpf"
+												maxlength="14"
 												placeholder="000.000.000-00"
 												required />
 										</div>
@@ -258,6 +255,7 @@
 												class="form-control"
 												id="telefone"
 												placeholder="(00) 00000-0000"
+												maxlength="16"
 												required />
 										</div>
 										<div class="col-md-6">
@@ -267,6 +265,7 @@
 												class="form-control"
 												id="form-email"
 												placeholder="nome@exemplo.com"
+												maxlength="50"
 												required />
 										</div>
 									</div>
@@ -285,6 +284,7 @@
 													class="form-control"
 													id="cep"
 													placeholder="00000-000"
+													maxlength="9"
 													required />
 												<button type="button" class="btn btn-pet px-3" id="buscarCep">
 													Buscar CEP
@@ -300,6 +300,7 @@
 												type="text"
 												class="form-control"
 												id="logradouro"
+												maxlength="100"
 												placeholder="Rua, Avenida, Travessa..."
 												required />
 										</div>
@@ -311,6 +312,7 @@
 												class="form-control"
 												id="numero"
 												placeholder="Ex: 123"
+												maxlength="10"
 												required />
 										</div>
 
@@ -320,17 +322,18 @@
 												type="text"
 												class="form-control"
 												id="complemento"
-												placeholder="Apto, Bloco..." />
+												placeholder="Apto, Bloco..."
+												maxlength="50" />
 										</div>
 
 										<div class="col-md-3">
 											<label for="bairro" class="form-label fw-semibold">Bairro</label>
-											<input type="text" class="form-control" id="bairro" required />
+											<input type="text" class="form-control" id="bairro" maxlength="50" required />
 										</div>
 
 										<div class="col-md-4">
 											<label for="cidade" class="form-label fw-semibold">Cidade</label>
-											<input type="text" class="form-control" id="cidade" required />
+											<input type="text" class="form-control" id="cidade" maxlength="50" required />
 										</div>
 
 										<div class="col-md-2">
@@ -470,7 +473,6 @@
 
 		<%- include ('partials/modal') %>
 
-		
 		<div class="modal fade" id="modalSucesso" tabindex="-1" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content border-0 rounded-4 shadow-lg">
@@ -497,7 +499,6 @@
 			</div>
 		</div>
 
-		
 		<div class="modal fade" id="modalErro" tabindex="-1" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content border-0 rounded-4 shadow-lg">
