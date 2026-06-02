@@ -1,7 +1,5 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
-import helmet from 'helmet';
 import 'dotenv/config';
-import cors from 'cors';
 import sessionMiddleware from './middlewares/session.js';
 import { sequelize } from './config/database.js';
 import { injetarLocals } from './middlewares/locals.js';
@@ -12,29 +10,10 @@ console.log('📦 Banco de dados sincronizado.');
 
 const app = express();
 
-app.use(
-	helmet.contentSecurityPolicy({
-		directives: {
-			defaultSrc: ["'self'"],
-			styleSrc: [
-				"'self'",
-				'https://cdn.jsdelivr.net',
-				'https://fonts.googleapis.com',
-				"'unsafe-inline'",
-			],
-			fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-			scriptSrc: ["'self'", 'https://cdn.jsdelivr.net'],
-			imgSrc: ["'self'", 'data:', 'https://www.apaixonadosporfocinhos.com.br'],
-			connectSrc: ["'self'", 'https://cdn.jsdelivr.net'],
-		},
-	}),
-);
-
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'));
 app.use(express.json());
-app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', 1);
 app.use(sessionMiddleware);

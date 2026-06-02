@@ -80,7 +80,7 @@ function preencherEstatisticas(pedidos) {
     const clientesUnicos = new Set(pedidos.map(p => p.email)).size;
 
     const receita = pedidos.reduce((acc, p) => {
-        const valor = parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
+        const valor = Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
         return acc + valor;
     }, 0);
 
@@ -100,7 +100,7 @@ function linhaTabela(pedido, index) {
 
     const qtdCao = Number(pedido.qtdCao || 0);
     const qtdGato = Number(pedido.qtdGato || 0);
-    const valor = parseFloat(String(pedido.valorTotal).replace(',', '.')) || 0;
+    const valor = Number.parseFloat(String(pedido.valorTotal).replace(',', '.')) || 0;
 
     const badges = [
         qtdCao > 0 ? `<span class="badge badge-cao rounded-pill me-1">🐶 ${qtdCao}</span>` : '',
@@ -139,7 +139,7 @@ function preencherClientes(pedidos, usuarios) {
         if (!p.email) return;
         if (!mapa[p.email]) mapa[p.email] = { nome: p.nome, total: 0, pedidos: 0 };
         mapa[p.email].pedidos += 1;
-        mapa[p.email].total += parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
+        mapa[p.email].total += Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
     });
 
     const emails = Object.keys(mapa);
