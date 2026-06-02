@@ -1,786 +1,114 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <%- include('partials/head') %>
-    <title>Painel de Pedidos | Apaixonados por Focinhos</title>
-    <style>
-      /* ── Paleta idêntica ao site principal ─────────────────── */
-      :root {
-        --rosa:        #e05577;
-        --rosa-suave:  #fce8ef;
-        --azul:        #4a8fc4;
-        --azul-claro:  #d6ecf8;
-        --azul-escuro: #2d6b99;
-        --cinza-bg:    #f7f8fc;
-        --sombra:      0 4px 20px rgba(0,0,0,.07);
-      }
+	<head>
+		<%- include ('partials/head') %>
+		<link rel="stylesheet" href="/style/painel.css" />
+		<title>Painel — Apaixonados por Focinhos</title>
+	</head>
+	<body>
+		<header><%- include ('partials/header') %></header>
 
-      /* ── Layout ──────────────────────────────────────────────── */
-      body        { background: var(--cinza-bg); font-family: inherit; }
+		<main class="container mt-5 pt-5 pb-5">
+			
+			<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+				<div>
+					<h1 class="titulos fw-bold mb-1">Painel Administrativo 🐾</h1>
+					<p class="text-secondary mb-0 small">Gerencie pedidos e clientes cadastrados</p>
+				</div>
+				<a href="/api/logout" class="btn btn-outline-secondary rounded-pill px-4">Sair</a>
+			</div>
 
-      .sidebar {
-        width: 240px; min-height: 100vh;
-        background: #fff;
-        border-right: 1px solid #e9ecef;
-        box-shadow: var(--sombra);
-        position: fixed; top: 0; left: 0; z-index: 100;
-        display: flex; flex-direction: column;
-      }
-      .sidebar-brand {
-        padding: 1.4rem 1.5rem;
-        border-bottom: 1px solid #f0f0f0;
-      }
-      .sidebar-brand .brand-rosa { color: var(--rosa); font-weight: 800; }
-      .sidebar-brand .brand-azul { color: var(--azul); font-weight: 800; }
-      .sidebar-nav { padding: 1rem 0; flex: 1; }
-      .nav-item-painel {
-        display: flex; align-items: center; gap: .75rem;
-        padding: .65rem 1.5rem;
-        color: #6c757d; text-decoration: none;
-        border-radius: 0 50px 50px 0;
-        margin: .1rem 0; margin-right: 1rem;
-        font-weight: 500; font-size: .9rem;
-        transition: all .2s;
-      }
-      .nav-item-painel:hover,
-      .nav-item-painel.ativo {
-        background: var(--rosa-suave);
-        color: var(--rosa);
-      }
-      .nav-item-painel .icon { font-size: 1.1rem; width: 20px; text-align: center; }
-      .sidebar-footer {
-        padding: 1rem 1.5rem;
-        border-top: 1px solid #f0f0f0;
-        font-size: .8rem; color: #adb5bd;
-      }
+			
+			<div class="row g-3 mb-5">
+				<div class="col-6 col-md-3">
+					<div class="card stat-card pedidos border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+						<p class="text-secondary small mb-1 fw-medium">Total de Pedidos</p>
+						<h2 class="titulos fw-bold mb-0" id="statPedidos">—</h2>
+					</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div class="card stat-card clientes border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+						<p class="text-secondary small mb-1 fw-medium">Clientes Únicos</p>
+						<h2 class="titulos fw-bold mb-0" id="statClientes">—</h2>
+					</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div class="card stat-card receita border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+						<p class="text-secondary small mb-1 fw-medium">Receita Total</p>
+						<h2 class="titulos fw-bold mb-0" id="statReceita">—</h2>
+					</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div class="card stat-card hoje border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+						<p class="text-secondary small mb-1 fw-medium">Pedidos Hoje</p>
+						<h2 class="titulos fw-bold mb-0" id="statHoje">—</h2>
+					</div>
+				</div>
+			</div>
 
-      .main-content {
-        margin-left: 240px;
-        padding: 2rem;
-        min-height: 100vh;
-      }
+			
+			<div class="card border-0 shadow-sm rounded-4 bg-white mb-5">
+				<div class="card-body p-4">
+					<div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+						<h2 class="titulos fw-bold h5 mb-0">Todos os Pedidos</h2>
+						<input
+							type="text"
+							id="searchBar"
+							class="form-control form-control-sm rounded-pill"
+							placeholder="🔍 Filtrar por e-mail..." />
+					</div>
 
-      /* ── Topbar ─────────────────────────────────────────────── */
-      .topbar {
-        background: #fff;
-        border-radius: 16px;
-        padding: 1rem 1.5rem;
-        box-shadow: var(--sombra);
-        display: flex; align-items: center;
-        justify-content: space-between;
-        margin-bottom: 2rem;
-      }
-      .topbar-title { font-weight: 700; color: #2d3748; font-size: 1.2rem; }
-      .badge-admin {
-        background: var(--azul-claro);
-        color: var(--azul-escuro);
-        padding: .35rem .85rem;
-        border-radius: 50px;
-        font-size: .8rem; font-weight: 600;
-      }
+					<div class="table-responsive">
+						<table class="table table-hover align-middle mb-0" id="tabelaPedidos">
+							<thead class="table-light">
+								<tr>
+									<th class="fw-semibold">#</th>
+									<th class="fw-semibold">Cliente</th>
+									<th class="fw-semibold">E-mail</th>
+									<th class="fw-semibold">Cidade / UF</th>
+									<th class="fw-semibold">Pets</th>
+									<th class="fw-semibold">Qtd.</th>
+									<th class="fw-semibold">Total</th>
+									<th class="fw-semibold">Data</th>
+								</tr>
+							</thead>
+							<tbody id="corpoTabelaPedidos">
+								<tr>
+									<td colspan="8" class="text-center text-secondary py-4">
+										<div class="spinner-border spinner-border-sm me-2" role="status"></div>
+										Carregando pedidos...
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 
-      /* ── Stat cards ─────────────────────────────────────────── */
-      .stat-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 1.4rem;
-        box-shadow: var(--sombra);
-        border: none;
-        transition: transform .2s;
-      }
-      .stat-card:hover { transform: translateY(-3px); }
-      .stat-card .stat-icon {
-        width: 48px; height: 48px;
-        border-radius: 12px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.4rem; margin-bottom: .75rem;
-      }
-      .stat-card .stat-value { font-size: 1.9rem; font-weight: 800; color: #2d3748; }
-      .stat-card .stat-label { color: #8896ab; font-size: .82rem; font-weight: 500; }
-      .stat-card .stat-delta {
-        font-size: .78rem; font-weight: 600;
-        padding: .2rem .55rem; border-radius: 50px; margin-top: .4rem; display: inline-block;
-      }
+			
+			<div class="card border-0 shadow-sm rounded-4 bg-white">
+				<div class="card-body p-4">
+					<h2 class="titulos fw-bold h5 mb-4">Clientes Cadastrados</h2>
+					<div class="row g-3" id="listaClientes">
+						<div class="col-12 text-center text-secondary py-3">
+							<div class="spinner-border spinner-border-sm me-2" role="status"></div>
+							Carregando clientes...
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
 
-      .icon-rosa    { background: var(--rosa-suave); }
-      .icon-azul    { background: var(--azul-claro); }
-      .icon-verde   { background: #e6f9f0; }
-      .icon-laranja { background: #fff3e0; }
-      .icon-roxo    { background: #f0ecff; }
+		<footer class="bg-light text-center"><%- include ('partials/footer') %></footer>
 
-      /* ── Filtros ────────────────────────────────────────────── */
-      .filtro-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 1.2rem 1.5rem;
-        box-shadow: var(--sombra);
-        margin-bottom: 1.5rem;
-      }
-      .filtro-card .form-control,
-      .filtro-card .form-select {
-        border-radius: 50px;
-        border: 1.5px solid #e9ecef;
-        padding-left: 1rem;
-        font-size: .88rem;
-      }
-      .filtro-card .form-control:focus,
-      .filtro-card .form-select:focus {
-        border-color: var(--rosa);
-        box-shadow: 0 0 0 .2rem rgba(224,85,119,.15);
-      }
-      .btn-pet {
-        background: var(--rosa);
-        color: #fff;
-        border: none;
-        border-radius: 50px;
-        font-weight: 600;
-      }
-      .btn-pet:hover { background: #c4486a; color: #fff; }
-      .btn-azul {
-        background: var(--azul);
-        color: #fff; border: none;
-        border-radius: 50px; font-weight: 600;
-      }
-      .btn-azul:hover { background: var(--azul-escuro); color: #fff; }
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"></script>
 
-      /* ── Tabela de pedidos ─────────────────────────────────── */
-      .tabela-card {
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: var(--sombra);
-        overflow: hidden;
-      }
-      .tabela-card .tabela-header {
-        padding: 1.2rem 1.5rem;
-        border-bottom: 1px solid #f0f2f5;
-        display: flex; align-items: center; justify-content: space-between;
-      }
-      .tabela-card .tabela-header h6 {
-        font-weight: 700; color: #2d3748; margin: 0; font-size: 1rem;
-      }
-      .table { margin: 0; }
-      .table thead th {
-        background: #f8f9fb;
-        border-bottom: 2px solid #f0f2f5;
-        color: #8896ab; font-size: .78rem;
-        font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
-        padding: .85rem 1.2rem;
-      }
-      .table tbody td {
-        padding: .9rem 1.2rem;
-        vertical-align: middle;
-        border-color: #f5f6f8;
-        font-size: .88rem; color: #4a5568;
-      }
-      .table tbody tr:hover { background: #fafbfc; }
+		<%- include ('partials/modal') %>
 
-      /* ── Status badges ──────────────────────────────────────── */
-      .badge-status {
-        padding: .35rem .8rem;
-        border-radius: 50px;
-        font-size: .75rem; font-weight: 700;
-      }
-      .s-pendente    { background: #fff3cd; color: #856404; }
-      .s-confirmado  { background: var(--azul-claro); color: var(--azul-escuro); }
-      .s-producao    { background: #f0ecff; color: #5b21b6; }
-      .s-enviado     { background: #fff0e6; color: #c05621; }
-      .s-entregue    { background: #e6f9f0; color: #166534; }
-      .s-cancelado   { background: #fee2e2; color: #991b1b; }
-
-      /* ── Avatar cliente ─────────────────────────────────────── */
-      .avatar-cliente {
-        width: 34px; height: 34px; border-radius: 50%;
-        background: var(--rosa-suave);
-        color: var(--rosa);
-        font-weight: 700; font-size: .85rem;
-        display: inline-flex; align-items: center; justify-content: center;
-        margin-right: .5rem;
-      }
-
-      /* ── Paginação ─────────────────────────────────────────── */
-      .page-link {
-        border-radius: 50px !important;
-        margin: 0 2px; color: var(--rosa);
-        border-color: #e9ecef;
-      }
-      .page-link:hover { background: var(--rosa-suave); color: var(--rosa); }
-      .page-item.active .page-link { background: var(--rosa); border-color: var(--rosa); }
-
-      /* ── Modal detalhes ─────────────────────────────────────── */
-      .modal-content { border: none; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,.15); }
-      .modal-header-rosa { background: var(--rosa); color: #fff; border-radius: 20px 20px 0 0; }
-      .modal-header-azul { background: var(--azul); color: #fff; border-radius: 20px 20px 0 0; }
-      .detalhe-row { border-bottom: 1px solid #f5f6f8; padding: .7rem 0; }
-      .detalhe-row:last-child { border-bottom: none; }
-      .detalhe-label { font-size: .78rem; color: #8896ab; font-weight: 600; text-transform: uppercase; }
-      .detalhe-valor { font-size: .92rem; color: #2d3748; font-weight: 500; }
-
-      /* ── Timeline ───────────────────────────────────────────── */
-      .timeline { position: relative; padding-left: 1.5rem; }
-      .timeline::before {
-        content: ''; position: absolute; left: 6px; top: 0; bottom: 0;
-        width: 2px; background: #f0f2f5;
-      }
-      .tl-item { position: relative; margin-bottom: 1rem; }
-      .tl-dot {
-        width: 14px; height: 14px; border-radius: 50%;
-        position: absolute; left: -1.85rem; top: 3px;
-        border: 2px solid #fff; box-shadow: 0 0 0 2px;
-      }
-      .tl-rosa  { background: var(--rosa); box-shadow: 0 0 0 2px var(--rosa); }
-      .tl-azul  { background: var(--azul); box-shadow: 0 0 0 2px var(--azul); }
-      .tl-verde { background: #22c55e; box-shadow: 0 0 0 2px #22c55e; }
-      .tl-cinza { background: #cbd5e0; box-shadow: 0 0 0 2px #cbd5e0; }
-      .tl-label { font-size: .82rem; font-weight: 600; color: #4a5568; }
-      .tl-data  { font-size: .75rem; color: #a0aec0; }
-
-      /* ── Responsivo ─────────────────────────────────────────── */
-      @media (max-width: 768px) {
-        .sidebar { display: none; }
-        .main-content { margin-left: 0; padding: 1rem; }
-      }
-    </style>
-  </head>
-
-  <body>
-    <%
-      /* ── Defaults seguros: evita crash se a rota não passar as variáveis ── */
-      var stats       = locals.stats       || { total:0, pendentes:0, emProducao:0, enviados:0, entregues:0, receitaTotal:0 };
-      var pedidos     = locals.pedidos     || { rows:[], count:0, totalPages:1, currentPage:1 };
-      var filtros     = locals.filtros     || { busca:'', status:'', dataInicio:'', dataFim:'' };
-      var queryString = locals.queryString || '';
-    %>
-    <!-- ═══ SIDEBAR ════════════════════════════════════════════ -->
-    <aside class="sidebar">
-      <div class="sidebar-brand">
-        <span class="brand-rosa fs-5">Apaixonados</span><br>
-        <span class="brand-azul fs-6">por Focinhos 🐾</span>
-        <div class="text-muted" style="font-size:.72rem; margin-top:.2rem;">Painel Administrativo</div>
-      </div>
-
-      <nav class="sidebar-nav">
-        <a href="/painel" class="nav-item-painel ativo">
-          <span class="icon">📦</span> Pedidos
-        </a>
-        <a href="/painel/clientes" class="nav-item-painel">
-          <span class="icon">👥</span> Clientes
-        </a>
-        <a href="/painel/produtos" class="nav-item-painel">
-          <span class="icon">🏷️</span> Produtos
-        </a>
-        <a href="/painel/relatorios" class="nav-item-painel">
-          <span class="icon">📊</span> Relatórios
-        </a>
-        <a href="/painel/configuracoes" class="nav-item-painel">
-          <span class="icon">⚙️</span> Configurações
-        </a>
-        <hr class="mx-3">
-        <a href="/" class="nav-item-painel">
-          <span class="icon">🏠</span> Ver site
-        </a>
-        <a href="/logout" class="nav-item-painel">
-          <span class="icon">🔒</span> Sair
-        </a>
-      </nav>
-
-      <div class="sidebar-footer">
-        v1.0.0 &nbsp;·&nbsp; SQLite + Sequelize
-      </div>
-    </aside>
-
-    <!-- ═══ CONTEÚDO PRINCIPAL ═════════════════════════════════ -->
-    <main class="main-content">
-
-      <!-- Topbar -->
-      <div class="topbar">
-        <div>
-          <div class="topbar-title">Gerenciamento de Pedidos</div>
-          <div class="text-muted" style="font-size:.8rem;">
-            <%= new Date().toLocaleDateString('pt-BR', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) %>
-          </div>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-          <span class="badge-admin">👤 <%= locals.adminNome || 'Admin' %></span>
-          <button class="btn btn-pet btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalNovoPedido">
-            + Novo Pedido
-          </button>
-        </div>
-      </div>
-
-      <!-- ── KPI Cards ─────────────────────────────────────── -->
-      <div class="row g-3 mb-4">
-        <div class="col-6 col-md-4 col-xl-2">
-          <div class="stat-card h-100">
-            <div class="stat-icon icon-azul">📦</div>
-            <div class="stat-value"><%= stats.total %></div>
-            <div class="stat-label">Total de Pedidos</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-2">
-          <div class="stat-card h-100">
-            <div class="stat-icon icon-laranja">⏳</div>
-            <div class="stat-value"><%= stats.pendentes %></div>
-            <div class="stat-label">Pendentes</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-2">
-          <div class="stat-card h-100">
-            <div class="stat-icon" style="background:#f0ecff">🔨</div>
-            <div class="stat-value"><%= stats.emProducao %></div>
-            <div class="stat-label">Em Produção</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-2">
-          <div class="stat-card h-100">
-            <div class="stat-icon icon-rosa">🚚</div>
-            <div class="stat-value"><%= stats.enviados %></div>
-            <div class="stat-label">Enviados</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-2">
-          <div class="stat-card h-100">
-            <div class="stat-icon icon-verde">✅</div>
-            <div class="stat-value"><%= stats.entregues %></div>
-            <div class="stat-label">Entregues</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-2">
-          <div class="stat-card h-100">
-            <div class="stat-icon icon-verde">💰</div>
-            <div class="stat-value" style="font-size:1.3rem;">
-              R$&nbsp;<%= (stats.receitaTotal || 0).toFixed(2).replace('.',',') %>
-            </div>
-            <div class="stat-label">Receita Total</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Filtros ────────────────────────────────────────── -->
-      <div class="filtro-card">
-        <form method="GET" action="/painel">
-          <div class="row g-2 align-items-center">
-            <div class="col-12 col-md-4">
-              <input
-                type="search"
-                name="busca"
-                class="form-control"
-                placeholder="🔍  Buscar por cliente, pedido ou pet..."
-                value="<%= filtros.busca || '' %>" />
-            </div>
-            <div class="col-6 col-md-2">
-              <select name="status" class="form-select">
-                <option value="">Todos os status</option>
-                <option value="pendente"   <%= filtros.status==='pendente'   ? 'selected':'' %>>Pendente</option>
-                <option value="confirmado" <%= filtros.status==='confirmado' ? 'selected':'' %>>Confirmado</option>
-                <option value="producao"   <%= filtros.status==='producao'   ? 'selected':'' %>>Em produção</option>
-                <option value="enviado"    <%= filtros.status==='enviado'    ? 'selected':'' %>>Enviado</option>
-                <option value="entregue"   <%= filtros.status==='entregue'   ? 'selected':'' %>>Entregue</option>
-                <option value="cancelado"  <%= filtros.status==='cancelado'  ? 'selected':'' %>>Cancelado</option>
-              </select>
-            </div>
-            <div class="col-6 col-md-2">
-              <input type="date" name="dataInicio" class="form-control"
-                value="<%= filtros.dataInicio || '' %>" style="border-radius:50px" />
-            </div>
-            <div class="col-6 col-md-2">
-              <input type="date" name="dataFim" class="form-control"
-                value="<%= filtros.dataFim || '' %>" style="border-radius:50px" />
-            </div>
-            <div class="col-6 col-md-2 d-flex gap-2">
-              <button type="submit" class="btn btn-pet w-100">Filtrar</button>
-              <a href="/painel" class="btn btn-outline-secondary rounded-pill">✕</a>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <!-- ── Tabela de Pedidos ──────────────────────────────── -->
-      <div class="tabela-card mb-4">
-        <div class="tabela-header">
-          <h6>📋 <%= pedidos.count %> pedido<%= pedidos.count !== 1 ? 's' : '' %> encontrado<%= pedidos.count !== 1 ? 's' : '' %></h6>
-          <div class="d-flex gap-2">
-            <a href="/painel/exportar?<%= queryString %>" class="btn btn-azul btn-sm px-3">
-              ⬇ Exportar CSV
-            </a>
-          </div>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Cliente</th>
-                <th>Pet</th>
-                <th>Produto</th>
-                <th>Status</th>
-                <th>Data</th>
-                <th>Valor</th>
-                <th>Rastreio</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% if (pedidos.rows.length === 0) { %>
-              <tr>
-                <td colspan="9" class="text-center py-5 text-muted">
-                  🐾 Nenhum pedido encontrado com os filtros selecionados.
-                </td>
-              </tr>
-              <% } %>
-
-              <% pedidos.rows.forEach(function(p) { %>
-              <tr>
-                <td>
-                  <span class="fw-bold" style="color:var(--rosa)">#<%= p.id %></span>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <span class="avatar-cliente">
-                      <%= p.Cliente.nome.charAt(0).toUpperCase() %>
-                    </span>
-                    <div>
-                      <div class="fw-medium" style="font-size:.88rem;"><%= p.Cliente && p.Cliente.nome  || '—' %></div>
-                      <div class="text-muted" style="font-size:.75rem;"><%= p.Cliente && p.Cliente.email || '—' %></div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="fw-medium"><%= p.nomePet %></div>
-                  <div class="text-muted" style="font-size:.75rem;"><%= p.tipoPet %></div>
-                </td>
-                <td>
-                  <div class="fw-medium"><%= p.Produto && p.Produto.nome     || '—' %></div>
-                  <div class="text-muted" style="font-size:.75rem;"><%= p.Produto && p.Produto.material || '—' %> · <%= p.tamanho || '—' %></div>
-                </td>
-                <td>
-                  <%
-                    const badgeMap = {
-                      pendente:   's-pendente',
-                      confirmado: 's-confirmado',
-                      producao:   's-producao',
-                      enviado:    's-enviado',
-                      entregue:   's-entregue',
-                      cancelado:  's-cancelado'
-                    };
-                    const labelMap = {
-                      pendente:   '⏳ Pendente',
-                      confirmado: '✔ Confirmado',
-                      producao:   '🔨 Em produção',
-                      enviado:    '🚚 Enviado',
-                      entregue:   '✅ Entregue',
-                      cancelado:  '❌ Cancelado'
-                    };
-                  %>
-                  <span class="badge-status <%= badgeMap[p.status] || '' %>">
-                    <%= labelMap[p.status] || p.status %>
-                  </span>
-                </td>
-                <td>
-                  <div><%= new Date(p.createdAt).toLocaleDateString('pt-BR') %></div>
-                  <div class="text-muted" style="font-size:.75rem;">
-                    <%= new Date(p.createdAt).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) %>
-                  </div>
-                </td>
-                <td class="fw-bold" style="color:#2d3748;">
-                  R$&nbsp;<%= (p.valorTotal || 0).toFixed(2).replace('.',',') %>
-                </td>
-                <td>
-                  <% if (p.codigoRastreio) { %>
-                    <a href="https://www.correios.com.br/rastreamento/<%= p.codigoRastreio %>"
-                       target="_blank"
-                       class="btn btn-sm rounded-pill"
-                       style="background:var(--azul-claro);color:var(--azul-escuro);font-size:.75rem;">
-                      📦 <%= p.codigoRastreio %>
-                    </a>
-                  <% } else { %>
-                    <span class="text-muted" style="font-size:.8rem;">—</span>
-                  <% } %>
-                </td>
-                <td>
-                  <button
-                    class="btn btn-sm rounded-pill btn-pet px-3"
-                    onclick="abrirDetalhe(<%= JSON.stringify(p) %>)">
-                    Ver
-                  </button>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Paginação -->
-        <% if (pedidos.totalPages > 1) { %>
-        <div class="d-flex justify-content-between align-items-center px-3 py-3 border-top">
-          <small class="text-muted">
-            Página <%= pedidos.currentPage %> de <%= pedidos.totalPages %>
-          </small>
-          <nav>
-            <ul class="pagination pagination-sm mb-0">
-              <% for (let i = 1; i <= pedidos.totalPages; i++) { %>
-              <li class="page-item <%= i === pedidos.currentPage ? 'active' : '' %>">
-                <a class="page-link" href="?page=<%= i %>&<%= queryString %>"><%= i %></a>
-              </li>
-              <% } %>
-            </ul>
-          </nav>
-        </div>
-        <% } %>
-      </div>
-
-    </main><!-- /main-content -->
-
-    <!-- ═══ MODAL: DETALHE DO PEDIDO ═══════════════════════════ -->
-    <div class="modal fade" id="modalDetalhe" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-header modal-header-rosa p-4">
-            <div>
-              <h5 class="modal-title fw-bold mb-0" id="detalhe-titulo">Pedido #—</h5>
-              <small class="opacity-75" id="detalhe-data"></small>
-            </div>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-
-          <div class="modal-body p-4">
-            <div class="row g-4">
-              <!-- Coluna esquerda -->
-              <div class="col-md-6">
-                <h6 class="fw-bold mb-3" style="color:var(--rosa)">👤 Cliente</h6>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Nome</div>
-                  <div class="detalhe-valor" id="d-clienteNome"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">E-mail</div>
-                  <div class="detalhe-valor" id="d-clienteEmail"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Telefone</div>
-                  <div class="detalhe-valor" id="d-clienteTel"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">CPF</div>
-                  <div class="detalhe-valor" id="d-clienteCpf"></div>
-                </div>
-
-                <h6 class="fw-bold mt-4 mb-3" style="color:var(--azul)">🐾 Pet & Produto</h6>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Nome do Pet</div>
-                  <div class="detalhe-valor" id="d-nomePet"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Tipo</div>
-                  <div class="detalhe-valor" id="d-tipoPet"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Produto</div>
-                  <div class="detalhe-valor" id="d-produto"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Tamanho / Material</div>
-                  <div class="detalhe-valor" id="d-tamanho"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Texto gravado</div>
-                  <div class="detalhe-valor" id="d-textoGravado"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Valor</div>
-                  <div class="detalhe-valor fw-bold" id="d-valor"></div>
-                </div>
-              </div>
-
-              <!-- Coluna direita: timeline + status -->
-              <div class="col-md-6">
-                <h6 class="fw-bold mb-3" style="color:var(--rosa)">📍 Endereço de Entrega</h6>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Logradouro</div>
-                  <div class="detalhe-valor" id="d-endereco"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Cidade / UF / CEP</div>
-                  <div class="detalhe-valor" id="d-cidade"></div>
-                </div>
-                <div class="detalhe-row">
-                  <div class="detalhe-label">Código de Rastreio</div>
-                  <div class="detalhe-valor" id="d-rastreio"></div>
-                </div>
-
-                <h6 class="fw-bold mt-4 mb-3" style="color:var(--azul)">📋 Histórico</h6>
-                <div class="timeline" id="d-timeline"></div>
-
-                <!-- Atualizar status -->
-                <div class="mt-4">
-                  <label class="form-label fw-semibold" style="font-size:.85rem">Alterar status</label>
-                  <div class="d-flex gap-2">
-                    <select class="form-select rounded-pill" id="novoStatus" style="font-size:.85rem">
-                      <option value="pendente">⏳ Pendente</option>
-                      <option value="confirmado">✔ Confirmado</option>
-                      <option value="producao">🔨 Em produção</option>
-                      <option value="enviado">🚚 Enviado</option>
-                      <option value="entregue">✅ Entregue</option>
-                      <option value="cancelado">❌ Cancelado</option>
-                    </select>
-                    <button class="btn btn-pet px-3" onclick="salvarStatus()">Salvar</button>
-                  </div>
-                  <div class="mt-2">
-                    <input type="text" class="form-control rounded-pill" id="novoRastreio"
-                      placeholder="Código de rastreio (opcional)" style="font-size:.85rem" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="modal-footer border-0 pb-4 px-4">
-            <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
-              data-bs-dismiss="modal">Fechar</button>
-            <a id="d-whatsapp" href="#" target="_blank"
-              class="btn btn-success rounded-pill px-4 fw-bold">
-              💬 WhatsApp Cliente
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ MODAL: ERRO ══════════════════════════════════════════ -->
-    <div class="modal fade" id="modalErro" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow-lg">
-          <div class="modal-header bg-danger text-white border-0 rounded-top-4 p-4">
-            <h5 class="modal-title fw-bold">Atenção ❌</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body p-4 text-center">
-            <p class="fs-5 mb-0 text-secondary" id="erroMsg">Ocorreu um erro.</p>
-          </div>
-          <div class="modal-footer border-0 justify-content-center pb-4">
-            <button type="button" class="btn btn-danger rounded-pill px-4 fw-bold"
-              data-bs-dismiss="modal">Fechar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ MODAL: SUCESSO ══════════════════════════════════════ -->
-    <div class="modal fade" id="modalSucesso" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow-lg">
-          <div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
-            <h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body p-4 text-center">
-            <p class="fs-5 mb-0 text-secondary" id="sucessoMsg">Operação realizada com sucesso!</p>
-          </div>
-          <div class="modal-footer border-0 justify-content-center pb-4">
-            <button type="button" class="btn btn-success rounded-pill px-4 fw-bold"
-              data-bs-dismiss="modal" onclick="location.reload()">Entendi</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"></script>
-
-    <script>
-      let pedidoAtual = null;
-
-      function abrirDetalhe(pedido) {
-        pedidoAtual = pedido;
-        const c = pedido.Cliente || {};
-        const p = pedido.Produto  || {};
-        const e = pedido.Endereco || {};
-
-        document.getElementById('detalhe-titulo').textContent = `Pedido #${pedido.id}`;
-        document.getElementById('detalhe-data').textContent =
-          new Date(pedido.createdAt).toLocaleString('pt-BR');
-
-        // Cliente
-        document.getElementById('d-clienteNome').textContent  = c.nome  || '—';
-        document.getElementById('d-clienteEmail').textContent = c.email || '—';
-        document.getElementById('d-clienteTel').textContent   = c.telefone || '—';
-        document.getElementById('d-clienteCpf').textContent   = c.cpf  || '—';
-
-        // Pet & Produto
-        document.getElementById('d-nomePet').textContent      = pedido.nomePet  || '—';
-        document.getElementById('d-tipoPet').textContent      = pedido.tipoPet  || '—';
-        document.getElementById('d-produto').textContent      = p.nome || '—';
-        document.getElementById('d-tamanho').textContent      = `${pedido.tamanho || '—'} / ${p.material || '—'}`;
-        document.getElementById('d-textoGravado').textContent = pedido.textoGravado || '—';
-        document.getElementById('d-valor').textContent        =
-          'R$ ' + Number(pedido.valorTotal).toFixed(2).replace('.',',');
-
-        // Endereço
-        document.getElementById('d-endereco').textContent =
-          e.logradouro ? `${e.logradouro}, ${e.numero} ${e.complemento || ''}`.trim() : '—';
-        document.getElementById('d-cidade').textContent =
-          e.cidade ? `${e.cidade} / ${e.estado} — ${e.cep}` : '—';
-
-        // Rastreio
-        const rastreioEl = document.getElementById('d-rastreio');
-        if (pedido.codigoRastreio) {
-          rastreioEl.innerHTML =
-            `<a href="https://www.correios.com.br/rastreamento/${pedido.codigoRastreio}" target="_blank">${pedido.codigoRastreio}</a>`;
-        } else {
-          rastreioEl.textContent = '—';
-        }
-
-        // Timeline
-        const tl = document.getElementById('d-timeline');
-        tl.innerHTML = '';
-        const historico = pedido.historico || [];
-        if (historico.length === 0) {
-          tl.innerHTML = '<span class="text-muted" style="font-size:.82rem">Sem histórico registrado.</span>';
-        }
-        historico.forEach(h => {
-          const corMap = { pendente:'tl-cinza', confirmado:'tl-azul', producao:'tl-rosa', enviado:'tl-rosa', entregue:'tl-verde', cancelado:'tl-cinza' };
-          tl.innerHTML += `
-            <div class="tl-item">
-              <span class="tl-dot ${corMap[h.status] || 'tl-cinza'}"></span>
-              <div class="tl-label">${h.descricao || h.status}</div>
-              <div class="tl-data">${new Date(h.createdAt).toLocaleString('pt-BR')}</div>
-            </div>`;
-        });
-
-        // Status atual no select
-        document.getElementById('novoStatus').value    = pedido.status;
-        document.getElementById('novoRastreio').value  = pedido.codigoRastreio || '';
-
-        // WhatsApp
-        const tel = (c.telefone || '').replace(/\D/g,'');
-        document.getElementById('d-whatsapp').href =
-          tel ? `https://wa.me/55${tel}?text=Ol%C3%A1+${encodeURIComponent(c.nome||'')}%2C+tudo+bem%3F+%F0%9F%90%BE` : '#';
-
-        new bootstrap.Modal(document.getElementById('modalDetalhe')).show();
-      }
-
-      async function salvarStatus() {
-        if (!pedidoAtual) return;
-        const status    = document.getElementById('novoStatus').value;
-        const rastreio  = document.getElementById('novoRastreio').value.trim();
-
-        try {
-          const res = await fetch(`/painel/pedidos/${pedidoAtual.id}/status`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status, codigoRastreio: rastreio || null })
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.mensagem || 'Erro ao atualizar');
-          bootstrap.Modal.getInstance(document.getElementById('modalDetalhe')).hide();
-          document.getElementById('sucessoMsg').textContent = 'Status atualizado com sucesso!';
-          new bootstrap.Modal(document.getElementById('modalSucesso')).show();
-        } catch (err) {
-          document.getElementById('erroMsg').textContent = err.message;
-          new bootstrap.Modal(document.getElementById('modalErro')).show();
-        }
-      }
-    </script>
-  </body>
+		<script src="/script/email.js" defer></script>
+		<script src="/script/painel.js" defer></script>
+	</body>
 </html>

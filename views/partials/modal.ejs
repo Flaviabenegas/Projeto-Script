@@ -1,4 +1,4 @@
-<!-- Modal: Login Administrativo -->
+
 <div
 	class="modal fade"
 	id="modalLogin"
@@ -38,6 +38,10 @@
 					<button type="submit" class="btn btn-pet w-100 rounded-pill py-2 fw-bold" id="btn-login">
 						Entrar na conta
 					</button>
+					<p class="text-center mt-3 mb-0 small">
+						Não possui usuário?
+						<a href="/users" class="fw-medium">Clique aqui para criar</a>
+					</p>
 				</form>
 			</div>
 		</div>
@@ -50,7 +54,8 @@
 		<span class="mt-2">Autenticando...</span>
 	</div>
 </div>
-<!-- Modal: E-mail Inscrito -->
+
+
 <div class="modal fade" id="modalEmailSucesso" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
@@ -76,7 +81,8 @@
 		</div>
 	</div>
 </div>
-<!-- Modal: Sucesso Login -->
+
+
 <div class="modal fade" id="modalSucessoPainel" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
@@ -89,7 +95,7 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body p-4 text-center">
-				<p class="fs-5 mb-0 text-secondary">Login realizado com sucesso!</p>
+				<p class="fs-5 mb-0 text-secondary" id="modalSucessoText">Login realizado com sucesso!</p>
 			</div>
 			<div class="modal-footer border-0 justify-content-center pb-4">
 				<button
@@ -102,7 +108,8 @@
 		</div>
 	</div>
 </div>
-<!-- Modal: Erro E-mail -->
+
+
 <div class="modal fade" id="modalEmailErro" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">

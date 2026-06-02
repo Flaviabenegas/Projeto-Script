@@ -1,9 +1,10 @@
 {
 	// Visit https://aka.ms/tsconfig to read more about this file
 	"exclude": ["node_modules", "dist"],
+	"include": ["src"],
 	"compilerOptions": {
 		// File Layout
-		// "rootDir": "./src",
+		"rootDir": "./src",
 		"useDefineForClassFields": false,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,

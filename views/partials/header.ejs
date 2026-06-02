@@ -31,6 +31,23 @@
 						Comprar Agora 🐾
 					</a>
 				</li>
+				<li class="nav-item ms-lg-2">
+    <% if (logado) { %>
+        <% if (usuario === 'teste@teste') { %>
+            <a class="btn transparente rounded-pill px-4" href="/criardepoimento">Gerenciar Depoimento</a>
+        <% } %>
+        <a class="btn transparente rounded-pill px-4" href="/painel">Painel</a>
+        <a class="btn transparente rounded-pill px-4" href="/api/logout">Logout</a>
+    <% } else { %>
+        <button
+            type="button"
+            class="btn transparente rounded-pill px-4"
+            data-bs-toggle="modal"
+            data-bs-target="#modalLogin">
+            Login
+        </button>
+    <% } %>
+</li>
 			</ul>
 		</div>
 	</div>

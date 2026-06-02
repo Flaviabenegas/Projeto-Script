@@ -40,7 +40,7 @@ Pedido.init(
 		},
 		complemento: {
 			type: DataTypes.STRING,
-			allowNull: true, // Pode ser nulo, pois nem todo endereço tem complemento
+			allowNull: true,
 		},
 		bairro: {
 			type: DataTypes.STRING,
@@ -63,6 +63,10 @@ Pedido.init(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			defaultValue: 0,
+		},
+		valorFrete: {
+			type: DataTypes.NUMBER,
+			allowNull: false,
 		},
 		valorTotal: {
 			type: DataTypes.STRING,

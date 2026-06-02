@@ -5,14 +5,17 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "tsx watch src/server.ts"
+		"build": "tsc",
+		"start": "node dist/server.js",
+		"dev": "tsx watch src/server.ts",
+		"seed": "tsx src/database/seed.ts"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Flaviabenegas/Projeto-Script.git"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Flavia Benegas",
 	"license": "ISC",
 	"type": "module",
 	"bugs": {
@@ -20,18 +23,26 @@
 	},
 	"homepage": "https://github.com/Flaviabenegas/Projeto-Script#readme",
 	"dependencies": {
+		"@types/dotenv": "^6.1.1",
+		"bcrypt": "^6.0.0",
 		"bootstrap": "^5.3.8",
 		"cors": "^2.8.6",
+		"dotenv": "^17.4.2",
 		"ejs": "^5.0.2",
 		"express": "^5.2.1",
+		"express-session": "^1.19.0",
 		"sequelize": "^6.37.8",
 		"sqlite": "^5.1.1",
 		"sqlite3": "^6.0.1",
-		"tsx": "^4.21.0"
+		"tsx": "^4.21.0",
+		"zod": "^4.4.3"
 	},
 	"devDependencies": {
+		"@sonar/scan": "^4.3.6",
+		"@types/bcrypt": "^6.0.0",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.6",
+		"@types/express-session": "^1.19.0",
 		"@types/node": "^25.7.0",
 		"sequelize-cli": "^6.6.5",
 		"ts-node": "^10.9.2",
