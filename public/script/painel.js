@@ -26,7 +26,7 @@ if (formLogin) {
             if (resposta.ok) {
                 
                 sessionStorage.setItem('emailLogado', usuario.toLowerCase().trim());
-                window.location.href = '/painel';
+                globalThis.location.href = '/painel';
             } else {
                 const modalErroEl = document.getElementById('modalEmailErro');
                 const textoModal = document.getElementById('modalText');

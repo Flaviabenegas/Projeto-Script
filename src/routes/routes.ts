@@ -20,7 +20,7 @@ import {
 
 import { handleLogin, logout } from '../controllers/AuthController.js';
 
-import verficarLogin from '../middlewares/checkLogin.js';
+import verificarLogin from '../middlewares/checkLogin.js';
 
 const router = express.Router();
 
@@ -28,18 +28,18 @@ router.get('/', visualizarSite);
 router.get('/comprar', comprar);
 router.get('/depoimentos', depoimentos);
 router.get('/users', criarUsuarioView);
-router.get('/painel', verficarLogin, painel);
+router.get('/painel', painel);
 router.get('/criardepoimento', criarDepoimentoView);
 
 router.get('/pedidos', pedidosUsuario);
-router.get('/api/pedidos', listarPedidos);
+router.get('/api/pedidos', verificarLogin, listarPedidos);
 router.post('/api/criar', criarUser);
 router.post('/api/pedidos', criarPedido);
-router.post('/api/depoimentos', verficarLogin, criarDepoimento);
+router.post('/api/depoimentos', verificarLogin, criarDepoimento);
 router.put('/api/depoimentos/:id', atualizarDepoimento);
 router.patch('/api/depoimentos/:id/toggle', alternarStatusDepoimento);
 router.post('/api/login/', handleLogin);
-router.get('/api/users', verficarLogin, listarUsuarios);
+router.get('/api/users', verificarLogin, listarUsuarios);
 router.get('/api/logout', logout);
 
 export default router;
