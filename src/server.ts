@@ -1,4 +1,5 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
+import helmet from 'helmet';
 import 'dotenv/config';
 import cors from 'cors';
 import sessionMiddleware from './middlewares/session.js';
@@ -6,11 +7,12 @@ import { sequelize } from './config/database.js';
 import { injetarLocals } from './middlewares/locals.js';
 import rotas from './routes/routes.js';
 
-sequelize.sync().then(() => {
-	console.log('📦 Banco de dados sincronizado.');
-});
+await sequelize.sync();
+console.log('📦 Banco de dados sincronizado.');
 
 const app = express();
+
+app.use(helmet());
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
