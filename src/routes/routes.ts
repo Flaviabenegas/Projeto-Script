@@ -4,9 +4,17 @@ import {
 	visualizarSite,
 	comprar,
 	depoimentos,
-	painel,
 	criarDepoimentoView,
 } from '../controllers/SiteController.js';
+
+import {
+	getPainel,
+	listarUsuariosAdmin,
+	definirAdmin,
+	atualizarNomeUsuario,
+	deletarUsuario,
+	adicionarAdministrador,
+} from '../controllers/painelController.js';
 
 import { criarPedido, listarPedidos, pedidosUsuario } from '../controllers/PedidoController.js';
 
@@ -17,6 +25,7 @@ import {
 	atualizarDepoimento,
 	alternarStatusDepoimento,
 } from '../controllers/DepoimentoController.js';
+import checkAdmin from '../middlewares/checkAdmin.js';
 
 import { handleLogin, logout } from '../controllers/AuthController.js';
 
@@ -28,7 +37,7 @@ router.get('/', visualizarSite);
 router.get('/comprar', comprar);
 router.get('/depoimentos', depoimentos);
 router.get('/users', criarUsuarioView);
-router.get('/painel', painel);
+router.get('/painel', verificarLogin, getPainel);
 router.get('/criardepoimento', criarDepoimentoView);
 
 router.get('/pedidos', pedidosUsuario);
@@ -41,5 +50,10 @@ router.patch('/api/depoimentos/:id/toggle', alternarStatusDepoimento);
 router.post('/api/login/', handleLogin);
 router.get('/api/users', verificarLogin, listarUsuarios);
 router.get('/api/logout', logout);
+router.get('/api/admin/usuarios', verificarLogin, checkAdmin, listarUsuariosAdmin);
+router.patch('/api/admin/usuarios/:id/admin', verificarLogin, checkAdmin, definirAdmin);
+router.put('/api/admin/usuarios/:id', verificarLogin, checkAdmin, atualizarNomeUsuario);
+router.delete('/api/admin/usuarios/:id', verificarLogin, checkAdmin, deletarUsuario);
+router.post('/api/admin/usuarios', verificarLogin, checkAdmin, adicionarAdministrador);
 
 export default router;

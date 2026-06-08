@@ -5,10 +5,11 @@ import { sequelize } from './config/database.js';
 import { injetarLocals } from './middlewares/locals.js';
 import rotas from './routes/routes.js';
 
-await sequelize.sync();
+await sequelize.sync({ alter: true });
 console.log('📦 Banco de dados sincronizado.');
 
 const app = express();
+app.disable('x-powered-by');
 
 app.set('view engine', 'ejs');
 app.set('views', './views');

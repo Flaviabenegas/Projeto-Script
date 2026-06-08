@@ -1,117 +1,148 @@
 <!doctype html>
 <html lang="pt-BR">
-	<head>
-		<%- include ('partials/head') %>
-		<link rel="stylesheet" href="/style/painel.css" />
-		<title>Painel — Apaixonados por Focinhos</title>
-	</head>
-	<body>
-		<header><%- include ('partials/header') %></header>
+    <head>
+        <%- include ('partials/head') %>
+        <link rel="stylesheet" href="/style/painel.css" />
+        <title>Painel — Apaixonados por Focinhos</title>
+    </head>
+    <body>
+        <header><%- include ('partials/header') %></header>
 
-		<main class="container mt-5 pt-5 pb-5">
-			
-			<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-				<div>
-					<h1 class="titulos fw-bold mb-1">Painel Administrativo 🐾</h1>
-					<p class="text-secondary mb-0 small">Gerencie pedidos e clientes cadastrados</p>
-				</div>
-				<a href="/api/logout" class="btn btn-outline-secondary rounded-pill px-4">Sair</a>
-			</div>
+        <main class="container mt-5 pt-5 pb-5">
+            
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+                <div>
+                    <h1 class="titulos fw-bold mb-1">Painel Administrativo 🐾</h1>
+                    <p class="text-secondary mb-0 small">Gerencie pedidos e clientes cadastrados</p>
+                </div>
+                <a href="/api/logout" class="btn btn-outline-secondary rounded-pill px-4">Sair</a>
+            </div>
 
-			
-			<div class="row g-3 mb-5">
-				<div class="col-6 col-md-3">
-					<div class="card stat-card pedidos border-0 shadow-sm rounded-4 h-100 bg-white p-3">
-						<p class="text-secondary small mb-1 fw-medium">Total de Pedidos</p>
-						<h2 class="titulos fw-bold mb-0" id="statPedidos">—</h2>
-					</div>
-				</div>
-				<div class="col-6 col-md-3">
-					<div class="card stat-card clientes border-0 shadow-sm rounded-4 h-100 bg-white p-3">
-						<p class="text-secondary small mb-1 fw-medium">Clientes Únicos</p>
-						<h2 class="titulos fw-bold mb-0" id="statClientes">—</h2>
-					</div>
-				</div>
-				<div class="col-6 col-md-3">
-					<div class="card stat-card receita border-0 shadow-sm rounded-4 h-100 bg-white p-3">
-						<p class="text-secondary small mb-1 fw-medium">Receita Total</p>
-						<h2 class="titulos fw-bold mb-0" id="statReceita">—</h2>
-					</div>
-				</div>
-				<div class="col-6 col-md-3">
-					<div class="card stat-card hoje border-0 shadow-sm rounded-4 h-100 bg-white p-3">
-						<p class="text-secondary small mb-1 fw-medium">Pedidos Hoje</p>
-						<h2 class="titulos fw-bold mb-0" id="statHoje">—</h2>
-					</div>
-				</div>
-			</div>
-
-			
-			<div class="card border-0 shadow-sm rounded-4 bg-white mb-5">
-				<div class="card-body p-4">
-					<div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-						<h2 class="titulos fw-bold h5 mb-0">Todos os Pedidos</h2>
-						<input
-							type="text"
-							id="searchBar"
-							class="form-control form-control-sm rounded-pill"
-							placeholder="🔍 Filtrar por e-mail..." />
-					</div>
-
-					<div class="table-responsive">
-						<table class="table table-hover align-middle mb-0" id="tabelaPedidos">
-							<thead class="table-light">
-								<tr>
-									<th class="fw-semibold">#</th>
-									<th class="fw-semibold">Cliente</th>
-									<th class="fw-semibold">E-mail</th>
-									<th class="fw-semibold">Cidade / UF</th>
-									<th class="fw-semibold">Pets</th>
-									<th class="fw-semibold">Qtd.</th>
-									<th class="fw-semibold">Total</th>
-									<th class="fw-semibold">Data</th>
-								</tr>
-							</thead>
-							<tbody id="corpoTabelaPedidos">
-								<tr>
-									<td colspan="8" class="text-center text-secondary py-4">
-										<div class="spinner-border spinner-border-sm me-2" role="status"></div>
-										Carregando pedidos...
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-
-			
-			<!-- Envolva o card com o if do EJS -->
-<% if (usuario === 'teste@teste') { %>
-    <div class="card border-0 shadow-sm rounded-4 bg-white">
-        <div class="card-body p-4">
-            <h2 class="titulos fw-bold h5 mb-4">Clientes Cadastrados</h2>
-            <div class="row g-3" id="listaClientes">
-                <div class="col-12 text-center text-secondary py-3">
-                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                    Carregando clientes...
+            
+            <div class="row g-3 mb-5">
+                <div class="col-6 col-md-3">
+                    <div class="card stat-card pedidos border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+                        <p class="text-secondary small mb-1 fw-medium">Total de Pedidos</p>
+                        <h2 class="titulos fw-bold mb-0" id="statPedidos">—</h2>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card stat-card clientes border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+                        <p class="text-secondary small mb-1 fw-medium">Clientes Únicos</p>
+                        <h2 class="titulos fw-bold mb-0" id="statClientes">—</h2>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card stat-card receita border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+                        <p class="text-secondary small mb-1 fw-medium">Receita Total</p>
+                        <h2 class="titulos fw-bold mb-0" id="statReceita">—</h2>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card stat-card hoje border-0 shadow-sm rounded-4 h-100 bg-white p-3">
+                        <p class="text-secondary small mb-1 fw-medium">Pedidos Hoje</p>
+                        <h2 class="titulos fw-bold mb-0" id="statHoje">—</h2>
+                    </div>
                 </div>
             </div>
+
+            
+            <div class="card border-0 shadow-sm rounded-4 bg-white mb-5">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                        <h2 class="titulos fw-bold h5 mb-0">Todos os Pedidos</h2>
+                        <input
+                            type="text"
+                            id="searchBar"
+                            class="form-control form-control-sm rounded-pill"
+                            placeholder="🔍 Filtrar por e-mail..." />
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0" id="tabelaPedidos">
+                      <thead class="table-light">
+    <tr>
+        <th class="fw-semibold">#</th>
+        <th class="fw-semibold">Cliente</th>
+        <th class="fw-semibold">E-mail</th>
+        <th class="fw-semibold">Cidade / UF</th>
+        <th class="fw-semibold">Pets</th>
+        <th class="fw-semibold">Qtd.</th>
+        <th class="fw-semibold">Total</th>
+        <th class="fw-semibold">Data</th>
+        <th class="fw-semibold text-center">Ações</th> </tr>
+</thead>
+                            <tbody id="corpoTabelaPedidos">
+                                <tr>
+                                    <td colspan="8" class="text-center text-secondary py-4">
+                                        <output class="spinner-border spinner-border-sm me-2" aria-label="Carregando"></output>
+                                        Carregando pedidos...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            
+            
+<% if (isAdmin) { %>
+    <div class="card border-0 shadow-sm rounded-4 bg-white mb-4">
+    <div class="card-body p-4">
+      <h2 class="titulos fw-bold h5 mb-4">Clientes Cadastrados</h2>
+      <div class="row g-3" id="listaClientes">
+        <div class="col-12 text-center text-secondary py-3">
+          <output class="spinner-border spinner-border-sm me-2" aria-label="Carregando"></output>
+          Carregando clientes...
         </div>
+      </div>
     </div>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4 bg-white">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="titulos fw-bold h5 mb-0">Gerenciar Administradores</h2>
+    <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAdicionarAdmin">
+        + Novo Admin
+    </button>
+</div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="fw-semibold">#</th>
+              <th class="fw-semibold">Nome</th> <th class="fw-semibold">Usuário</th>
+              <th class="fw-semibold">Admin</th>
+              <th class="fw-semibold text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabelaUsuarios">
+            <tr>
+              <td colspan="5" class="text-center text-secondary py-4"> <output class="spinner-border spinner-border-sm me-2" aria-label="Carregando"></output>
+                Carregando usuários...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 <% } %>
-		</main>
+        </main>
 
-		<footer class="bg-light text-center"><%- include ('partials/footer') %></footer>
+        <footer class="bg-light text-center"><%- include ('partials/footer') %></footer>
 
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
+     <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous">
+</script>
 
-		<%- include ('partials/modal') %>
+        <%- include ('partials/modal') %>
 
-		<script src="/script/email.js" defer></script>
-		<script src="/script/painel.js" defer></script>
-	</body>
+        <script src="/script/email.js" defer></script>
+        <script src="/script/painel.js" defer></script>
+    </body>
 </html>

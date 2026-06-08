@@ -1,3 +1,19 @@
+<div class="modal fade" id="modalDetalhesPedido" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content rounded-4 border-0 shadow">
+			<div class="modal-header border-bottom-0 pb-0">
+				<h5 class="modal-title titulos fw-bold">Detalhes do Pedido</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="conteudoDetalhesPedido"></div>
+			<div class="modal-footer border-top-0 pt-0">
+				<button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">
+					Fechar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div
 	class="modal fade"
@@ -50,11 +66,10 @@
 
 <div id="loader" class="d-none opacity-0" style="transition: opacity 0.5s ease">
 	<div class="d-flex flex-column align-items-center my-3">
-		<div class="spinner-border text-primary" role="status"></div>
+		<output class="spinner-border text-primary" aria-label="status"></output>
 		<span class="mt-2">Autenticando...</span>
 	</div>
 </div>
-
 
 <div class="modal fade" id="modalEmailSucesso" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
@@ -82,7 +97,6 @@
 	</div>
 </div>
 
-
 <div class="modal fade" id="modalSucessoPainel" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
@@ -109,7 +123,6 @@
 	</div>
 </div>
 
-
 <div class="modal fade" id="modalEmailErro" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
@@ -130,6 +143,146 @@
 					class="btn btn-danger rounded-pill px-4 fw-bold"
 					data-bs-dismiss="modal">
 					Tentar novamente
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="modalEditarNome" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content rounded-4 border-0 shadow">
+			<div class="modal-header border-bottom-0 pb-0">
+				<h5 class="modal-title titulos fw-bold">Editar Nome</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="editAdminId" />
+				<div class="mb-3">
+					<label for="editAdminNome" class="form-label text-secondary small">Novo Nome:</label>
+					<input
+						type="text"
+						class="form-control rounded-pill"
+						id="editAdminNome"
+						placeholder="Digite o novo nome do administrador" />
+				</div>
+			</div>
+			<div class="modal-footer border-top-0 pt-0">
+				<button
+					type="button"
+					class="btn btn-outline-secondary rounded-pill px-4"
+					data-bs-dismiss="modal">
+					Cancelar
+				</button>
+				<button type="button" class="btn btn-primary rounded-pill px-4" id="btnSalvarNomeAdmin">
+					Salvar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modalConfirmarDelecao" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content rounded-4 border-0 shadow">
+			<div class="modal-header border-bottom-0 pb-0">
+				<h5 class="modal-title titulos fw-bold text-danger">⚠️ Confirmar Exclusão</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="deleteAdminId" />
+				<p class="text-secondary">
+					Tem a certeza que deseja excluir este administrador permanentemente? Esta ação não pode
+					ser desfeita.
+				</p>
+			</div>
+			<div class="modal-footer border-top-0 pt-0">
+				<button
+					type="button"
+					class="btn btn-outline-secondary rounded-pill px-4"
+					data-bs-dismiss="modal">
+					Cancelar
+				</button>
+				<button type="button" class="btn btn-danger rounded-pill px-4" id="btnConfirmarDelecao">
+					Excluir
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modalSucessoGeral" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-sm">
+		<div class="modal-content rounded-4 border-0 shadow text-center p-4">
+			<div class="mb-3">
+				<span class="fs-1">✅</span>
+			</div>
+			<h5 class="fw-bold titulos mb-2" id="textoModalSucesso">Sucesso!</h5>
+			<button
+				type="button"
+				class="btn btn-primary rounded-pill mt-3 px-4 w-100"
+				data-bs-dismiss="modal">
+				OK
+			</button>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="modalAdicionarAdmin" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content rounded-4 border-0 shadow">
+			<div class="modal-header border-bottom-0 pb-0">
+				<h5 class="modal-title titulos fw-bold">Novo Administrador</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="formAdicionarAdmin">
+					<div class="mb-3">
+						<label for="novoAdminNome" class="form-label text-secondary small mb-1">Nome:</label>
+						<input
+							type="text"
+							class="form-control rounded-pill"
+							id="novoAdminNome"
+							placeholder="Ex: João Silva" />
+					</div>
+					<div class="mb-3">
+						<label for="novoAdminEmail" class="form-label text-secondary small mb-1"
+							>E-mail (Login): <span class="text-danger">*</span></label
+						>
+						<input
+							type="email"
+							class="form-control rounded-pill"
+							id="novoAdminEmail"
+							placeholder="email@exemplo.com"
+							required />
+					</div>
+					<div class="mb-3">
+						<label for="novoAdminSenha" class="form-label text-secondary small mb-1"
+							>Palavra-passe: <span class="text-danger">*</span></label
+						>
+						<input
+							type="password"
+							class="form-control rounded-pill"
+							id="novoAdminSenha"
+							placeholder="Mínimo 6 caracteres"
+							required
+							minlength="6" />
+					</div>
+					<div class="form-check form-switch mt-3">
+						<input class="form-check-input" type="checkbox" id="novoAdminIsAdmin" checked />
+						<label class="form-check-label text-secondary small" for="novoAdminIsAdmin"
+							>Dar permissões de Administrador imediatamente</label
+						>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer border-top-0 pt-0">
+				<button
+					type="button"
+					class="btn btn-outline-secondary rounded-pill px-4"
+					data-bs-dismiss="modal">
+					Cancelar
+				</button>
+				<button type="button" class="btn btn-primary rounded-pill px-4" id="btnSalvarNovoAdmin">
+					Adicionar
 				</button>
 			</div>
 		</div>

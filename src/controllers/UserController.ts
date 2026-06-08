@@ -11,16 +11,12 @@ const createUserSchema = z.object({
 export const criarUsuarioView = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('users');
-	} catch (erro) {
-		next(erro);
+	} catch (error) {
+		next(error);
 	}
 };
 
-export const criarUser = async (
-	req: Request,
-	res: Response,
-	next: NextFunction,
-): Promise<void> => {
+export const criarUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 	try {
 		const data = createUserSchema.parse(req.body);
 
@@ -50,7 +46,7 @@ export const listarUsuarios = async (
 ): Promise<void> => {
 	try {
 		const todosUsuarios = await User.findAll({
-			attributes: ['id', 'usuario', 'senha'],
+			attributes: ['id', 'usuario'],
 		});
 
 		res.status(200).json({
@@ -58,9 +54,9 @@ export const listarUsuarios = async (
 			quantidade: todosUsuarios.length,
 			usuarios: todosUsuarios,
 		});
-	} catch (erro) {
-		console.error('Erro ao buscar os usuarios:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao buscar os usuarios:', error);
+		next(error);
 	}
 };
 

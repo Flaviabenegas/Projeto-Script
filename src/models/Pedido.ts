@@ -1,7 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database.js';
 
-export class Pedido extends Model {}
+export class Pedido extends Model {
+	public id!: number;
+	public nome!: string;
+	public email!: string;
+	public createdAt!: Date;
+}
 
 Pedido.init(
 	{

@@ -26,7 +26,7 @@ const createPedidoSchema = z.object({
 	bairro: z.string().min(1, 'Bairro é obrigatório'),
 	cidade: z.string().min(1, 'Cidade é obrigatória'),
 	uf: z.string().length(2, 'A UF deve conter exatamente 2 caracteres'),
-	email: z.string().email('O email é inválido.').min(1, 'O email é obrigatório'),
+	email: z.email('O email é inválido.').min(1, 'O email é obrigatório'),
 	valorTotal: z.string().min(1, 'O valor total é obrigatório'),
 	nomePets: z.string().min(1, 'O nome dos pets é obrigatório'),
 	telGravacao: z.string().min(10, 'O telefone para gravação deve conter pelo menos 10 dígitos'),
@@ -66,9 +66,9 @@ export const listarPedidos = async (
 			quantidade: todosPedidos.length,
 			pedidos: todosPedidos,
 		});
-	} catch (erro) {
-		console.error('Erro ao buscar os pedidos:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao buscar os pedidos:', error);
+		next(error);
 	}
 };
 
@@ -83,17 +83,23 @@ export const pedidosUsuario = async (
 	}
 
 	try {
-		const todosPedidos = await Pedido.findAll();
+		let pedidos;
 
-		const pedidos =
-			req.session.usuario === 'teste@teste'
-				? todosPedidos
-				: todosPedidos.filter((p: Pedido) => p.getDataValue('email') === req.session.usuario);
+		// Se for o utilizador de teste, vai buscar todos com findAll()
+		if (req.session.usuario === 'teste@teste') {
+			pedidos = await Pedido.findAll();
+		} else {
+			// MODO ORM CORRETO: Pede à base de dados para filtrar através do "where"
+			pedidos = await Pedido.findAll({
+				where: {
+					email: req.session.usuario,
+				},
+			});
+		}
 
 		res.json({ pedidos });
-	} catch (err) {
-		next(err);
+	} catch (error) {
+		next(error);
 	}
 };
-
 export default Pedido;
