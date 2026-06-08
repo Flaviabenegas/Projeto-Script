@@ -197,3 +197,24 @@ export const adicionarAdministrador = async (
 		next(error);
 	}
 };
+
+export const listarPedidosPainel = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
+	try {
+		const usuario = req.session.usuario;
+		const user = await User.findOne({ where: { usuario } });
+
+		const isAdmin = user?.isAdmin || ADMINS.has(usuario ?? '');
+
+		const where = isAdmin ? {} : { email: usuario };
+
+		const pedidos = await Pedido.findAll({ where, order: [['createdAt', 'DESC']] });
+
+		res.status(200).json({ sucesso: true, pedidos });
+	} catch (error) {
+		next(error);
+	}
+};

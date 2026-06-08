@@ -14,9 +14,10 @@ import {
 	atualizarNomeUsuario,
 	deletarUsuario,
 	adicionarAdministrador,
+	listarPedidosPainel,
 } from '../controllers/painelController.js';
 
-import { criarPedido, listarPedidos, pedidosUsuario } from '../controllers/PedidoController.js';
+import { criarPedido, pedidosUsuario } from '../controllers/PedidoController.js';
 
 import { criarUsuarioView, criarUser, listarUsuarios } from '../controllers/UserController.js';
 
@@ -41,7 +42,7 @@ router.get('/painel', verificarLogin, getPainel);
 router.get('/criardepoimento', criarDepoimentoView);
 
 router.get('/pedidos', pedidosUsuario);
-router.get('/api/pedidos', verificarLogin, listarPedidos);
+router.get('/api/pedidos', verificarLogin, listarPedidosPainel);
 router.post('/api/criar', criarUser);
 router.post('/api/pedidos', criarPedido);
 router.post('/api/depoimentos', verificarLogin, criarDepoimento);

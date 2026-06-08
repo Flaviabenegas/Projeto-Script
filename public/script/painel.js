@@ -1,7 +1,5 @@
-
 const formLogin = document.getElementById('loginPainel');
 let modalEditarNomeInstance, modalConfirmarDelecaoInstance, modalSucessoInstance;
-
 
 if (formLogin) {
     formLogin.addEventListener('submit', async function (e) {
@@ -41,24 +39,18 @@ if (formLogin) {
     });
 }
 
-
 async function carregarPainel() {
     if (!document.getElementById('statPedidos')) return;
 
     try {
-        const [resPedidos, resUsuarios] = await Promise.all([
-            fetch('/api/pedidos'),
-            fetch('/api/users'),
-        ]);
-
+        const resPedidos = await fetch('/api/pedidos');
         const { pedidos } = await resPedidos.json();
-        const { usuarios } = await resUsuarios.json();
 
-        globalThis.listaPedidosGlobais = pedidos; 
+        globalThis.mapaPedidos = Object.fromEntries(pedidos.map(p => [p.id, p]));
 
         preencherEstatisticas(pedidos);
         preencherTabelaPedidos(pedidos);
-        preencherClientes(pedidos, usuarios);
+        preencherClientes(pedidos);
         ativarFiltro();
     } catch (err) {
         console.error('Erro ao carregar painel:', err);
@@ -97,7 +89,7 @@ function linhaTabela(pedido, index) {
     ].join('');
 
     return `
-        <tr data-email="${pedido.email?.toLowerCase() || ''}">
+        <tr data-email="${pedido.email?.toLowerCase() || ''}" data-id="${pedido.id}">
             <td class="text-secondary small">${index + 1}</td>
             <td class="fw-medium">${pedido.nome || '—'}</td>
             <td class="text-secondary small">${pedido.email || '—'}</td>
@@ -107,7 +99,7 @@ function linhaTabela(pedido, index) {
             <td class="fw-bold titulos-rosa">R$ ${valor.toFixed(2).replace('.', ',')}</td>
             <td class="text-secondary small">${data}</td>
             <td class="text-center">
-                <button onclick="abrirDetalhesPedido(${index})" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                <button onclick="abrirDetalhesPedido(${pedido.id})" class="btn btn-sm btn-outline-primary rounded-pill px-3">
                     Detalhes
                 </button>
             </td>
@@ -125,16 +117,67 @@ function preencherTabelaPedidos(pedidos) {
     corpo.innerHTML = pedidos.map((p, i) => linhaTabela(p, i)).join('');
 }
 
-function preencherClientes(pedidos, usuarios) {
+function abrirDetalhesPedido(id) {
+    const p = globalThis.mapaPedidos?.[id];
+    if (!p) return;
+
+    const valorFrete = Number(p.valorFrete || 0).toFixed(2).replace('.', ',');
+    const valorTotal = Number.parseFloat(String(p.valorTotal).replace(',', '.')).toFixed(2).replace('.', ',');
+
+    const modalBody = document.getElementById('conteudoDetalhesPedido');
+
+    modalBody.innerHTML = `
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h6 class="fw-bold titulos-rosa mb-3">👤 Dados do Cliente</h6>
+                <p class="mb-1 small text-secondary"><strong>Nome:</strong> <span class="text-dark">${p.nome || '—'}</span></p>
+                <p class="mb-1 small text-secondary"><strong>E-mail:</strong> <span class="text-dark">${p.email || '—'}</span></p>
+                <p class="mb-1 small text-secondary"><strong>CPF:</strong> <span class="text-dark">${p.cpf || '—'}</span></p>
+                <p class="mb-1 small text-secondary"><strong>Telefone:</strong> <span class="text-dark">${p.telefone || '—'}</span></p>
+            </div>
+            <div class="col-md-6">
+                <h6 class="fw-bold titulos-rosa mb-3">📍 Endereço de Entrega</h6>
+                <p class="mb-1 small text-secondary"><strong>Logradouro:</strong> <span class="text-dark">${p.logradouro || '—'}, ${p.numero || ''} ${p.complemento ? ' - ' + p.complemento : ''}</span></p>
+                <p class="mb-1 small text-secondary"><strong>Bairro:</strong> <span class="text-dark">${p.bairro || '—'}</span></p>
+                <p class="mb-1 small text-secondary"><strong>Cidade/UF:</strong> <span class="text-dark">${p.cidade || '—'} - ${p.uf || '—'}</span></p>
+                <p class="mb-1 small text-secondary"><strong>CEP:</strong> <span class="text-dark">${p.cep || '—'}</span></p>
+            </div>
+            <div class="col-12">
+                <h6 class="fw-bold titulos-rosa mb-3">🐾 Detalhes para Gravação (Produção)</h6>
+                <div class="bg-light p-3 rounded-3 border">
+                    <p class="mb-2 small"><strong>Quantidade:</strong> ${p.qtdCao} Cãozinho(s) | ${p.qtdGato} Gatinho(s)</p>
+                    <p class="mb-2 small text-primary"><strong>Nomes para a Frente da Plaquinha:</strong><br>
+                        <span class="fs-6 text-dark">${p.nomePets || '—'}</span>
+                    </p>
+                    <p class="mb-1 small text-primary"><strong>Telefone para o Verso da Plaquinha:</strong><br>
+                        <span class="fs-6 text-dark">${p.telGravacao || '—'}</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 text-end border-top pt-3 mt-4">
+                <p class="mb-1 small text-secondary">Valor do Frete: R$ ${valorFrete}</p>
+                <h5 class="fw-bold mb-0 titulos">Total Pago: R$ ${valorTotal}</h5>
+            </div>
+        </div>
+    `;
+
+    const modalEl = document.getElementById('modalDetalhesPedido');
+    const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    modal.show();
+}
+
+function preencherClientes(pedidos) {
     const lista = document.getElementById('listaClientes');
     if (!lista) return;
 
     const mapa = {};
+
     pedidos.forEach(p => {
         if (!p.email) return;
-        if (!mapa[p.email]) mapa[p.email] = { nome: p.nome, total: 0, pedidos: 0 };
-        mapa[p.email].pedidos += 1;
-        mapa[p.email].total += Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
+        const emailNorm = p.email.toLowerCase().trim();
+        if (!mapa[emailNorm]) mapa[emailNorm] = { nome: p.nome, total: 0, pedidos: 0 };
+        mapa[emailNorm].pedidos += 1;
+        mapa[emailNorm].total += Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
     });
 
     const emails = Object.keys(mapa);
@@ -188,102 +231,6 @@ function ativarFiltro() {
     }
 }
 
-function abrirDetalhesPedido(index) {
-   
-    const p = globalThis.listaPedidosGlobais[index];
-    if (!p) return;
-
-    const valorFrete = Number(p.valorFrete || 0).toFixed(2).replace('.', ',');
-    const valorTotal = Number.parseFloat(String(p.valorTotal).replace(',', '.')).toFixed(2).replace('.', ',');
-
-    const modalBody = document.getElementById('conteudoDetalhesPedido');
-    
-    modalBody.innerHTML = `
-        <div class="row g-4">
-            <div class="col-md-6">
-                <h6 class="fw-bold titulos-rosa mb-3">👤 Dados do Cliente</h6>
-                <p class="mb-1 small text-secondary"><strong>Nome:</strong> <span class="text-dark">${p.nome}</span></p>
-                <p class="mb-1 small text-secondary"><strong>E-mail:</strong> <span class="text-dark">${p.email}</span></p>
-                <p class="mb-1 small text-secondary"><strong>CPF:</strong> <span class="text-dark">${p.cpf}</span></p>
-                <p class="mb-1 small text-secondary"><strong>Telefone:</strong> <span class="text-dark">${p.telefone}</span></p>
-            </div>
-            
-            <div class="col-md-6">
-                <h6 class="fw-bold titulos-rosa mb-3">📍 Endereço de Entrega</h6>
-                <p class="mb-1 small text-secondary"><strong>Logradouro:</strong> <span class="text-dark">${p.logradouro}, ${p.numero} ${p.complemento ? ' - ' + p.complemento : ''}</span></p>
-                <p class="mb-1 small text-secondary"><strong>Bairro:</strong> <span class="text-dark">${p.bairro}</span></p>
-                <p class="mb-1 small text-secondary"><strong>Cidade/UF:</strong> <span class="text-dark">${p.cidade} - ${p.uf}</span></p>
-                <p class="mb-1 small text-secondary"><strong>CEP:</strong> <span class="text-dark">${p.cep}</span></p>
-            </div>
-
-            <div class="col-12">
-                <h6 class="fw-bold titulos-rosa mb-3">🐾 Detalhes para Gravação (Produção)</h6>
-                <div class="bg-light p-3 rounded-3 border">
-                    <p class="mb-2 small"><strong>Quantidade:</strong> ${p.qtdCao} Cãozinho(s) | ${p.qtdGato} Gatinho(s)</p>
-                    <p class="mb-2 small text-primary"><strong>Nomes para a Frente da Plaquinha:</strong> <br>
-                        <span class="fs-6 text-dark">${p.nomePets}</span>
-                    </p>
-                    <p class="mb-1 small text-primary"><strong>Telefone para o Verso da Plaquinha:</strong> <br>
-                        <span class="fs-6 text-dark">${p.telGravacao}</span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-12 text-end border-top pt-3 mt-4">
-                <p class="mb-1 small text-secondary">Valor do Frete: R$ ${valorFrete}</p>
-                <h5 class="fw-bold mb-0 titulos">Total Pago: R$ ${valorTotal}</h5>
-            </div>
-        </div>
-    `;
-
-    const modal = new bootstrap.Modal(document.getElementById('modalDetalhesPedido'));
-    modal.show();
-}
-
-
-async function carregarUsuarios() {
-    try {
-        const response = await fetch('/api/admin/usuarios');
-        const data = await response.json();
-        const tbody = document.getElementById('corpoTabelaUsuarios');
-        
-        if (data.sucesso && data.usuarios.length > 0) {
-            tbody.innerHTML = ''; 
-            
-            data.usuarios.forEach((user, index) => {
-                const tr = document.createElement('tr');
-                const adminCheck = user.isAdmin ? 'checked' : '';
-                const nomeSeguro = (user.nome && user.nome !== 'null') ? user.nome : '';
-
-                tr.innerHTML = `
-                    <td class="text-secondary">${index + 1}</td>
-                    <td class="fw-medium">${nomeSeguro || '<span class="text-muted small">Sem nome configurado</span>'}</td>
-                    <td class="text-secondary">${user.usuario}</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" onchange="alternarAdmin(${user.id}, this.checked)" ${adminCheck}>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="d-flex gap-2 justify-content-center">
-                            <button onclick="atualizarNomeUsuario(${user.id}, '${nomeSeguro}')" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                Editar
-                            </button>
-                            <button onclick="deletarUsuario(${user.id})" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                                Excluir
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        } else {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-secondary">Nenhum usuário encontrado.</td></tr>';
-        }
-    } catch (error) {
-        console.error('Erro ao procurar usuários:', error);
-    }
-}
 function mostrarSucesso(mensagem) {
     document.getElementById('textoModalSucesso').innerText = mensagem;
     if (!modalSucessoInstance) {
@@ -292,15 +239,64 @@ function mostrarSucesso(mensagem) {
     modalSucessoInstance.show();
 }
 
-// === 1. LÓGICA DE EDIÇÃO ===
+async function carregarUsuarios() {
+    try {
+        const response = await fetch('/api/admin/usuarios');
+        const data = await response.json();
+        const tbody = document.getElementById('corpoTabelaUsuarios');
+
+        if (!data.sucesso || !data.usuarios.length) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-secondary">Nenhum usuário encontrado.</td></tr>';
+            return;
+        }
+
+        const vistos = new Set();
+        const unicos = data.usuarios.filter(u => {
+            const chave = u.usuario?.toLowerCase().trim();
+            if (vistos.has(chave)) return false;
+            vistos.add(chave);
+            return true;
+        });
+
+        tbody.innerHTML = '';
+        unicos.forEach((user, index) => {
+            const tr = document.createElement('tr');
+            const adminCheck = user.isAdmin ? 'checked' : '';
+            const nomeSeguro = (user.nome && user.nome !== 'null') ? user.nome : '';
+
+            tr.innerHTML = `
+                <td class="text-secondary">${index + 1}</td>
+                <td class="fw-medium">${nomeSeguro || '<span class="text-muted small">Sem nome configurado</span>'}</td>
+                <td class="text-secondary">${user.usuario}</td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" onchange="alternarAdmin(${user.id}, this.checked)" ${adminCheck}>
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button onclick="atualizarNomeUsuario(${user.id}, '${nomeSeguro}')" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                            Editar
+                        </button>
+                        <button onclick="deletarUsuario(${user.id})" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                            Excluir
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Erro ao procurar usuários:', error);
+    }
+}
+
 function atualizarNomeUsuario(id, nomeAtual) {
     if (!modalEditarNomeInstance) {
         modalEditarNomeInstance = new bootstrap.Modal(document.getElementById('modalEditarNome'));
     }
-    // Preenche o modal com os dados atuais
     document.getElementById('editAdminId').value = id;
     document.getElementById('editAdminNome').value = nomeAtual || '';
-    
     modalEditarNomeInstance.show();
 }
 
@@ -320,15 +316,15 @@ async function executarAtualizacaoNome() {
         const response = await fetch(`/api/admin/usuarios/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome: novoNome })
+            body: JSON.stringify({ nome: novoNome }),
         });
-        
+
         const data = await response.json();
-        
+
         if (data.sucesso) {
-            modalEditarNomeInstance.hide(); // Fecha o modal de edição
-            mostrarSucesso('Nome atualizado com sucesso!'); // Abre o modal verde
-            carregarUsuarios(); // Atualiza a tabela
+            modalEditarNomeInstance.hide();
+            mostrarSucesso('Nome atualizado com sucesso!');
+            carregarUsuarios();
         } else {
             alert(data.mensagem || 'Erro ao atualizar o nome.');
         }
@@ -338,12 +334,10 @@ async function executarAtualizacaoNome() {
     }
 }
 
-// === 2. LÓGICA DE EXCLUSÃO ===
 function deletarUsuario(id) {
     if (!modalConfirmarDelecaoInstance) {
         modalConfirmarDelecaoInstance = new bootstrap.Modal(document.getElementById('modalConfirmarDelecao'));
     }
-    // Salva o ID no input invisível e abre o modal vermelho
     document.getElementById('deleteAdminId').value = id;
     modalConfirmarDelecaoInstance.show();
 }
@@ -352,16 +346,13 @@ async function executarDelecaoUsuario() {
     const id = document.getElementById('deleteAdminId').value;
 
     try {
-        const response = await fetch(`/api/admin/usuarios/${id}`, {
-            method: 'DELETE'
-        });
-        
+        const response = await fetch(`/api/admin/usuarios/${id}`, { method: 'DELETE' });
         const data = await response.json();
-        
+
         if (data.sucesso) {
-            modalConfirmarDelecaoInstance.hide(); // Fecha o modal de alerta vermelho
-            mostrarSucesso('Cadastro removido com sucesso!'); // Abre o modal verde
-            carregarUsuarios(); // Atualiza a tabela
+            modalConfirmarDelecaoInstance.hide();
+            mostrarSucesso('Cadastro removido com sucesso!');
+            carregarUsuarios();
         } else {
             alert(data.mensagem || 'Erro ao excluir cadastro.');
         }
@@ -376,14 +367,14 @@ async function alternarAdmin(id, isAdmin) {
         const response = await fetch(`/api/admin/usuarios/${id}/admin`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isAdmin })
+            body: JSON.stringify({ isAdmin }),
         });
         const data = await response.json();
-        if(!data.sucesso) {
+        if (!data.sucesso) {
             alert('Erro ao alterar permissões de administrador.');
             carregarUsuarios();
         }
-    } catch(error) {
+    } catch (error) {
         console.error(error);
     }
 }
@@ -408,21 +399,16 @@ async function executarAdicionarAdmin() {
         const response = await fetch('/api/admin/usuarios', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, usuario, senha, isAdmin })
+            body: JSON.stringify({ nome, usuario, senha, isAdmin }),
         });
 
         const data = await response.json();
 
         if (data.sucesso) {
-            // Fecha o modal de adicionar
             const modalEl = document.getElementById('modalAdicionarAdmin');
             const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
             modalInstance.hide();
-            
-            // Limpa os campos do formulário para a próxima vez
             document.getElementById('formAdicionarAdmin').reset();
-            
-            // Mostra o sucesso e recarrega a tabela
             mostrarSucesso('Novo administrador adicionado com sucesso!');
             carregarUsuarios();
         } else {
@@ -438,14 +424,9 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarPainel();
 
     const corpoUsuarios = document.getElementById('corpoTabelaUsuarios');
-    if (corpoUsuarios) {
-        carregarUsuarios();
-    }
+    if (corpoUsuarios) carregarUsuarios();
 
-    
     document.getElementById('btnSalvarNomeAdmin')?.addEventListener('click', executarAtualizacaoNome);
     document.getElementById('btnConfirmarDelecao')?.addEventListener('click', executarDelecaoUsuario);
-    
-    
     document.getElementById('btnSalvarNovoAdmin')?.addEventListener('click', executarAdicionarAdmin);
 });

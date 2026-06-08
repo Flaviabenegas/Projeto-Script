@@ -17,173 +17,161 @@ const modalErro = modalErroEl ? new bootstrap.Modal(modalErroEl) : null;
 const modalEditar = modalEditarEl ? new bootstrap.Modal(modalEditarEl) : null;
 
 
-async function enviarDepoimento() {
-	btnEnviar.disabled = true;
-	if (btnText) btnText.textContent = 'Enviando Depoimento...';
-	if (spinner) spinner.classList.remove('d-none');
 
-	const dadosDepoimento = {
-		tutor: document.getElementById('tutor').value,
-		pet: document.getElementById('pet').value,
-		imagem: document.getElementById('imagem').value,
-		alt: document.getElementById('alt').value,
-		texto: document.getElementById('texto').value,
+function mostrarErro(mensagem) {
+	const textoModal = document.getElementById('modalText');
+	if (textoModal) textoModal.innerText = mensagem;
+	if (modalErro) modalErro.show();
+}
+
+function mostrarSucesso(mensagem) {
+	const textoSucesso = document.getElementById('modalSucessoText');
+	if (textoSucesso) textoSucesso.innerText = mensagem;
+	if (modalSucesso) modalSucesso.show();
+}
+
+function recarregarApos(ms = 2000) {
+	setTimeout(() => globalThis.location.reload(), ms);
+}
+
+function setCarregando(btn, textEl, spinnerEl, textCarregando, label) {
+	btn.disabled = true;
+	if (textEl) textEl.textContent = textCarregando;
+	if (spinnerEl) spinnerEl.classList.remove('d-none');
+
+	return () => {
+		btn.disabled = false;
+		if (textEl) textEl.textContent = label;
+		if (spinnerEl) spinnerEl.classList.add('d-none');
 	};
+}
+
+function lerFormDepoimento(prefixo = '') {
+	const id = (campo) => document.getElementById(`${prefixo}${campo}`)?.value ?? '';
+	return {
+		tutor: id('tutor'),
+		pet: id('pet'),
+		imagem: id('imagem'),
+		alt: id('alt'),
+		texto: id('texto'),
+	};
+}
+
+
+async function enviarDepoimento() {
+	const restaurar = setCarregando(btnEnviar, btnText, spinner, 'Enviando Depoimento...', 'Enviar Depoimento 🐾');
 
 	try {
 		const resposta = await fetch('/api/depoimentos', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(dadosDepoimento)
+			body: JSON.stringify(lerFormDepoimento()),
 		});
 
 		const data = await resposta.json();
 
 		if (resposta.ok && data.sucesso) {
-			const textoSucesso = document.getElementById('modalSucessoText');
-			if (textoSucesso) textoSucesso.innerText = 'Depoimento enviado com sucesso!';
-			if (modalSucesso) modalSucesso.show();
+			mostrarSucesso('Depoimento enviado com sucesso!');
 			formDepoimento.reset();
-			setTimeout(() => {
-				window.location.reload();
-			}, 2000);
+			recarregarApos();
 		} else {
-			const mensagemErro = data.mensagem || 'Erro ao enviar o depoimento. Verifique os dados.';
-			const textoModal = document.getElementById('modalText');
-			if (textoModal) textoModal.innerText = mensagemErro;
-			if (modalErro) modalErro.show();
+			mostrarErro(data.mensagem || 'Erro ao enviar o depoimento. Verifique os dados.');
 		}
-	} catch (error) {
-		console.error('Erro na requisição:', error);
-		const textoModal = document.getElementById('modalText');
-		if (textoModal) textoModal.innerText = 'Houve um erro ao processar seu depoimento. Tente novamente.';
-		if (modalErro) modalErro.show();
+	} catch {
+		mostrarErro('Houve um erro ao processar seu depoimento. Tente novamente.');
 	} finally {
-		btnEnviar.disabled = false;
-		if (btnText) btnText.textContent = 'Enviar Depoimento 🐾';
-		if (spinner) spinner.classList.add('d-none');
+		restaurar();
 	}
 }
 
 if (formDepoimento) {
-	formDepoimento.addEventListener('submit', function (event) {
-		event.preventDefault();
+	formDepoimento.addEventListener('submit', (e) => {
+		e.preventDefault();
 		enviarDepoimento();
 	});
 }
 
 
-window.abrirModalEdicao = function (id, tutor, pet, imagem, alt, texto) {
-	document.getElementById('edit-id').value = id;
-	document.getElementById('edit-tutor').value = tutor;
-	document.getElementById('edit-pet').value = pet;
-	document.getElementById('edit-imagem').value = imagem;
-	document.getElementById('edit-alt').value = alt;
-	document.getElementById('edit-texto').value = texto;
 
-	if (modalEditar) {
-		modalEditar.show();
+globalThis.abrirModalEdicao = function (id, tutor, pet, imagem, alt, texto) {
+	const campos = { 'edit-id': id, 'edit-tutor': tutor, 'edit-pet': pet, 'edit-imagem': imagem, 'edit-alt': alt, 'edit-texto': texto };
+	for (const [campo, valor] of Object.entries(campos)) {
+		const el = document.getElementById(campo);
+		if (el) el.value = valor;
 	}
+	if (modalEditar) modalEditar.show();
 };
 
 
 async function salvarEdicao() {
 	const id = document.getElementById('edit-id').value;
-	btnSalvarEdicao.disabled = true;
-	if (btnEditText) btnEditText.textContent = 'Salvando Alterações...';
-	if (editSpinner) editSpinner.classList.remove('d-none');
-
-	const dadosEditados = {
-		tutor: document.getElementById('edit-tutor').value,
-		pet: document.getElementById('edit-pet').value,
-		imagem: document.getElementById('edit-imagem').value,
-		alt: document.getElementById('edit-alt').value,
-		texto: document.getElementById('edit-texto').value,
-	};
+	const restaurar = setCarregando(btnSalvarEdicao, btnEditText, editSpinner, 'Salvando Alterações...', 'Salvar Alterações 🐾');
 
 	try {
 		const resposta = await fetch(`/api/depoimentos/${id}`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(dadosEditados)
+			body: JSON.stringify(lerFormDepoimento('edit-')),
 		});
 
 		const data = await resposta.json();
 
 		if (resposta.ok && data.sucesso) {
 			if (modalEditar) modalEditar.hide();
-			
-			const textoSucesso = document.getElementById('modalSucessoText');
-			if (textoSucesso) textoSucesso.innerText = 'Depoimento atualizado com sucesso!';
-			if (modalSucesso) modalSucesso.show();
-
-			setTimeout(() => {
-				window.location.reload();
-			}, 2000);
+			mostrarSucesso('Depoimento atualizado com sucesso!');
+			recarregarApos();
 		} else {
-			const mensagemErro = data.mensagem || 'Erro ao atualizar o depoimento.';
-			const textoModal = document.getElementById('modalText');
-			if (textoModal) textoModal.innerText = mensagemErro;
-			if (modalErro) modalErro.show();
+			mostrarErro(data.mensagem || 'Erro ao atualizar o depoimento.');
 		}
-	} catch (error) {
-		console.error('Erro na requisição de edição:', error);
-		const textoModal = document.getElementById('modalText');
-		if (textoModal) textoModal.innerText = 'Houve um erro ao salvar o depoimento. Tente novamente.';
-		if (modalErro) modalErro.show();
+	} catch {
+		mostrarErro('Houve um erro ao salvar o depoimento. Tente novamente.');
 	} finally {
-		btnSalvarEdicao.disabled = false;
-		if (btnEditText) btnEditText.textContent = 'Salvar Alterações 🐾';
-		if (editSpinner) editSpinner.classList.add('d-none');
+		restaurar();
 	}
 }
 
 if (formEditarDepoimento) {
-	formEditarDepoimento.addEventListener('submit', function (event) {
-		event.preventDefault();
+	formEditarDepoimento.addEventListener('submit', (e) => {
+		e.preventDefault();
 		salvarEdicao();
 	});
 }
 
 
-window.toggleStatus = async function (id) {
+
+function atualizarBadge(id, isAtivo) {
+	const badge = document.getElementById(`status-badge-${id}`);
+	if (badge) {
+		badge.textContent = isAtivo ? 'Ativo' : 'Inativo';
+		badge.className = `badge rounded-pill ${isAtivo ? 'bg-success' : 'bg-secondary'}`;
+	}
+}
+
+function atualizarBotaoToggle(btnToggle, isAtivo) {
+	btnToggle.className = `btn btn-sm ${isAtivo ? 'btn-outline-danger' : 'btn-outline-success'} rounded-pill px-3`;
+	btnToggle.innerHTML = `<i class="bi ${isAtivo ? 'bi-eye-slash' : 'bi-eye'} me-1"></i>${isAtivo ? 'Desativar' : 'Ativar'}`;
+}
+
+globalThis.toggleStatus = async function (id) {
 	const btnToggle = document.getElementById(`btn-toggle-${id}`);
 	if (btnToggle) btnToggle.disabled = true;
 
 	try {
 		const resposta = await fetch(`/api/depoimentos/${id}/toggle`, {
 			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' }
+			headers: { 'Content-Type': 'application/json' },
 		});
 
 		const data = await resposta.json();
 
 		if (resposta.ok && data.sucesso) {
-			const badge = document.getElementById(`status-badge-${id}`);
-			const isAtivo = data.ativo;
-
-			
-			if (badge) {
-				badge.textContent = isAtivo ? 'Ativo' : 'Inativo';
-				badge.className = `badge rounded-pill ${isAtivo ? 'bg-success' : 'bg-secondary'}`;
-			}
-
-			
-			if (btnToggle) {
-				btnToggle.className = `btn btn-sm ${isAtivo ? 'btn-outline-danger' : 'btn-outline-success'} rounded-pill px-3`;
-				btnToggle.innerHTML = `<i class="bi ${isAtivo ? 'bi-eye-slash' : 'bi-eye'} me-1"></i>${isAtivo ? 'Desativar' : 'Ativar'}`;
-			}
+			atualizarBadge(id, data.ativo);
+			if (btnToggle) atualizarBotaoToggle(btnToggle, data.ativo);
 		} else {
-			const mensagemErro = data.mensagem || 'Erro ao alternar o status do depoimento.';
-			const textoModal = document.getElementById('modalText');
-			if (textoModal) textoModal.innerText = mensagemErro;
-			if (modalErro) modalErro.show();
+			mostrarErro(data.mensagem || 'Erro ao alternar o status do depoimento.');
 		}
-	} catch (error) {
-		console.error('Erro na requisição de toggle:', error);
-		const textoModal = document.getElementById('modalText');
-		if (textoModal) textoModal.innerText = 'Houve um erro de rede. Tente novamente.';
-		if (modalErro) modalErro.show();
+	} catch {
+		mostrarErro('Houve um erro de rede. Tente novamente.');
 	} finally {
 		if (btnToggle) btnToggle.disabled = false;
 	}
