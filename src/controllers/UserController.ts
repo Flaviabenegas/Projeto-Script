@@ -5,7 +5,7 @@ import { handleZodError } from '../utils/errorHandler.js';
 
 const createUserSchema = z.object({
 	usuario: z.string().min(1, 'O nome é obrigatório.'),
-	senha: z.string().min(6, 'usuário é obrigatorio com 6 digitos'),
+	senha: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres.'),
 });
 
 export const criarUsuarioView = (req: Request, res: Response, next: NextFunction): void => {
@@ -33,7 +33,15 @@ export const criarUser = async (req: Request, res: Response, next: NextFunction)
 			mensagem: 'Usuário criado com sucesso!',
 			usuario: novoUsuario.usuario,
 		});
-	} catch (err: any) {
+	} catch (err: unknown) {
+		if (err instanceof z.ZodError) {
+			res.status(400).json({
+				sucesso: false,
+				mensagem: 'Dados inválidos.',
+				erros: err.issues.map((e: z.ZodIssue) => ({ campo: e.path.join('.'), message: e.message })),
+			});
+			return;
+		}
 		if (handleZodError(err, res, 'gravação de usuário')) return;
 		next(err);
 	}

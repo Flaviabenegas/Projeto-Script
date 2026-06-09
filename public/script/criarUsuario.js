@@ -9,52 +9,86 @@ const modalErroEl = document.getElementById('modalEmailErro');
 const modalSucesso = modalSucessoEl ? new bootstrap.Modal(modalSucessoEl) : null;
 const modalErro = modalErroEl ? new bootstrap.Modal(modalErroEl) : null;
 
+
+
+function mostrarModalSucesso(texto) {
+    const el = document.getElementById('modalSucessoText');
+    if (el) el.innerText = texto;
+    modalSucesso?.show();
+}
+
+function mostrarModalErro(texto) {
+    const el = document.getElementById('modalText');
+    if (el) el.innerText = texto;
+    modalErro?.show();
+}
+
+function setLoading(ativo) {
+    btnCriar.disabled = ativo;
+    if (btnText) btnText.textContent = ativo ? 'Criando Usuário...' : 'Criar Usuário';
+    spinner?.classList.toggle('d-none', !ativo);
+}
+
+function extrairMensagemErro(corpo) {
+    if (corpo?.erros?.length) {
+        return corpo.erros.map((e) => e.message ?? e).join('\n');
+    }
+    return corpo?.mensagem ?? 'Houve um erro ao processar seu pedido. Tente novamente.';
+}
+
+
+
+async function handleResposta(resposta) {
+    if (resposta.ok) {
+        mostrarModalSucesso('Usuário criado com sucesso!');
+        formCriar.reset();
+        setTimeout(() => { globalThis.location.href = '/'; }, 2000);
+        return;
+    }
+
+    const corpo = await resposta.json().catch(() => null);
+
+    if (resposta.status === 409) {
+        mostrarModalErro('Este usuário já está cadastrado.');
+        return;
+    }
+
+   
+    if (resposta.status === 400) {
+        mostrarModalErro(extrairMensagemErro(corpo));
+        return;
+    }
+
+    throw new Error(corpo?.mensagem ?? 'Erro ao salvar no servidor');
+}
+
+
+
 async function criarDados() {
-    btnCriar.disabled = true;
-    if (btnText) btnText.textContent = 'Criando Usuário...';
-    if (spinner) spinner.classList.remove('d-none');
+    setLoading(true);
 
     const dadosUsuario = {
         usuario: document.getElementById('usuario').value,
         senha: senha.value,
     };
 
-
     try {
         const resposta = await fetch('/api/criar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosUsuario)
+            body: JSON.stringify(dadosUsuario),
         });
 
-        if (resposta.ok) {
-            const textoSucesso = document.getElementById('modalSucessoText');
-            if (textoSucesso) textoSucesso.innerText = 'Usuário criado com sucesso!';
-            if (modalSucesso) modalSucesso.show();
-            formCriar.reset();
-            setTimeout(() => {
-                globalThis.location.href = '/';
-            }, 2000);
-
-        } else if (resposta.status === 409) {
-            const textoModal = document.getElementById('modalText');
-            if (textoModal) textoModal.innerText = 'Este usuário já está cadastrado.';
-            if (modalErro) modalErro.show();
-
-        } else {
-            throw new Error('Erro ao salvar no servidor');
-        }
+        await handleResposta(resposta);
     } catch (error) {
         console.error('Erro na requisição:', error);
-        const textoModal = document.getElementById('modalText');
-        if (textoModal) textoModal.innerText = 'Houve um erro ao processar seu pedido. Tente novamente.';
-        if (modalErro) modalErro.show();
+        mostrarModalErro('Houve um erro ao processar seu pedido. Tente novamente.');
     } finally {
-        btnCriar.disabled = false;
-        if (btnText) btnText.textContent = 'Criar Usuário';
-        if (spinner) spinner.classList.add('d-none');
+        setLoading(false);
     }
 }
+
+
 
 formCriar.addEventListener('submit', function (event) {
     event.preventDefault();
