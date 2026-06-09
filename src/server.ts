@@ -1,5 +1,5 @@
-import express, { type Request, type Response, type NextFunction } from 'express';
 import 'dotenv/config';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import sessionMiddleware from './middlewares/session.js';
 import { sequelize } from './config/database.js';
 import { injetarLocals } from './middlewares/locals.js';
