@@ -1,3 +1,4 @@
+// esqueciSenha.js
 
 document.addEventListener('DOMContentLoaded', () => {
 	const modalEsqueciEl     = document.getElementById('modalEsqueciSenha');
@@ -5,23 +6,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	if (!modalEsqueciEl || !modalConfirmacaoEl) return;
 
+	const formReset    = document.getElementById('formEsqueciSenha');
 	const btnSolicitar = document.getElementById('btn-solicitar-reset');
 	const btnResetText = document.getElementById('btn-reset-text');
 	const spinnerReset = document.getElementById('spinner-reset');
 	const inputUsuario = document.getElementById('reset-usuario');
 	const feedback1    = document.getElementById('reset-feedback-1');
 
-	
 	const modalEsqueci     = new bootstrap.Modal(modalEsqueciEl);
 	const modalConfirmacao = new bootstrap.Modal(modalConfirmacaoEl);
 
-	
 	let abrirConfirmacao = false;
 
 	function setLoadingReset(ativo) {
 		btnSolicitar.disabled    = ativo;
 		btnResetText.textContent = ativo ? 'Enviando...' : 'Enviar link';
-		if (spinnerReset) spinnerReset.classList.toggle('d-none', !ativo);
+		spinnerReset?.classList.toggle('d-none', !ativo);
+	}
+
+	function mostrarFeedback(msg) {
+		feedback1.textContent = msg;
+		feedback1.classList.remove('d-none');
 	}
 
 	function resetarModal() {
@@ -31,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		setLoadingReset(false);
 	}
 
-	
 	modalEsqueciEl.addEventListener('hidden.bs.modal', () => {
 		if (abrirConfirmacao) {
 			abrirConfirmacao = false;
@@ -40,16 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		resetarModal();
 	});
 
-	btnSolicitar.addEventListener('click', async () => {
-		const usuario = inputUsuario.value.trim();
+	formReset?.addEventListener('submit', async (event) => {
+		event.preventDefault();
 
 		feedback1.classList.add('d-none');
 
-		if (!usuario) {
-			feedback1.textContent = 'Informe seu e-mail.';
-			feedback1.classList.remove('d-none');
+		
+		if (!inputUsuario.checkValidity()) {
+			inputUsuario.reportValidity();
 			return;
 		}
+
+		const usuario = inputUsuario.value.trim();
 
 		setLoadingReset(true);
 
@@ -60,13 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				body: JSON.stringify({ usuario }),
 			});
 
-			
 			abrirConfirmacao = true;
 			modalEsqueci.hide();
 
 		} catch {
-			feedback1.textContent = 'Erro de conexão. Tente novamente.';
-			feedback1.classList.remove('d-none');
+			mostrarFeedback('Erro de conexão. Tente novamente.');
+		} finally {
 			setLoadingReset(false);
 		}
 	});
