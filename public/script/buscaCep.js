@@ -47,9 +47,9 @@ buscarCEPBtn.addEventListener('click', async (e) => {
         cidadeInput.value = data.city || '';
         ufInput.value = data.state || '';
         if (data.city != 'Mogi Mirim' && data.city != 'Mogi Guaçu') {
-            valorFreteInput.value = parseFloat('25,00'.replace(',', '.')).toFixed(2);
+            valorFreteInput.value = Number.parseFloat('25,00'.replace(',', '.')).toFixed(2);
         } else {
-            valorFreteInput.value = parseFloat('0,00'.replace(',', '.')).toFixed(2);
+            valorFreteInput.value = Number.parseFloat('0,00'.replace(',', '.')).toFixed(2);
         }
         
 

@@ -38,6 +38,8 @@ import { handleLogin, logout } from '../controllers/AuthController.js';
 
 import verificarLogin from '../middlewares/checkLogin.js';
 
+import { subscribe } from '../controllers/SubscribeController.js';
+
 const router = express.Router();
 
 router.get('/', visualizarSite);
@@ -70,5 +72,7 @@ router.patch('/api/admin/usuarios/:id/admin', verificarLogin, checkAdmin, defini
 router.put('/api/admin/usuarios/:id', verificarLogin, checkAdmin, atualizarNomeUsuario);
 router.delete('/api/admin/usuarios/:id', verificarLogin, checkAdmin, deletarUsuario);
 router.post('/api/admin/usuarios', verificarLogin, checkAdmin, adicionarAdministrador);
+
+router.post('/api/subscribe', subscribe);
 
 export default router;

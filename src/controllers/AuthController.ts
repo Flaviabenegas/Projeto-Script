@@ -33,9 +33,9 @@ export const handleLogin = async (
 		(req.session as any).usuario = user.usuario;
 
 		res.status(200).json({ sucesso: true, mensagem: 'Autenticado com sucesso!' });
-	} catch (erro) {
-		console.error('Erro ao fazer login:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao fazer login:', error);
+		next(error);
 	}
 };
 
@@ -44,7 +44,7 @@ export const logout = (req: Request, res: Response, next: NextFunction): void =>
 		req.session.destroy(() => {
 			res.redirect('/');
 		});
-	} catch (erro) {
-		next(erro);
+	} catch (error) {
+		next(error);
 	}
 };

@@ -8,7 +8,7 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        
+       
         const { nome, email } = JSON.parse(event.body);
 
         if (!email) {
@@ -20,7 +20,7 @@ exports.handler = async (event, context) => {
 
         const DATACENTER = process.env.DATACENTER;
         const LIST_ID = process.env.LIST_ID;
-        const API_KEY = process.env.API_KEY;
+        const SUA_API_KEY = process.env.SUA_API_KEY;
 
         const url = `https://${DATACENTER}.api.mailchimp.com/3.0/lists/${LIST_ID}/members`;
 
@@ -35,7 +35,7 @@ exports.handler = async (event, context) => {
         const apiResponse = await fetch(url, {
             method: 'POST',
             headers: {
-                'Authorization': `Basic ${API_KEY}`,
+                'Authorization': `Basic ${SUA_API_KEY}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
                 body: JSON.stringify({ message: 'Inscrição realizada com sucesso!' }),
             };
         } else {
-           
+            
             const errorData = await apiResponse.json();
             console.error('Erro da API:', errorData);
             return {

@@ -4,18 +4,18 @@ import { Depoimento } from '../models/Depoimentos.js';
 export const visualizarSite = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('index');
-	} catch (erro) {
-		console.error('Erro ao visualizar o site:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao visualizar o site:', error);
+		next(error);
 	}
 };
 
 export const comprar = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('comprar');
-	} catch (erro) {
-		console.error('Erro ao acessar a página de compra:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao acessar a página de compra:', error);
+		next(error);
 	}
 };
 
@@ -31,18 +31,18 @@ export const depoimentos = async (
 			order: [['id', 'DESC']],
 		});
 		res.render('depoimentos', { depoimentos: listaDepoimentos });
-	} catch (erro) {
-		console.error('Erro ao acessar a página de depoimentos:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao acessar a página de depoimentos:', error);
+		next(error);
 	}
 };
 
 export const painel = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		res.render('painel');
-	} catch (erro) {
-		console.error('Erro ao acessar o painel:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao acessar o painel:', error);
+		next(error);
 	}
 };
 
@@ -56,8 +56,8 @@ export const criarDepoimentoView = async (
 			order: [['id', 'DESC']],
 		});
 		res.render('criardepoimento', { depoimentos: todosDepoimentos });
-	} catch (erro) {
-		console.error('Erro ao acessar a página de criação de depoimento:', erro);
-		next(erro);
+	} catch (error) {
+		console.error('Erro ao acessar a página de criação de depoimento:', error);
+		next(error);
 	}
 };

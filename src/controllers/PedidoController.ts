@@ -85,11 +85,9 @@ export const pedidosUsuario = async (
 	try {
 		let pedidos;
 
-		// Se for o utilizador de teste, vai buscar todos com findAll()
 		if (req.session.usuario === 'teste@teste') {
 			pedidos = await Pedido.findAll();
 		} else {
-			// MODO ORM CORRETO: Pede à base de dados para filtrar através do "where"
 			pedidos = await Pedido.findAll({
 				where: {
 					email: req.session.usuario,

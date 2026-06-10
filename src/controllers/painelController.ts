@@ -17,7 +17,7 @@ export const getPainel = async (req: Request, res: Response, next: NextFunction)
 			const user = await User.findOne({ where: { usuario } });
 			res.render('painel', {
 				usuario,
-				isAdmin: user?.isAdmin || ADMINS.has(usuario), // <-- Aproveite e garanta o || aqui
+				isAdmin: user?.isAdmin || ADMINS.has(usuario),
 			});
 			return;
 		}
@@ -100,7 +100,7 @@ export const atualizarNomeUsuario = async (
 			return;
 		}
 
-		await user.update({ nome }); // Atualiza apenas o nome
+		await user.update({ nome });
 
 		res.status(200).json({
 			sucesso: true,
@@ -187,7 +187,7 @@ export const adicionarAdministrador = async (
 			nome: nome || null,
 			usuario,
 			senha,
-			isAdmin: isAdmin ?? true, // ?? já trata undefined e null, sem negação
+			isAdmin: isAdmin ?? true,
 		});
 		res.status(201).json({
 			sucesso: true,

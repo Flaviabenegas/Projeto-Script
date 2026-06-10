@@ -9,7 +9,7 @@ export const handleZodError = (err: any, res: Response, blockName: string): bool
 			mensagem: err.issues[0]?.message || 'Erro de validação dos dados enviados.',
 			erros: err.issues || err,
 		});
-		return true; // was handled
+		return true;
 	}
-	return false; // not a Zod error
+	return false;
 };

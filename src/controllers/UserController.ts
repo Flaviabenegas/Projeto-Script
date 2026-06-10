@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { z } from 'zod';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import { User } from '../models/User.js';
 import { PasswordReset } from '../models/PasswordReset.js';
 import { handleZodError } from '../utils/errorHandler.js';
@@ -71,8 +71,6 @@ export const listarUsuarios = async (
 	}
 };
 
-// POST /api/solicitar-reset
-// Recebe o e-mail, gera token e envia o e-mail de redefinição
 export const solicitarReset = async (
 	req: Request,
 	res: Response,
@@ -81,7 +79,6 @@ export const solicitarReset = async (
 	try {
 		const { usuario } = req.body as { usuario: string };
 
-		// Resposta sempre igual para não revelar se o e-mail existe
 		const respostaPadrao = {
 			sucesso: true,
 			mensagem: 'Se o e-mail estiver cadastrado, você receberá as instruções em breve.',
@@ -99,11 +96,10 @@ export const solicitarReset = async (
 			return;
 		}
 
-		// Invalida tokens anteriores deste usuário que ainda não foram usados
 		await PasswordReset.update({ usado: true }, { where: { usuario, usado: false } });
 
 		const token = crypto.randomBytes(32).toString('hex');
-		const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+		const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
 		await PasswordReset.create({ usuario, token, expiresAt });
 
@@ -116,8 +112,6 @@ export const solicitarReset = async (
 	}
 };
 
-// POST /api/resetar-senha
-// Recebe o token (vindo da URL) e a nova senha
 export const resetarSenha = async (
 	req: Request,
 	res: Response,
@@ -153,10 +147,10 @@ export const resetarSenha = async (
 			return;
 		}
 
-		user.senha = novaSenha; // hook beforeUpdate do Sequelize faz o hash
+		user.senha = novaSenha;
 		await user.save();
 
-		registro.usado = true; // invalida o token — não pode ser reutilizado
+		registro.usado = true;
 		await registro.save();
 
 		res.json({ sucesso: true, mensagem: 'Senha alterada com sucesso!' });

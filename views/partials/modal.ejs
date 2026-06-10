@@ -58,17 +58,6 @@
 						Não possui usuário?
 						<a href="/users" class="fw-medium">Clique aqui para criar</a>
 					</p>
-					<!-- Link para esqueci minha senha — fecha o login e abre o modal de reset -->
-					<p class="text-center mt-2 mb-0 small">
-						<a
-							href="#"
-							class="fw-medium text-secondary"
-							data-bs-dismiss="modal"
-							data-bs-toggle="modal"
-							data-bs-target="#modalEsqueciSenha">
-							Esqueci minha senha
-						</a>
-					</p>
 				</form>
 			</div>
 		</div>
@@ -94,7 +83,9 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body p-4 text-center">
-				<p class="fs-5 mb-0 text-secondary">Inscrita com sucesso!</p>
+				<p class="fs-5 mb-0 text-secondary" id="modalEmailSucessoText">
+					Inscrição realizada com sucesso!
+				</p>
 			</div>
 			<div class="modal-footer border-0 justify-content-center pb-4">
 				<button
@@ -159,7 +150,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="modal fade" id="modalEditarNome" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content rounded-4 border-0 shadow">
@@ -238,7 +228,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="modal fade" id="modalAdicionarAdmin" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content rounded-4 border-0 shadow">
@@ -296,83 +285,6 @@
 				</button>
 				<button type="button" class="btn btn-primary rounded-pill px-4" id="btnSalvarNovoAdmin">
 					Adicionar
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Modal: Esqueci minha senha -->
-<div class="modal fade" id="modalEsqueciSenha" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content border-0 rounded-4 shadow-lg">
-			<div class="modal-header azul-claro border-0 rounded-4 p-4">
-				<h5 class="modal-title fw-bold">Esqueci minha senha</h5>
-				<button
-					type="button"
-					class="btn-close rounded-pill titulos"
-					data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body p-4">
-				<p class="text-secondary small mb-3">
-					Informe seu e-mail de cadastro e enviaremos um link para redefinir sua senha.
-				</p>
-				<div class="mb-3">
-					<label for="reset-usuario" class="form-label fw-medium">E-mail</label>
-					<input
-						type="email"
-						class="form-control rounded-4"
-						id="reset-usuario"
-						placeholder="nome@exemplo.com"
-						required />
-				</div>
-				<p id="reset-feedback-1" class="small text-danger d-none mt-2 text-center"></p>
-				<button
-					type="button"
-					class="btn btn-pet w-100 rounded-pill py-2 fw-bold mt-1"
-					id="btn-solicitar-reset">
-					<span id="btn-reset-text">Enviar link</span>
-					<output id="spinner-reset" class="spinner-border spinner-border-sm d-none"></output>
-				</button>
-				<p class="text-center mt-3 mb-0 small">
-					<a
-						href="#"
-						class="fw-medium"
-						data-bs-dismiss="modal"
-						data-bs-toggle="modal"
-						data-bs-target="#modalLogin">
-						Voltar ao login
-					</a>
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Modal: Confirmação de envio do e-mail de reset -->
-<div class="modal fade" id="modalResetEnviado" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content border-0 rounded-4 shadow-lg">
-			<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
-				<h5 class="modal-title fw-bold">E-mail enviado 📧</h5>
-				<button
-					type="button"
-					class="btn-close btn-close-white"
-					data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body p-4 text-center">
-				<p class="fs-5 mb-0 text-secondary">
-					Um e-mail chegará em instantes se você estiver cadastrado em nosso banco de dados.
-				</p>
-			</div>
-			<div class="modal-footer border-0 justify-content-center pb-4">
-				<button
-					type="button"
-					class="btn btn-success rounded-pill px-4 fw-bold"
-					data-bs-dismiss="modal">
-					Entendi
 				</button>
 			</div>
 		</div>

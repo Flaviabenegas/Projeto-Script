@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalSucesso = document.getElementById('modalSucesso') ? new bootstrap.Modal(document.getElementById('modalSucesso')) : null;
     const modalErro = document.getElementById('modalErro') ? new bootstrap.Modal(document.getElementById('modalErro')) : null;
 
-    const precoUnitario = 15.00;
+   
+    const precoUnitario = 15;
    
     
     if (inputQtdCao) inputQtdCao.value = 0; 
@@ -21,8 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
     function atualizarValorTotal() {
-        let qtdCao = parseInt(inputQtdCao.value) || 0;
-        let qtdGato = parseInt(inputQtdGato.value) || 0;
+       
+        let qtdCao = Number.parseInt(inputQtdCao.value) || 0;
+        let qtdGato = Number.parseInt(inputQtdGato.value) || 0;
 
         if (qtdCao < 0) qtdCao = 0;
         if (qtdGato < 0) qtdGato = 0;
@@ -30,9 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const totalPlacas = qtdCao + qtdGato;
         
         let valorFrete = 0;
-        if (valorFreteInput && valorFreteInput.value) {
-            valorFrete = parseFloat(valorFreteInput.value.replace(',', '.'));
-            if (isNaN(valorFrete)) valorFrete = 0;
+       
+        if (valorFreteInput?.value) {
+            
+            valorFrete = Number.parseFloat(valorFreteInput.value.replace(',', '.'));
+          
+            if (Number.isNaN(valorFrete)) valorFrete = 0;
         }
 
         const valorTotal = (totalPlacas * precoUnitario) + valorFrete;
@@ -58,26 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
     if (formPedido) {
+        
         formPedido.addEventListener('submit', async (event) => {
             event.preventDefault(); 
+
+            if (!validarFormulario()) return;
     
-            let totalPedidos = (parseInt(inputQtdCao.value) || 0) + (parseInt(inputQtdGato.value) || 0);
-            if (totalPedidos === 0) {
-                const textoModal = document.getElementById('modalText');
-                if (textoModal) textoModal.innerText = "Você precisa pedir pelo menos 1 plaquinha para continuar.";
-                if (modalErro) modalErro.show();
-                return;
-            }
-
-            const ehValido = validarCPF(inputCpf.value);
-            if (!ehValido) {
-                const textoModal = document.getElementById('modalText');
-                if (textoModal) textoModal.innerText = "CPF inválido. Por favor, verifique os números digitados.";
-                if (modalErro) modalErro.show();
-                inputCpf.focus();
-                return;
-            }
-
             btnComprar.disabled = true;
             if (btnText) btnText.textContent = 'ENVIANDO...';
             if (spinner) spinner.classList.remove('d-none');
@@ -94,12 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 bairro: document.getElementById('bairro').value,
                 cidade: document.getElementById('cidade').value,
                 uf: document.getElementById('uf').value,
-                qtdCao: parseInt(inputQtdCao.value),
-                qtdGato: parseInt(inputQtdGato.value),
+                // S7773: parseInt → Number.parseInt
+                qtdCao: Number.parseInt(inputQtdCao.value),
+                qtdGato: Number.parseInt(inputQtdGato.value),
                 valorTotal: inputValorTotal.value, 
                 nomePets: document.getElementById('nomePets').value,
                 telGravacao: document.getElementById('telGravacao').value,
-                valorFrete: valorFreteInput.value ? parseFloat(valorFreteInput.value.replace(',', '.')) : 0
+                
+                valorFrete: valorFreteInput.value ? Number.parseFloat(valorFreteInput.value.replace(',', '.')) : 0
             };
 
             try {
@@ -128,13 +121,36 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+   
+    function validarFormulario() {
+       
+        const totalPedidos = (Number.parseInt(inputQtdCao.value) || 0) + (Number.parseInt(inputQtdGato.value) || 0);
+        if (totalPedidos === 0) {
+            const textoModal = document.getElementById('modalText');
+            if (textoModal) textoModal.innerText = "Você precisa pedir pelo menos 1 plaquinha para continuar.";
+            if (modalErro) modalErro.show();
+            return false;
+        }
+
+        if (!validarCPF(inputCpf.value)) {
+            const textoModal = document.getElementById('modalText');
+            if (textoModal) textoModal.innerText = "CPF inválido. Por favor, verifique os números digitados.";
+            if (modalErro) modalErro.show();
+            inputCpf.focus();
+            return false;
+        }
+
+        return true;
+    }
 });
 
 function validarCPF(cpfDigitado) {
     const cpfLimpo = String(cpfDigitado).replace(/[^\d]+/g, '');
 
     if (cpfLimpo.length !== 11) return false;
-    if (!!cpfLimpo.match(/(\d)\1{10}/)) return false;
+    
+    if (/(\d)\1{10}/.exec(cpfLimpo)) return false;
 
     const cpfsplit = cpfLimpo.split('').map(Number);
 
