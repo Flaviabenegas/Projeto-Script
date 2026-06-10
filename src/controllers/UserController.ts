@@ -1,7 +1,10 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { z } from 'zod';
+import crypto from 'crypto';
 import { User } from '../models/User.js';
+import { PasswordReset } from '../models/PasswordReset.js';
 import { handleZodError } from '../utils/errorHandler.js';
+import { sendResetEmail } from '../utils/mailer.js';
 
 const createUserSchema = z.object({
 	usuario: z.string().min(1, 'O nome é obrigatório.'),
@@ -64,6 +67,101 @@ export const listarUsuarios = async (
 		});
 	} catch (error) {
 		console.error('Erro ao buscar os usuarios:', error);
+		next(error);
+	}
+};
+
+// POST /api/solicitar-reset
+// Recebe o e-mail, gera token e envia o e-mail de redefinição
+export const solicitarReset = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
+	try {
+		const { usuario } = req.body as { usuario: string };
+
+		// Resposta sempre igual para não revelar se o e-mail existe
+		const respostaPadrao = {
+			sucesso: true,
+			mensagem: 'Se o e-mail estiver cadastrado, você receberá as instruções em breve.',
+		};
+
+		if (!usuario) {
+			res.status(400).json({ sucesso: false, mensagem: 'Informe o e-mail.' });
+			return;
+		}
+
+		const user = await User.findOne({ where: { usuario } });
+
+		if (!user) {
+			res.json(respostaPadrao);
+			return;
+		}
+
+		// Invalida tokens anteriores deste usuário que ainda não foram usados
+		await PasswordReset.update({ usado: true }, { where: { usuario, usado: false } });
+
+		const token = crypto.randomBytes(32).toString('hex');
+		const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+
+		await PasswordReset.create({ usuario, token, expiresAt });
+
+		await sendResetEmail(usuario, token);
+
+		res.json(respostaPadrao);
+	} catch (error) {
+		console.error('Erro ao solicitar reset:', error);
+		next(error);
+	}
+};
+
+// POST /api/resetar-senha
+// Recebe o token (vindo da URL) e a nova senha
+export const resetarSenha = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+): Promise<void> => {
+	try {
+		const { token, novaSenha } = req.body as { token: string; novaSenha: string };
+
+		if (!token || !novaSenha || novaSenha.length < 6) {
+			res.status(400).json({
+				sucesso: false,
+				mensagem: 'Dados inválidos. A senha deve ter no mínimo 6 caracteres.',
+			});
+			return;
+		}
+
+		const registro = await PasswordReset.findOne({
+			where: { token, usado: false },
+		});
+
+		if (!registro || registro.expiresAt < new Date()) {
+			res.status(400).json({
+				sucesso: false,
+				mensagem: 'Link inválido ou expirado. Solicite um novo.',
+			});
+			return;
+		}
+
+		const user = await User.findOne({ where: { usuario: registro.usuario } });
+
+		if (!user) {
+			res.status(404).json({ sucesso: false, mensagem: 'Usuário não encontrado.' });
+			return;
+		}
+
+		user.senha = novaSenha; // hook beforeUpdate do Sequelize faz o hash
+		await user.save();
+
+		registro.usado = true; // invalida o token — não pode ser reutilizado
+		await registro.save();
+
+		res.json({ sucesso: true, mensagem: 'Senha alterada com sucesso!' });
+	} catch (error) {
+		console.error('Erro ao resetar senha:', error);
 		next(error);
 	}
 };

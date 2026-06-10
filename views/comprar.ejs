@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 	<head>
+		<title>Apaixonados por Focinhos - Compre sua tag</title>
 		<%- include ('partials/head') %>
 	</head>
 	<body>
@@ -452,10 +453,10 @@
 										class="btn btn-pedido btn-lg fw-bold rounded-pill"
 										id="btn-comprar">
 										<span id="btn-text">ENVIAR PEDIDO</span>
-										<div
+										<output
 											id="spinner"
 											class="spinner-border spinner-border-sm d-none"
-											role="status"></div>
+											aria-label="status"></output>
 									</button>
 								</div>
 							</form>
@@ -531,5 +532,7 @@
 		<script src="script/painel.js" defer></script>
 		<script src="script/email.js" defer></script>
 		<script src="script/validar.js" defer></script>
+		<script src="/script/esqueciSenha.js" defer></script>
+		<script src="/script/resetarSenha.js" defer></script>
 	</body>
 </html>

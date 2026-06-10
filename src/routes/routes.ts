@@ -19,7 +19,13 @@ import {
 
 import { criarPedido, pedidosUsuario } from '../controllers/PedidoController.js';
 
-import { criarUsuarioView, criarUser, listarUsuarios } from '../controllers/UserController.js';
+import {
+	criarUsuarioView,
+	criarUser,
+	listarUsuarios,
+	solicitarReset,
+	resetarSenha,
+} from '../controllers/UserController.js';
 
 import {
 	criarDepoimento,
@@ -41,6 +47,10 @@ router.get('/users', criarUsuarioView);
 router.get('/painel', verificarLogin, getPainel);
 router.get('/criardepoimento', criarDepoimentoView);
 
+router.get('/resetar-senha', (req, res) => {
+	res.render('resetarSenha', { token: req.query.token ?? '' });
+});
+
 router.get('/pedidos', pedidosUsuario);
 router.get('/api/pedidos', verificarLogin, listarPedidosPainel);
 router.post('/api/criar', criarUser);
@@ -51,6 +61,10 @@ router.patch('/api/depoimentos/:id/toggle', alternarStatusDepoimento);
 router.post('/api/login/', handleLogin);
 router.get('/api/users', verificarLogin, listarUsuarios);
 router.get('/api/logout', logout);
+
+router.post('/api/solicitar-reset', solicitarReset);
+router.post('/api/resetar-senha', resetarSenha);
+
 router.get('/api/admin/usuarios', verificarLogin, checkAdmin, listarUsuariosAdmin);
 router.patch('/api/admin/usuarios/:id/admin', verificarLogin, checkAdmin, definirAdmin);
 router.put('/api/admin/usuarios/:id', verificarLogin, checkAdmin, atualizarNomeUsuario);
