@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express, { type Request, type Response, type NextFunction } from 'express';
+import helmet from 'helmet';
 import sessionMiddleware from './middlewares/session.js';
 import { sequelize } from './config/database.js';
 import { injetarLocals } from './middlewares/locals.js';
@@ -10,6 +11,41 @@ console.log('📦 Banco de dados sincronizado.');
 
 const app = express();
 app.disable('x-powered-by');
+
+app.use(
+	helmet({
+		contentSecurityPolicy: {
+			directives: {
+				defaultSrc: ["'self'"],
+				scriptSrc: ["'self'", 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
+				styleSrc: [
+					"'self'",
+					'https://cdn.jsdelivr.net',
+					'https://fonts.googleapis.com',
+					"'unsafe-inline'",
+				],
+				styleSrcElem: [
+					"'self'",
+					'https://cdn.jsdelivr.net',
+					'https://fonts.googleapis.com',
+					"'unsafe-inline'",
+				],
+				fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https://cdn.jsdelivr.net'],
+				imgSrc: [
+					"'self'",
+					'data:',
+					'https://www.apaixonadosporfocinhos.com.br',
+					'https://apaixonadosporfocinhos.com.br',
+					'https://loremflickr.com',
+				],
+				connectSrc: ["'self'", 'https://cdn.jsdelivr.net'],
+				objectSrc: ["'none'"],
+				frameSrc: ["'none'"],
+				upgradeInsecureRequests: [],
+			},
+		},
+	}),
+);
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
