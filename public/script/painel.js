@@ -2,93 +2,91 @@ const formLogin = document.getElementById('loginPainel');
 let modalEditarNomeInstance, modalConfirmarDelecaoInstance, modalSucessoInstance;
 
 if (formLogin) {
-    formLogin.addEventListener('submit', async function (e) {
-        e.preventDefault();
+	formLogin.addEventListener('submit', async function (e) {
+		e.preventDefault();
 
-        const btnLogin = document.getElementById('btn-login');
-        const loader = document.getElementById('loader');
+		const btnLogin = document.getElementById('btn-login');
+		const loader = document.getElementById('loader');
 
-        if (btnLogin) btnLogin.disabled = true;
-        if (loader) loader.classList.remove('d-none');
+		if (btnLogin) btnLogin.disabled = true;
+		if (loader) loader.classList.remove('d-none');
 
-        const usuario = document.getElementById('email-login')?.value;
-        const senha = document.getElementById('senha')?.value;
+		const usuario = document.getElementById('email-login')?.value;
+		const senha = document.getElementById('senha')?.value;
 
-        try {
-            const resposta = await fetch('/api/login/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario, senha }),
-            });
+		try {
+			const resposta = await fetch('/api/login/', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ usuario, senha }),
+			});
 
-            if (resposta.ok) {
-                sessionStorage.setItem('emailLogado', usuario.toLowerCase().trim());
-                globalThis.location.href = '/painel';
-            } else {
-                const modalErroEl = document.getElementById('modalEmailErro');
-                const textoModal = document.getElementById('modalText');
-                if (textoModal) textoModal.innerText = 'Usuário ou senha incorretos.';
-                if (modalErroEl) new bootstrap.Modal(modalErroEl).show();
-            }
-        } catch (err) {
-            console.error('Erro no login:', err);
-        } finally {
-            if (btnLogin) btnLogin.disabled = false;
-            if (loader) loader.classList.add('d-none');
-        }
-    });
+			if (resposta.ok) {
+				sessionStorage.setItem('emailLogado', usuario.toLowerCase().trim());
+				globalThis.location.href = '/painel';
+			} else {
+				const modalErroEl = document.getElementById('modalEmailErro');
+				const textoModal = document.getElementById('modalText');
+				if (textoModal) textoModal.innerText = 'Usuário ou senha incorretos.';
+				if (modalErroEl) new bootstrap.Modal(modalErroEl).show();
+			}
+		} catch (err) {
+			console.error('Erro no login:', err);
+		} finally {
+			if (btnLogin) btnLogin.disabled = false;
+			if (loader) loader.classList.add('d-none');
+		}
+	});
 }
 
 async function carregarPainel() {
-    if (!document.getElementById('statPedidos')) return;
+	if (!document.getElementById('statPedidos')) return;
 
-    try {
-        const resPedidos = await fetch('/api/pedidos');
-        const { pedidos } = await resPedidos.json();
+	try {
+		const resPedidos = await fetch('/api/pedidos');
+		const { pedidos } = await resPedidos.json();
 
-        globalThis.mapaPedidos = Object.fromEntries(pedidos.map(p => [p.id, p]));
+		globalThis.mapaPedidos = Object.fromEntries(pedidos.map((p) => [p.id, p]));
 
-        preencherEstatisticas(pedidos);
-        preencherTabelaPedidos(pedidos);
-        preencherClientes(pedidos);
-        ativarFiltro();
-    } catch (err) {
-        console.error('Erro ao carregar painel:', err);
-    }
+		preencherEstatisticas(pedidos);
+		preencherTabelaPedidos(pedidos);
+		preencherClientes(pedidos);
+		ativarFiltro();
+	} catch (err) {
+		console.error('Erro ao carregar painel:', err);
+	}
 }
 
 function preencherEstatisticas(pedidos) {
-    const hoje = new Date().toISOString().slice(0, 10);
-    const clientesUnicos = new Set(pedidos.map(p => p.email)).size;
+	const hoje = new Date().toISOString().slice(0, 10);
+	const clientesUnicos = new Set(pedidos.map((p) => p.email)).size;
 
-    const receita = pedidos.reduce((acc, p) => {
-        const valor = Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
-        return acc + valor;
-    }, 0);
+	const receita = pedidos.reduce((acc, p) => {
+		const valor = Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
+		return acc + valor;
+	}, 0);
 
-    const pedidosHoje = pedidos.filter(p => p.createdAt?.slice(0, 10) === hoje).length;
+	const pedidosHoje = pedidos.filter((p) => p.createdAt?.slice(0, 10) === hoje).length;
 
-    document.getElementById('statPedidos').textContent = pedidos.length;
-    document.getElementById('statClientes').textContent = clientesUnicos;
-    document.getElementById('statReceita').textContent = 'R$ ' + receita.toFixed(2).replace('.', ',');
-    document.getElementById('statHoje').textContent = pedidosHoje;
+	document.getElementById('statPedidos').textContent = pedidos.length;
+	document.getElementById('statClientes').textContent = clientesUnicos;
+	document.getElementById('statReceita').textContent = 'R$ ' + receita.toFixed(2).replace('.', ',');
+	document.getElementById('statHoje').textContent = pedidosHoje;
 }
 
 function linhaTabela(pedido, index) {
-    const data = pedido.createdAt
-        ? new Date(pedido.createdAt).toLocaleDateString('pt-BR')
-        : '—';
+	const data = pedido.createdAt ? new Date(pedido.createdAt).toLocaleDateString('pt-BR') : '—';
 
-    const qtdCao = Number(pedido.qtdCao || 0);
-    const qtdGato = Number(pedido.qtdGato || 0);
-    const valor = Number.parseFloat(String(pedido.valorTotal).replace(',', '.')) || 0;
+	const qtdCao = Number(pedido.qtdCao || 0);
+	const qtdGato = Number(pedido.qtdGato || 0);
+	const valor = Number.parseFloat(String(pedido.valorTotal).replace(',', '.')) || 0;
 
-    const badges = [
-        qtdCao > 0 ? `<span class="badge badge-cao rounded-pill me-1">🐶 ${qtdCao}</span>` : '',
-        qtdGato > 0 ? `<span class="badge badge-gato rounded-pill">🐱 ${qtdGato}</span>` : '',
-    ].join('');
+	const badges = [
+		qtdCao > 0 ? `<span class="badge badge-cao rounded-pill me-1">🐶 ${qtdCao}</span>` : '',
+		qtdGato > 0 ? `<span class="badge badge-gato rounded-pill">🐱 ${qtdGato}</span>` : '',
+	].join('');
 
-    return `
+	return `
         <tr data-email="${pedido.email?.toLowerCase() || ''}" data-id="${pedido.id}">
             <td class="text-secondary small">${index + 1}</td>
             <td class="fw-medium">${pedido.nome || '—'}</td>
@@ -107,26 +105,30 @@ function linhaTabela(pedido, index) {
 }
 
 function preencherTabelaPedidos(pedidos) {
-    const corpo = document.getElementById('corpoTabelaPedidos');
+	const corpo = document.getElementById('corpoTabelaPedidos');
 
-    if (!pedidos.length) {
-        corpo.innerHTML = `<tr><td colspan="9" class="text-center text-secondary py-4">Nenhum pedido encontrado.</td></tr>`;
-        return;
-    }
+	if (!pedidos.length) {
+		corpo.innerHTML = `<tr><td colspan="9" class="text-center text-secondary py-4">Nenhum pedido encontrado.</td></tr>`;
+		return;
+	}
 
-    corpo.innerHTML = pedidos.map((p, i) => linhaTabela(p, i)).join('');
+	corpo.innerHTML = pedidos.map((p, i) => linhaTabela(p, i)).join('');
 }
 
 function abrirDetalhesPedido(id) {
-    const p = globalThis.mapaPedidos?.[id];
-    if (!p) return;
+	const p = globalThis.mapaPedidos?.[id];
+	if (!p) return;
 
-    const valorFrete = Number(p.valorFrete || 0).toFixed(2).replace('.', ',');
-    const valorTotal = Number.parseFloat(String(p.valorTotal).replace(',', '.')).toFixed(2).replace('.', ',');
+	const valorFrete = Number(p.valorFrete || 0)
+		.toFixed(2)
+		.replace('.', ',');
+	const valorTotal = Number.parseFloat(String(p.valorTotal).replace(',', '.'))
+		.toFixed(2)
+		.replace('.', ',');
 
-    const modalBody = document.getElementById('conteudoDetalhesPedido');
+	const modalBody = document.getElementById('conteudoDetalhesPedido');
 
-    modalBody.innerHTML = `
+	modalBody.innerHTML = `
         <div class="row g-4">
             <div class="col-md-6">
                 <h6 class="fw-bold titulos-rosa mb-3">👤 Dados do Cliente</h6>
@@ -161,33 +163,35 @@ function abrirDetalhesPedido(id) {
         </div>
     `;
 
-    const modalEl = document.getElementById('modalDetalhesPedido');
-    const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-    modal.show();
+	const modalEl = document.getElementById('modalDetalhesPedido');
+	const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+	modal.show();
 }
 
 function preencherClientes(pedidos) {
-    const lista = document.getElementById('listaClientes');
-    if (!lista) return;
+	const lista = document.getElementById('listaClientes');
+	if (!lista) return;
 
-    const mapa = {};
+	const mapa = {};
 
-    pedidos.forEach(p => {
-        if (!p.email) return;
-        const emailNorm = p.email.toLowerCase().trim();
-        if (!mapa[emailNorm]) mapa[emailNorm] = { nome: p.nome, total: 0, pedidos: 0 };
-        mapa[emailNorm].pedidos += 1;
-        mapa[emailNorm].total += Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
-    });
+	pedidos.forEach((p) => {
+		if (!p.email) return;
+		const emailNorm = p.email.toLowerCase().trim();
+		if (!mapa[emailNorm]) mapa[emailNorm] = { nome: p.nome, total: 0, pedidos: 0 };
+		mapa[emailNorm].pedidos += 1;
+		mapa[emailNorm].total += Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
+	});
 
-    const emails = Object.keys(mapa);
+	const emails = Object.keys(mapa);
 
-    if (!emails.length) {
-        lista.innerHTML = `<div class="col-12 text-secondary text-center py-3">Nenhum cliente encontrado.</div>`;
-        return;
-    }
+	if (!emails.length) {
+		lista.innerHTML = `<div class="col-12 text-secondary text-center py-3">Nenhum cliente encontrado.</div>`;
+		return;
+	}
 
-    lista.innerHTML = emails.map(email => `
+	lista.innerHTML = emails
+		.map(
+			(email) => `
         <div class="col-md-4 col-sm-6">
             <div class="border rounded-4 p-3 bg-light h-100">
                 <p class="fw-bold titulos mb-1 text-truncate" title="${mapa[email].nome}">${mapa[email].nome || '—'}</p>
@@ -202,69 +206,72 @@ function preencherClientes(pedidos) {
                     Ver pedidos
                 </button>
             </div>
-        </div>`).join('');
+        </div>`,
+		)
+		.join('');
 
-    document.querySelectorAll('.btn-filtrar').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const email = btn.dataset.email;
-            document.getElementById('searchBar').value = email;
-            filtrarTabela(email);
-            document.getElementById('tabelaPedidos').scrollIntoView({ behavior: 'smooth' });
-        });
-    });
+	document.querySelectorAll('.btn-filtrar').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const email = btn.dataset.email;
+			document.getElementById('searchBar').value = email;
+			filtrarTabela(email);
+			document.getElementById('tabelaPedidos').scrollIntoView({ behavior: 'smooth' });
+		});
+	});
 }
 
 function filtrarTabela(termo) {
-    const linhas = document.querySelectorAll('#corpoTabelaPedidos tr[data-email]');
-    linhas.forEach(tr => {
-        const email = tr.dataset.email || '';
-        tr.style.display = email.includes(termo.toLowerCase()) ? '' : 'none';
-    });
+	const linhas = document.querySelectorAll('#corpoTabelaPedidos tr[data-email]');
+	linhas.forEach((tr) => {
+		const email = tr.dataset.email || '';
+		tr.style.display = email.includes(termo.toLowerCase()) ? '' : 'none';
+	});
 }
 
 function ativarFiltro() {
-    const searchBar = document.getElementById('searchBar');
-    if (searchBar) {
-        searchBar.addEventListener('input', function () {
-            filtrarTabela(this.value.trim());
-        });
-    }
+	const searchBar = document.getElementById('searchBar');
+	if (searchBar) {
+		searchBar.addEventListener('input', function () {
+			filtrarTabela(this.value.trim());
+		});
+	}
 }
 
 function mostrarSucesso(mensagem) {
-    document.getElementById('textoModalSucesso').innerText = mensagem;
-    if (!modalSucessoInstance) {
-        modalSucessoInstance = new bootstrap.Modal(document.getElementById('modalSucessoGeral'));
-    }
-    modalSucessoInstance.show();
+	document.getElementById('textoModalSucesso').innerText = mensagem;
+	if (!modalSucessoInstance) {
+		modalSucessoInstance = new bootstrap.Modal(document.getElementById('modalSucessoGeral'));
+	}
+	modalSucessoInstance.show();
 }
 
 async function carregarUsuarios() {
-    try {
-        const response = await fetch('/api/admin/usuarios');
-        const data = await response.json();
-        const tbody = document.getElementById('corpoTabelaUsuarios');
+	try {
+		const response = await fetch('/api/admin/usuarios');
+		const data = await response.json();
+		const tbody = document.getElementById('corpoTabelaUsuarios');
 
-        if (!data.sucesso || !data.usuarios.length) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-secondary">Nenhum usuário encontrado.</td></tr>';
-            return;
-        }
+		if (!data.sucesso || !data.usuarios.length) {
+			tbody.innerHTML =
+				'<tr><td colspan="5" class="text-center py-4 text-secondary">Nenhum usuário encontrado.</td></tr>';
+			return;
+		}
 
-        const vistos = new Set();
-        const unicos = data.usuarios.filter(u => {
-            const chave = u.usuario?.toLowerCase().trim();
-            if (vistos.has(chave)) return false;
-            vistos.add(chave);
-            return true;
-        });
+		const vistos = new Set();
+		const unicos = data.usuarios.filter((u) => {
+			const chave = u.usuario?.toLowerCase().trim();
+			if (vistos.has(chave)) return false;
+			vistos.add(chave);
+			return true;
+		});
 
-        tbody.innerHTML = '';
-        unicos.forEach((user, index) => {
-            const tr = document.createElement('tr');
-            const adminCheck = user.isAdmin ? 'checked' : '';
-            const nomeSeguro = (user.nome && user.nome !== 'null') ? user.nome : '';
+		tbody.innerHTML = '';
+		unicos.forEach((user, index) => {
+			const tr = document.createElement('tr');
+			const adminCheck = user.isAdmin ? 'checked' : '';
+			const nomeSeguro = user.nome && user.nome !== 'null' ? user.nome : '';
 
-            tr.innerHTML = `
+			tr.innerHTML = `
                 <td class="text-secondary">${index + 1}</td>
                 <td class="fw-medium">${nomeSeguro || '<span class="text-muted small">Sem nome configurado</span>'}</td>
                 <td class="text-secondary">${user.usuario}</td>
@@ -284,149 +291,151 @@ async function carregarUsuarios() {
                     </div>
                 </td>
             `;
-            tbody.appendChild(tr);
-        });
-    } catch (error) {
-        console.error('Erro ao procurar usuários:', error);
-    }
+			tbody.appendChild(tr);
+		});
+	} catch (error) {
+		console.error('Erro ao procurar usuários:', error);
+	}
 }
 
 function atualizarNomeUsuario(id, nomeAtual) {
-    if (!modalEditarNomeInstance) {
-        modalEditarNomeInstance = new bootstrap.Modal(document.getElementById('modalEditarNome'));
-    }
-    document.getElementById('editAdminId').value = id;
-    document.getElementById('editAdminNome').value = nomeAtual || '';
-    modalEditarNomeInstance.show();
+	if (!modalEditarNomeInstance) {
+		modalEditarNomeInstance = new bootstrap.Modal(document.getElementById('modalEditarNome'));
+	}
+	document.getElementById('editAdminId').value = id;
+	document.getElementById('editAdminNome').value = nomeAtual || '';
+	modalEditarNomeInstance.show();
 }
 
 async function executarAtualizacaoNome() {
-    const id = document.getElementById('editAdminId').value;
-    const novoNome = document.getElementById('editAdminNome').value.trim();
+	const id = document.getElementById('editAdminId').value;
+	const novoNome = document.getElementById('editAdminNome').value.trim();
 
-    if (!novoNome) {
-        const modalErroEl = document.getElementById('modalEmailErro');
-        const textoModal = document.getElementById('modalText');
-        if (textoModal) textoModal.innerText = 'O nome não pode estar vazio.';
-        if (modalErroEl) new bootstrap.Modal(modalErroEl).show();
-        return;
-    }
+	if (!novoNome) {
+		const modalErroEl = document.getElementById('modalEmailErro');
+		const textoModal = document.getElementById('modalText');
+		if (textoModal) textoModal.innerText = 'O nome não pode estar vazio.';
+		if (modalErroEl) new bootstrap.Modal(modalErroEl).show();
+		return;
+	}
 
-    try {
-        const response = await fetch(`/api/admin/usuarios/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome: novoNome }),
-        });
+	try {
+		const response = await fetch(`/api/admin/usuarios/${id}`, {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ nome: novoNome }),
+		});
 
-        const data = await response.json();
+		const data = await response.json();
 
-        if (data.sucesso) {
-            modalEditarNomeInstance.hide();
-            mostrarSucesso('Nome atualizado com sucesso!');
-            carregarUsuarios();
-        } else {
-            alert(data.mensagem || 'Erro ao atualizar o nome.');
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        alert('Erro ao se conectar ao servidor.');
-    }
+		if (data.sucesso) {
+			modalEditarNomeInstance.hide();
+			mostrarSucesso('Nome atualizado com sucesso!');
+			carregarUsuarios();
+		} else {
+			alert(data.mensagem || 'Erro ao atualizar o nome.');
+		}
+	} catch (error) {
+		console.error('Erro:', error);
+		alert('Erro ao se conectar ao servidor.');
+	}
 }
 
 function deletarUsuario(id) {
-    if (!modalConfirmarDelecaoInstance) {
-        modalConfirmarDelecaoInstance = new bootstrap.Modal(document.getElementById('modalConfirmarDelecao'));
-    }
-    document.getElementById('deleteAdminId').value = id;
-    modalConfirmarDelecaoInstance.show();
+	if (!modalConfirmarDelecaoInstance) {
+		modalConfirmarDelecaoInstance = new bootstrap.Modal(
+			document.getElementById('modalConfirmarDelecao'),
+		);
+	}
+	document.getElementById('deleteAdminId').value = id;
+	modalConfirmarDelecaoInstance.show();
 }
 
 async function executarDelecaoUsuario() {
-    const id = document.getElementById('deleteAdminId').value;
+	const id = document.getElementById('deleteAdminId').value;
 
-    try {
-        const response = await fetch(`/api/admin/usuarios/${id}`, { method: 'DELETE' });
-        const data = await response.json();
+	try {
+		const response = await fetch(`/api/admin/usuarios/${id}`, { method: 'DELETE' });
+		const data = await response.json();
 
-        if (data.sucesso) {
-            modalConfirmarDelecaoInstance.hide();
-            mostrarSucesso('Cadastro removido com sucesso!');
-            carregarUsuarios();
-        } else {
-            alert(data.mensagem || 'Erro ao excluir cadastro.');
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        alert('Erro ao se conectar ao servidor.');
-    }
+		if (data.sucesso) {
+			modalConfirmarDelecaoInstance.hide();
+			mostrarSucesso('Cadastro removido com sucesso!');
+			carregarUsuarios();
+		} else {
+			alert(data.mensagem || 'Erro ao excluir cadastro.');
+		}
+	} catch (error) {
+		console.error('Erro:', error);
+		alert('Erro ao se conectar ao servidor.');
+	}
 }
 
 async function alternarAdmin(id, isAdmin) {
-    try {
-        const response = await fetch(`/api/admin/usuarios/${id}/admin`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isAdmin }),
-        });
-        const data = await response.json();
-        if (!data.sucesso) {
-            alert('Erro ao alterar permissões de administrador.');
-            carregarUsuarios();
-        }
-    } catch (error) {
-        console.error(error);
-    }
+	try {
+		const response = await fetch(`/api/admin/usuarios/${id}/admin`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ isAdmin }),
+		});
+		const data = await response.json();
+		if (!data.sucesso) {
+			alert('Erro ao alterar permissões de administrador.');
+			carregarUsuarios();
+		}
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 async function executarAdicionarAdmin() {
-    const nome = document.getElementById('novoAdminNome').value.trim();
-    const usuario = document.getElementById('novoAdminEmail').value.trim();
-    const senha = document.getElementById('novoAdminSenha').value;
-    const isAdmin = document.getElementById('novoAdminIsAdmin').checked;
+	const nome = document.getElementById('novoAdminNome').value.trim();
+	const usuario = document.getElementById('novoAdminEmail').value.trim();
+	const senha = document.getElementById('novoAdminSenha').value;
+	const isAdmin = document.getElementById('novoAdminIsAdmin').checked;
 
-    if (!usuario || !senha) {
-        alert('O E-mail e a palavra-passe são obrigatórios!');
-        return;
-    }
+	if (!usuario || !senha) {
+		alert('O E-mail e a palavra-passe são obrigatórios!');
+		return;
+	}
 
-    if (senha.length < 6) {
-        alert('A palavra-passe deve ter pelo menos 6 caracteres.');
-        return;
-    }
+	if (senha.length < 6) {
+		alert('A palavra-passe deve ter pelo menos 6 caracteres.');
+		return;
+	}
 
-    try {
-        const response = await fetch('/api/admin/usuarios', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, usuario, senha, isAdmin }),
-        });
+	try {
+		const response = await fetch('/api/admin/usuarios', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ nome, usuario, senha, isAdmin }),
+		});
 
-        const data = await response.json();
+		const data = await response.json();
 
-        if (data.sucesso) {
-            const modalEl = document.getElementById('modalAdicionarAdmin');
-            const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-            modalInstance.hide();
-            document.getElementById('formAdicionarAdmin').reset();
-            mostrarSucesso('Novo administrador adicionado com sucesso!');
-            carregarUsuarios();
-        } else {
-            alert(data.mensagem || 'Erro ao adicionar administrador.');
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        alert('Erro ao ligar ao servidor.');
-    }
+		if (data.sucesso) {
+			const modalEl = document.getElementById('modalAdicionarAdmin');
+			const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+			modalInstance.hide();
+			document.getElementById('formAdicionarAdmin').reset();
+			mostrarSucesso('Novo administrador adicionado com sucesso!');
+			carregarUsuarios();
+		} else {
+			alert(data.mensagem || 'Erro ao adicionar administrador.');
+		}
+	} catch (error) {
+		console.error('Erro:', error);
+		alert('Erro ao ligar ao servidor.');
+	}
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    carregarPainel();
+	carregarPainel();
 
-    const corpoUsuarios = document.getElementById('corpoTabelaUsuarios');
-    if (corpoUsuarios) carregarUsuarios();
+	const corpoUsuarios = document.getElementById('corpoTabelaUsuarios');
+	if (corpoUsuarios) carregarUsuarios();
 
-    document.getElementById('btnSalvarNomeAdmin')?.addEventListener('click', executarAtualizacaoNome);
-    document.getElementById('btnConfirmarDelecao')?.addEventListener('click', executarDelecaoUsuario);
-    document.getElementById('btnSalvarNovoAdmin')?.addEventListener('click', executarAdicionarAdmin);
+	document.getElementById('btnSalvarNomeAdmin')?.addEventListener('click', executarAtualizacaoNome);
+	document.getElementById('btnConfirmarDelecao')?.addEventListener('click', executarDelecaoUsuario);
+	document.getElementById('btnSalvarNovoAdmin')?.addEventListener('click', executarAdicionarAdmin);
 });

@@ -17,12 +17,10 @@ export const subscribe = async (req: Request, res: Response, next: NextFunction)
 			console.error(
 				'Variáveis de ambiente do Mailchimp não configuradas (DATACENTER, LIST_ID, API_KEY).',
 			);
-			res
-				.status(500)
-				.json({
-					sucesso: false,
-					mensagem: 'Serviço de inscrição indisponível. Tente novamente mais tarde.',
-				});
+			res.status(500).json({
+				sucesso: false,
+				mensagem: 'Serviço de inscrição indisponível. Tente novamente mais tarde.',
+			});
 			return;
 		}
 

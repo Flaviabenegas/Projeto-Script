@@ -16,8 +16,6 @@ const modalSucesso = modalSucessoEl ? new bootstrap.Modal(modalSucessoEl) : null
 const modalErro = modalErroEl ? new bootstrap.Modal(modalErroEl) : null;
 const modalEditar = modalEditarEl ? new bootstrap.Modal(modalEditarEl) : null;
 
-
-
 function mostrarErro(mensagem) {
 	const textoModal = document.getElementById('modalText');
 	if (textoModal) textoModal.innerText = mensagem;
@@ -57,9 +55,14 @@ function lerFormDepoimento(prefixo = '') {
 	};
 }
 
-
 async function enviarDepoimento() {
-	const restaurar = setCarregando(btnEnviar, btnText, spinner, 'Enviando Depoimento...', 'Enviar Depoimento 🐾');
+	const restaurar = setCarregando(
+		btnEnviar,
+		btnText,
+		spinner,
+		'Enviando Depoimento...',
+		'Enviar Depoimento 🐾',
+	);
 
 	try {
 		const resposta = await fetch('/api/depoimentos', {
@@ -91,10 +94,15 @@ if (formDepoimento) {
 	});
 }
 
-
-
 globalThis.abrirModalEdicao = function (id, tutor, pet, imagem, alt, texto) {
-	const campos = { 'edit-id': id, 'edit-tutor': tutor, 'edit-pet': pet, 'edit-imagem': imagem, 'edit-alt': alt, 'edit-texto': texto };
+	const campos = {
+		'edit-id': id,
+		'edit-tutor': tutor,
+		'edit-pet': pet,
+		'edit-imagem': imagem,
+		'edit-alt': alt,
+		'edit-texto': texto,
+	};
 	for (const [campo, valor] of Object.entries(campos)) {
 		const el = document.getElementById(campo);
 		if (el) el.value = valor;
@@ -102,10 +110,15 @@ globalThis.abrirModalEdicao = function (id, tutor, pet, imagem, alt, texto) {
 	if (modalEditar) modalEditar.show();
 };
 
-
 async function salvarEdicao() {
 	const id = document.getElementById('edit-id').value;
-	const restaurar = setCarregando(btnSalvarEdicao, btnEditText, editSpinner, 'Salvando Alterações...', 'Salvar Alterações 🐾');
+	const restaurar = setCarregando(
+		btnSalvarEdicao,
+		btnEditText,
+		editSpinner,
+		'Salvando Alterações...',
+		'Salvar Alterações 🐾',
+	);
 
 	try {
 		const resposta = await fetch(`/api/depoimentos/${id}`, {
@@ -136,8 +149,6 @@ if (formEditarDepoimento) {
 		salvarEdicao();
 	});
 }
-
-
 
 function atualizarBadge(id, isAtivo) {
 	const badge = document.getElementById(`status-badge-${id}`);

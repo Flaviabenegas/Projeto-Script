@@ -2,13 +2,16 @@
 <html lang="pt-BR">
 	<head>
 		<%- include ('partials/head') %>
-		
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+		/>
 		<title>Criar Depoimento — Apaixonados por Focinhos</title>
 	</head>
 	<body>
 		<header><%- include ('partials/header') %></header>
-		
+
 		<main class="container mt-5 mb-5 pt-5 pb-5">
 			<div class="row justify-content-center">
 				<div class="col-12 col-md-8 col-lg-6">
@@ -17,71 +20,84 @@
 							<div class="text-center mb-4">
 								<span class="fs-1">🐾</span>
 								<h2 class="titulos fw-bold mt-2 text-primary">Criar Depoimento</h2>
-								<p class="text-secondary small">Conte-nos como a plaquinha ajudou na segurança do seu pet!</p>
+								<p class="text-secondary small">
+									Conte-nos como a plaquinha ajudou na segurança do seu pet!
+								</p>
 							</div>
 
 							<form method="POST" action="/api/depoimentos" id="form-depoimento">
-								
 								<div class="mb-3">
 									<label for="tutor" class="form-label fw-medium">Nome do Tutor(a)</label>
 									<div class="input-group">
-										<span class="input-group-text bg-light text-secondary"><i class="bi bi-person"></i></span>
+										<span class="input-group-text bg-light text-secondary"
+											><i class="bi bi-person"></i
+										></span>
 										<input
 											type="text"
 											class="form-control"
 											id="tutor"
 											name="tutor"
 											placeholder="Seu nome completo"
-											required />
+											required
+										/>
 									</div>
 								</div>
 
-								
 								<div class="mb-3">
 									<label for="pet" class="form-label fw-medium">Nome do Pet</label>
 									<div class="input-group">
-										<span class="input-group-text bg-light text-secondary"><i class="bi bi-heart"></i></span>
+										<span class="input-group-text bg-light text-secondary"
+											><i class="bi bi-heart"></i
+										></span>
 										<input
 											type="text"
 											class="form-control"
 											id="pet"
 											name="pet"
 											placeholder="Ex: Simba, Mel, etc."
-											required />
+											required
+										/>
 									</div>
 								</div>
 
-								
 								<div class="mb-3">
-									<label for="imagem" class="form-label fw-medium">Foto do Pet (URL ou Caminho)</label>
+									<label for="imagem" class="form-label fw-medium"
+										>Foto do Pet (URL ou Caminho)</label
+									>
 									<div class="input-group">
-										<span class="input-group-text bg-light text-secondary"><i class="bi bi-image"></i></span>
+										<span class="input-group-text bg-light text-secondary"
+											><i class="bi bi-image"></i
+										></span>
 										<input
 											type="text"
 											class="form-control"
 											id="imagem"
 											name="imagem"
 											placeholder="Ex: img/simba.webp ou URL externa"
-											required />
+											required
+										/>
 									</div>
 								</div>
 
-								
 								<div class="mb-3">
-									<label for="alt" class="form-label fw-medium">Descrição da Foto (Acessibilidade)</label>
+									<label for="alt" class="form-label fw-medium"
+										>Descrição da Foto (Acessibilidade)</label
+									>
 									<div class="input-group">
-										<span class="input-group-text bg-light text-secondary"><i class="bi bi-card-text"></i></span>
+										<span class="input-group-text bg-light text-secondary"
+											><i class="bi bi-card-text"></i
+										></span>
 										<input
 											type="text"
 											class="form-control"
 											id="alt"
 											name="alt"
 											placeholder="Ex: Cachorro Golden Retriever sorrindo"
-											required />
+											required
+										/>
 									</div>
 								</div>
 
-								
 								<div class="mb-3">
 									<label for="texto" class="form-label fw-medium">Seu Depoimento</label>
 									<textarea
@@ -90,20 +106,22 @@
 										name="texto"
 										rows="4"
 										placeholder="Escreva aqui sua história..."
-										required></textarea>
+										required
+									></textarea>
 								</div>
 
-								
 								<div class="d-grid gap-2 mt-4">
 									<button
 										type="submit"
 										class="btn btn-pedido btn-lg fw-bold rounded-pill"
-										id="btn-enviar">
+										id="btn-enviar"
+									>
 										<span id="btn-text">Enviar Depoimento 🐾</span>
 										<div
 											id="spinner"
 											class="spinner-border spinner-border-sm d-none"
-											role="status"></div>
+											role="status"
+										></div>
 									</button>
 								</div>
 							</form>
@@ -112,13 +130,14 @@
 				</div>
 			</div>
 
-			
 			<div class="row justify-content-center mt-5">
 				<div class="col-12 col-lg-10">
 					<div class="card shadow-sm border-0 rounded-4">
 						<div class="card-body p-4 p-md-5">
-							<h3 class="titulos fw-bold mb-4 text-secondary h4"><i class="bi bi-list-stars me-2"></i>Depoimentos Cadastrados</h3>
-							
+							<h3 class="titulos fw-bold mb-4 text-secondary h4">
+								<i class="bi bi-list-stars me-2"></i>Depoimentos Cadastrados
+							</h3>
+
 							<div class="table-responsive">
 								<table class="table table-hover align-middle mb-0" id="tabela-depoimentos">
 									<thead class="table-light">
@@ -132,39 +151,65 @@
 									</thead>
 									<tbody>
 										<% if (depoimentos && depoimentos.length > 0) { %>
-											<% depoimentos.forEach(function(depoimento) { %>
-												<tr id="depoimento-row-<%= depoimento.id %>">
-													<td>
-														<img src="<%= depoimento.imagem %>" alt="<%= depoimento.alt %>" class="rounded-circle object-fit-cover" width="48" height="48" onerror="this.src='/img/logo.webp'" />
-													</td>
-													<td class="fw-semibold text-secondary" id="cell-tutor-<%= depoimento.id %>"><%= depoimento.tutor %></td>
-													<td id="cell-pet-<%= depoimento.id %>"><%= depoimento.pet %></td>
-													<td>
-														<span id="status-badge-<%= depoimento.id %>" class="badge rounded-pill <%= depoimento.ativo ? 'bg-success' : 'bg-secondary' %>">
-															<%= depoimento.ativo ? 'Ativo' : 'Inativo' %>
-														</span>
-													</td>
-													<td class="text-end">
-														<button 
-															type="button" 
-															class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1"
-															onclick="abrirModalEdicao('<%= depoimento.id %>', '<%= depoimento.tutor %>', '<%= depoimento.pet %>', '<%= depoimento.imagem %>', '<%= depoimento.alt %>', `<%= depoimento.texto %>`)">
-															<i class="bi bi-pencil me-1"></i>Editar
-														</button>
-														<button 
-															type="button" 
-															id="btn-toggle-<%= depoimento.id %>"
-															class="btn btn-sm <%= depoimento.ativo ? 'btn-outline-danger' : 'btn-outline-success' %> rounded-pill px-3"
-															onclick="toggleStatus('<%= depoimento.id %>')">
-															<i class="bi <%= depoimento.ativo ? 'bi-eye-slash' : 'bi-eye' %> me-1"></i><%= depoimento.ativo ? 'Desativar' : 'Ativar' %>
-														</button>
-													</td>
-												</tr>
-											<% }); %>
+										<% depoimentos.forEach(function(depoimento) { %>
+										<tr id="depoimento-row-<%= depoimento.id %>">
+											<td>
+												<img
+													src="<%= depoimento.imagem %>"
+													alt="<%= depoimento.alt %>"
+													class="rounded-circle object-fit-cover"
+													width="48"
+													height="48"
+													onerror="this.src = '/img/logo.webp'"
+												/>
+											</td>
+											<td class="fw-semibold text-secondary" id="cell-tutor-<%= depoimento.id %>">
+												<%= depoimento.tutor %>
+											</td>
+											<td id="cell-pet-<%= depoimento.id %>"><%= depoimento.pet %></td>
+											<td>
+												<span
+													id="status-badge-<%= depoimento.id %>"
+													class="badge rounded-pill <%= depoimento.ativo ? 'bg-success' : 'bg-secondary' %>"
+												>
+													<%= depoimento.ativo ? 'Ativo' : 'Inativo' %>
+												</span>
+											</td>
+											<td class="text-end">
+												<button
+													type="button"
+													class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1"
+													onclick="
+														abrirModalEdicao(
+															'<%= depoimento.id %>',
+															'<%= depoimento.tutor %>',
+															'<%= depoimento.pet %>',
+															'<%= depoimento.imagem %>',
+															'<%= depoimento.alt %>',
+															`<%= depoimento.texto %>`,
+														)
+													"
+												>
+													<i class="bi bi-pencil me-1"></i>Editar
+												</button>
+												<button
+													type="button"
+													id="btn-toggle-<%= depoimento.id %>"
+													class="btn btn-sm <%= depoimento.ativo ? 'btn-outline-danger' : 'btn-outline-success' %> rounded-pill px-3"
+													onclick="toggleStatus('<%= depoimento.id %>')"
+												>
+													<i class="bi <%= depoimento.ativo ? 'bi-eye-slash' : 'bi-eye' %> me-1"></i
+													><%= depoimento.ativo ? 'Desativar' : 'Ativar' %>
+												</button>
+											</td>
+										</tr>
+										<% }); %>
 										<% } else { %>
-											<tr>
-												<td colspan="5" class="text-center text-secondary py-4">Nenhum depoimento cadastrado ainda.</td>
-											</tr>
+										<tr>
+											<td colspan="5" class="text-center text-secondary py-4">
+												Nenhum depoimento cadastrado ainda.
+											</td>
+										</tr>
 										<% } %>
 									</tbody>
 								</table>
@@ -180,68 +225,92 @@
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
+			crossorigin="anonymous"
+		></script>
 
 		<%- include ('partials/modal') %>
 
-		
-		<div class="modal fade" id="modalEditarDepoimento" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+		<div
+			class="modal fade"
+			id="modalEditarDepoimento"
+			tabindex="-1"
+			aria-labelledby="modalEditarLabel"
+			aria-hidden="true"
+		>
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content border-0 rounded-4 shadow-lg">
 					<div class="modal-header bg-custom border-0 rounded-top-4 p-4">
 						<h5 class="modal-title fw-bold" id="modalEditarLabel">🐾 Editar Depoimento</h5>
-						<button type="button" class="btn-close rounded-pill text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+						<button
+							type="button"
+							class="btn-close rounded-pill text-white"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
 					</div>
 					<div class="modal-body p-4">
 						<form id="form-editar-depoimento">
 							<input type="hidden" id="edit-id" />
-							
-							
+
 							<div class="mb-3">
 								<label for="edit-tutor" class="form-label fw-medium">Nome do Tutor(a)</label>
 								<div class="input-group">
-									<span class="input-group-text bg-light text-secondary"><i class="bi bi-person"></i></span>
+									<span class="input-group-text bg-light text-secondary"
+										><i class="bi bi-person"></i
+									></span>
 									<input type="text" class="form-control" id="edit-tutor" required />
 								</div>
 							</div>
 
-							
 							<div class="mb-3">
 								<label for="edit-pet" class="form-label fw-medium">Nome do Pet</label>
 								<div class="input-group">
-									<span class="input-group-text bg-light text-secondary"><i class="bi bi-heart"></i></span>
+									<span class="input-group-text bg-light text-secondary"
+										><i class="bi bi-heart"></i
+									></span>
 									<input type="text" class="form-control" id="edit-pet" required />
 								</div>
 							</div>
 
-							
 							<div class="mb-3">
-								<label for="edit-imagem" class="form-label fw-medium">Foto do Pet (URL ou Caminho)</label>
+								<label for="edit-imagem" class="form-label fw-medium"
+									>Foto do Pet (URL ou Caminho)</label
+								>
 								<div class="input-group">
-									<span class="input-group-text bg-light text-secondary"><i class="bi bi-image"></i></span>
+									<span class="input-group-text bg-light text-secondary"
+										><i class="bi bi-image"></i
+									></span>
 									<input type="text" class="form-control" id="edit-imagem" required />
 								</div>
 							</div>
 
-							
 							<div class="mb-3">
 								<label for="edit-alt" class="form-label fw-medium">Descrição da Foto</label>
 								<div class="input-group">
-									<span class="input-group-text bg-light text-secondary"><i class="bi bi-card-text"></i></span>
+									<span class="input-group-text bg-light text-secondary"
+										><i class="bi bi-card-text"></i
+									></span>
 									<input type="text" class="form-control" id="edit-alt" required />
 								</div>
 							</div>
 
-							
 							<div class="mb-3">
 								<label for="edit-texto" class="form-label fw-medium">Seu Depoimento</label>
 								<textarea class="form-control" id="edit-texto" rows="4" required></textarea>
 							</div>
 
 							<div class="d-grid gap-2 mt-4">
-								<button type="submit" class="btn btn-pet btn-lg fw-bold rounded-pill" id="btn-salvar-edicao">
+								<button
+									type="submit"
+									class="btn btn-pet btn-lg fw-bold rounded-pill"
+									id="btn-salvar-edicao"
+								>
 									<span id="btn-edit-text">Salvar Alterações 🐾</span>
-									<div id="edit-spinner" class="spinner-border spinner-border-sm d-none" role="status"></div>
+									<div
+										id="edit-spinner"
+										class="spinner-border spinner-border-sm d-none"
+										role="status"
+									></div>
 								</button>
 							</div>
 						</form>

@@ -9,7 +9,8 @@
 		"start": "node --import dotenv/config dist/server.js",
 		"dev": "tsx watch src/server.ts",
 		"seed": "tsx src/database/seed.ts",
-		"sonar": "sonar-scanner"
+		"sonar": "sonar-scanner",
+		"format": "prettier --write \"views/**/*.ejs\" \"src/**/*.ts\" \"public/**/*.js\""
 	},
 	"repository": {
 		"type": "git",
@@ -51,6 +52,8 @@
 		"@types/helmet": "^0.0.48",
 		"@types/node": "^25.7.0",
 		"@types/nodemailer": "^8.0.0",
+		"prettier": "^3.8.4",
+		"prettier-plugin-ejs": "^1.0.3",
 		"sequelize-cli": "^6.6.5",
 		"sonarqube-scanner": "^4.3.6",
 		"ts-node": "^10.9.2",

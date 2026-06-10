@@ -12,13 +12,15 @@
 					<div class="card shadow-sm">
 						<div class="card-body p-4">
 							<h2 class="text-center mb-1">Redefinir Senha</h2>
-							<p class="text-center text-secondary small mb-4">Escolha uma nova senha para sua conta.</p>
+							<p class="text-center text-secondary small mb-4">
+								Escolha uma nova senha para sua conta.
+							</p>
 
 							<% if (!token) { %>
-								<div class="alert alert-danger text-center rounded-4">
-									Link inválido ou expirado.<br />
-									<a href="/" class="fw-medium">Voltar ao início</a>
-								</div>
+							<div class="alert alert-danger text-center rounded-4">
+								Link inválido ou expirado.<br />
+								<a href="/" class="fw-medium">Voltar ao início</a>
+							</div>
 							<% } else { %>
 
 							<!-- Token guardado no data-attribute — não vira variável JS global -->
@@ -35,7 +37,8 @@
 												id="nova-senha"
 												placeholder="Mínimo 6 caracteres"
 												minlength="6"
-												required />
+												required
+											/>
 										</div>
 									</div>
 									<div class="mb-3">
@@ -48,7 +51,8 @@
 												id="confirmar-senha"
 												placeholder="Repita a nova senha"
 												minlength="6"
-												required />
+												required
+											/>
 										</div>
 									</div>
 									<p id="reset-erro" class="small text-danger d-none text-center"></p>
@@ -56,9 +60,13 @@
 										<button
 											type="button"
 											class="btn btn-pedido btn-lg fw-bold rounded-pill"
-											id="btn-confirmar-reset">
+											id="btn-confirmar-reset"
+										>
 											<span id="btn-confirmar-text">Salvar nova senha</span>
-											<output id="spinner-confirmar" class="spinner-border spinner-border-sm d-none"></output>
+											<output
+												id="spinner-confirmar"
+												class="spinner-border spinner-border-sm d-none"
+											></output>
 										</button>
 									</div>
 								</div>
@@ -82,7 +90,8 @@
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
+			crossorigin="anonymous"
+		></script>
 
 		<%- include ('partials/modal') %>
 		<script src="/script/esqueciSenha.js" defer></script>

@@ -20,7 +20,8 @@
 	id="modalLogin"
 	tabindex="-1"
 	aria-labelledby="modalLoginLabel"
-	aria-hidden="true">
+	aria-hidden="true"
+>
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
 			<div class="modal-header azul-claro border-0 rounded-4 p-4">
@@ -29,7 +30,8 @@
 					type="button"
 					class="btn-close rounded-pill titulos"
 					data-bs-dismiss="modal"
-					aria-label="Close"></button>
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body p-4">
 				<form id="loginPainel">
@@ -40,7 +42,8 @@
 							class="form-control rounded-4"
 							id="email-login"
 							placeholder="nome@exemplo.com"
-							required />
+							required
+						/>
 					</div>
 					<div class="mb-3">
 						<label for="senha" class="form-label fw-medium">Senha</label>
@@ -49,7 +52,8 @@
 							class="form-control rounded-4"
 							id="senha"
 							placeholder="Sua senha secreta"
-							required />
+							required
+						/>
 					</div>
 					<button type="submit" class="btn btn-pet w-100 rounded-pill py-2 fw-bold" id="btn-login">
 						Entrar na conta
@@ -65,7 +69,8 @@
 							class="fw-medium text-secondary"
 							data-bs-dismiss="modal"
 							data-bs-toggle="modal"
-							data-bs-target="#modalEsqueciSenha">
+							data-bs-target="#modalEsqueciSenha"
+						>
 							Esqueci minha senha
 						</a>
 					</p>
@@ -91,7 +96,8 @@
 					type="button"
 					class="btn-close btn-close-white"
 					data-bs-dismiss="modal"
-					aria-label="Close"></button>
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body p-4 text-center">
 				<p class="fs-5 mb-0 text-secondary">Inscrita com sucesso!</p>
@@ -100,7 +106,8 @@
 				<button
 					type="button"
 					class="btn btn-success rounded-pill px-4 fw-bold"
-					data-bs-dismiss="modal">
+					data-bs-dismiss="modal"
+				>
 					Entendi
 				</button>
 			</div>
@@ -117,7 +124,8 @@
 					type="button"
 					class="btn-close btn-close-white"
 					data-bs-dismiss="modal"
-					aria-label="Close"></button>
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body p-4 text-center">
 				<p class="fs-5 mb-0 text-secondary" id="modalSucessoText">Login realizado com sucesso!</p>
@@ -126,7 +134,8 @@
 				<button
 					type="button"
 					class="btn btn-success rounded-pill px-4 fw-bold"
-					data-bs-dismiss="modal">
+					data-bs-dismiss="modal"
+				>
 					Entendi
 				</button>
 			</div>
@@ -143,7 +152,8 @@
 					type="button"
 					class="btn-close btn-close-white"
 					data-bs-dismiss="modal"
-					aria-label="Close"></button>
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body p-4 text-center">
 				<p class="fs-5 mb-0 text-secondary" id="modalText">Houve algum erro, tente novamente</p>
@@ -152,7 +162,8 @@
 				<button
 					type="button"
 					class="btn btn-danger rounded-pill px-4 fw-bold"
-					data-bs-dismiss="modal">
+					data-bs-dismiss="modal"
+				>
 					Tentar novamente
 				</button>
 			</div>
@@ -175,14 +186,16 @@
 						type="text"
 						class="form-control rounded-pill"
 						id="editAdminNome"
-						placeholder="Digite o novo nome do administrador" />
+						placeholder="Digite o novo nome do administrador"
+					/>
 				</div>
 			</div>
 			<div class="modal-footer border-top-0 pt-0">
 				<button
 					type="button"
 					class="btn btn-outline-secondary rounded-pill px-4"
-					data-bs-dismiss="modal">
+					data-bs-dismiss="modal"
+				>
 					Cancelar
 				</button>
 				<button type="button" class="btn btn-primary rounded-pill px-4" id="btnSalvarNomeAdmin">
@@ -211,7 +224,8 @@
 				<button
 					type="button"
 					class="btn btn-outline-secondary rounded-pill px-4"
-					data-bs-dismiss="modal">
+					data-bs-dismiss="modal"
+				>
 					Cancelar
 				</button>
 				<button type="button" class="btn btn-danger rounded-pill px-4" id="btnConfirmarDelecao">
@@ -232,7 +246,8 @@
 			<button
 				type="button"
 				class="btn btn-primary rounded-pill mt-3 px-4 w-100"
-				data-bs-dismiss="modal">
+				data-bs-dismiss="modal"
+			>
 				OK
 			</button>
 		</div>
@@ -254,7 +269,8 @@
 							type="text"
 							class="form-control rounded-pill"
 							id="novoAdminNome"
-							placeholder="Ex: João Silva" />
+							placeholder="Ex: João Silva"
+						/>
 					</div>
 					<div class="mb-3">
 						<label for="novoAdminEmail" class="form-label text-secondary small mb-1"
@@ -265,7 +281,8 @@
 							class="form-control rounded-pill"
 							id="novoAdminEmail"
 							placeholder="email@exemplo.com"
-							required />
+							required
+						/>
 					</div>
 					<div class="mb-3">
 						<label for="novoAdminSenha" class="form-label text-secondary small mb-1"
@@ -277,7 +294,8 @@
 							id="novoAdminSenha"
 							placeholder="Mínimo 6 caracteres"
 							required
-							minlength="6" />
+							minlength="6"
+						/>
 					</div>
 					<div class="form-check form-switch mt-3">
 						<input class="form-check-input" type="checkbox" id="novoAdminIsAdmin" checked />
@@ -291,7 +309,8 @@
 				<button
 					type="button"
 					class="btn btn-outline-secondary rounded-pill px-4"
-					data-bs-dismiss="modal">
+					data-bs-dismiss="modal"
+				>
 					Cancelar
 				</button>
 				<button type="button" class="btn btn-primary rounded-pill px-4" id="btnSalvarNovoAdmin">
@@ -312,7 +331,8 @@
 					type="button"
 					class="btn-close rounded-pill titulos"
 					data-bs-dismiss="modal"
-					aria-label="Close"></button>
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body p-4">
 				<form id="formEsqueciSenha" novalidate>
@@ -326,13 +346,15 @@
 							class="form-control rounded-4"
 							id="reset-usuario"
 							placeholder="nome@exemplo.com"
-							required />
+							required
+						/>
 					</div>
 					<p id="reset-feedback-1" class="small text-danger d-none mt-2 text-center"></p>
 					<button
 						type="submit"
 						class="btn btn-pet w-100 rounded-pill py-2 fw-bold mt-1"
-						id="btn-solicitar-reset">
+						id="btn-solicitar-reset"
+					>
 						<span id="btn-reset-text">Enviar link</span>
 						<output id="spinner-reset" class="spinner-border spinner-border-sm d-none"></output>
 					</button>
@@ -342,7 +364,8 @@
 							class="fw-medium"
 							data-bs-dismiss="modal"
 							data-bs-toggle="modal"
-							data-bs-target="#modalLogin">
+							data-bs-target="#modalLogin"
+						>
 							Voltar ao login
 						</a>
 					</p>
@@ -362,7 +385,8 @@
 					type="button"
 					class="btn-close btn-close-white"
 					data-bs-dismiss="modal"
-					aria-label="Close"></button>
+					aria-label="Close"
+				></button>
 			</div>
 			<div class="modal-body p-4 text-center">
 				<p class="fs-5 mb-0 text-secondary">
@@ -373,7 +397,8 @@
 				<button
 					type="button"
 					class="btn btn-success rounded-pill px-4 fw-bold"
-					data-bs-dismiss="modal">
+					data-bs-dismiss="modal"
+				>
 					Entendi
 				</button>
 			</div>

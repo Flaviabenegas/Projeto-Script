@@ -1,25 +1,25 @@
 // esqueciSenha.js
 
 document.addEventListener('DOMContentLoaded', () => {
-	const modalEsqueciEl     = document.getElementById('modalEsqueciSenha');
+	const modalEsqueciEl = document.getElementById('modalEsqueciSenha');
 	const modalConfirmacaoEl = document.getElementById('modalResetEnviado');
 
 	if (!modalEsqueciEl || !modalConfirmacaoEl) return;
 
-	const formReset    = document.getElementById('formEsqueciSenha');
+	const formReset = document.getElementById('formEsqueciSenha');
 	const btnSolicitar = document.getElementById('btn-solicitar-reset');
 	const btnResetText = document.getElementById('btn-reset-text');
 	const spinnerReset = document.getElementById('spinner-reset');
 	const inputUsuario = document.getElementById('reset-usuario');
-	const feedback1    = document.getElementById('reset-feedback-1');
+	const feedback1 = document.getElementById('reset-feedback-1');
 
-	const modalEsqueci     = new bootstrap.Modal(modalEsqueciEl);
+	const modalEsqueci = new bootstrap.Modal(modalEsqueciEl);
 	const modalConfirmacao = new bootstrap.Modal(modalConfirmacaoEl);
 
 	let abrirConfirmacao = false;
 
 	function setLoadingReset(ativo) {
-		btnSolicitar.disabled    = ativo;
+		btnSolicitar.disabled = ativo;
 		btnResetText.textContent = ativo ? 'Enviando...' : 'Enviar link';
 		spinnerReset?.classList.toggle('d-none', !ativo);
 	}
@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		feedback1.classList.add('d-none');
 
-		
 		if (!inputUsuario.checkValidity()) {
 			inputUsuario.reportValidity();
 			return;
@@ -68,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			abrirConfirmacao = true;
 			modalEsqueci.hide();
-
 		} catch {
 			mostrarFeedback('Erro de conexão. Tente novamente.');
 		} finally {
