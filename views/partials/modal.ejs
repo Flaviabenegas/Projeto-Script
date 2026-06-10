@@ -315,36 +315,38 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body p-4">
-				<p class="text-secondary small mb-3">
-					Informe seu e-mail de cadastro e enviaremos um link para redefinir sua senha.
-				</p>
-				<div class="mb-3">
-					<label for="reset-usuario" class="form-label fw-medium">E-mail</label>
-					<input
-						type="email"
-						class="form-control rounded-4"
-						id="reset-usuario"
-						placeholder="nome@exemplo.com"
-						required />
-				</div>
-				<p id="reset-feedback-1" class="small text-danger d-none mt-2 text-center"></p>
-				<button
-					type="button"
-					class="btn btn-pet w-100 rounded-pill py-2 fw-bold mt-1"
-					id="btn-solicitar-reset">
-					<span id="btn-reset-text">Enviar link</span>
-					<output id="spinner-reset" class="spinner-border spinner-border-sm d-none"></output>
-				</button>
-				<p class="text-center mt-3 mb-0 small">
-					<a
-						href="#"
-						class="fw-medium"
-						data-bs-dismiss="modal"
-						data-bs-toggle="modal"
-						data-bs-target="#modalLogin">
-						Voltar ao login
-					</a>
-				</p>
+				<form id="formEsqueciSenha" novalidate>
+					<p class="text-secondary small mb-3">
+						Informe seu e-mail de cadastro e enviaremos um link para redefinir sua senha.
+					</p>
+					<div class="mb-3">
+						<label for="reset-usuario" class="form-label fw-medium">E-mail</label>
+						<input
+							type="email"
+							class="form-control rounded-4"
+							id="reset-usuario"
+							placeholder="nome@exemplo.com"
+							required />
+					</div>
+					<p id="reset-feedback-1" class="small text-danger d-none mt-2 text-center"></p>
+					<button
+						type="submit"
+						class="btn btn-pet w-100 rounded-pill py-2 fw-bold mt-1"
+						id="btn-solicitar-reset">
+						<span id="btn-reset-text">Enviar link</span>
+						<output id="spinner-reset" class="spinner-border spinner-border-sm d-none"></output>
+					</button>
+					<p class="text-center mt-3 mb-0 small">
+						<a
+							href="#"
+							class="fw-medium"
+							data-bs-dismiss="modal"
+							data-bs-toggle="modal"
+							data-bs-target="#modalLogin">
+							Voltar ao login
+						</a>
+					</p>
+				</form>
 			</div>
 		</div>
 	</div>

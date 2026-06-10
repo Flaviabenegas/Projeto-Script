@@ -37,6 +37,7 @@ app.use(
 					'https://www.apaixonadosporfocinhos.com.br',
 					'https://apaixonadosporfocinhos.com.br',
 					'https://loremflickr.com',
+					'https://loremflickr.com/400/600/cat',
 				],
 				connectSrc: ["'self'", 'https://cdn.jsdelivr.net'],
 				objectSrc: ["'none'"],
