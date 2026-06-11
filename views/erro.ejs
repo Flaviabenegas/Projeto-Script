@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 	<head>
-		<title>Erro 500</title>
+		<title><%= status %> - <%= titulo %></title>
 		<%- include ('partials/head') %>
 	</head>
 	<body>
@@ -16,18 +16,14 @@
 						style="max-width: 400px"
 					/>
 				</div>
-				<h1 class="display-4">500 - Erro Interno</h1>
-				<p class="lead">Desculpe, houve um erro no servidor.</p>
+				<h1 class="display-4"><%= status %> - <%= titulo %></h1>
+				<p class="lead"><%= mensagem %></p>
 				<a href="/" class="btn btn-primary">Voltar para a Página Inicial</a>
 			</section>
 		</main>
 		<footer class="bg-light text-center"><%- include ('partials/footer') %></footer>
 
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"
-		></script>
+		<%- include('partials/script') %>
 
 		<%- include ('partials/modal') %>
 

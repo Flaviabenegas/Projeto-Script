@@ -49,13 +49,17 @@ body {
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.btn-pet:hover {
-	background-color: var(--azul);
-	border-color: var(--rosa);
+.btn-pet:hover,
+.btn-pedido:hover {
 	color: white;
 	transform: scale(1.05);
 	box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 	animation: pulsar 2s infinite;
+}
+
+.btn-pet:hover {
+	background-color: var(--azul);
+	border-color: var(--rosa);
 }
 .azul-claro {
 	background-color: var(--azul-claro) !important;
@@ -136,10 +140,6 @@ a {
 .btn-pedido:hover {
 	background-color: var(--rosa);
 	border-color: var(--rosa);
-	color: white;
-	transform: scale(1.05);
-	box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-	animation: pulsar 2s infinite;
 }
 
 .tooltip-icon {
@@ -217,9 +217,6 @@ input[type='radio'] {
 	accent-color: var(--rosa);
 }
 
-
-
-
 .pt-6 {
 	padding-top: 3rem !important;
 }
@@ -243,7 +240,6 @@ input[type='radio'] {
 		padding-bottom: 5.5rem !important;
 	}
 }
-
 
 @media (max-width: 576px) {
 	.vh-80 {

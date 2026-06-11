@@ -117,11 +117,11 @@
 										id="btn-enviar"
 									>
 										<span id="btn-text">Enviar Depoimento 🐾</span>
-										<div
+										<output
 											id="spinner"
 											class="spinner-border spinner-border-sm d-none"
-											role="status"
-										></div>
+											aria-label="status"
+										></output>
 									</button>
 								</div>
 							</form>
@@ -157,10 +157,9 @@
 												<img
 													src="<%= depoimento.imagem %>"
 													alt="<%= depoimento.alt %>"
-													class="rounded-circle object-fit-cover"
+													class="rounded-circle object-fit-cover img-depoimento"
 													width="48"
 													height="48"
-													onerror="this.src = '/img/logo.webp'"
 												/>
 											</td>
 											<td class="fw-semibold text-secondary" id="cell-tutor-<%= depoimento.id %>">
@@ -178,25 +177,21 @@
 											<td class="text-end">
 												<button
 													type="button"
-													class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1"
-													onclick="
-														abrirModalEdicao(
-															'<%= depoimento.id %>',
-															'<%= depoimento.tutor %>',
-															'<%= depoimento.pet %>',
-															'<%= depoimento.imagem %>',
-															'<%= depoimento.alt %>',
-															`<%= depoimento.texto %>`,
-														)
-													"
+													class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1 btn-editar"
+													data-id="<%= depoimento.id %>"
+													data-tutor="<%= depoimento.tutor %>"
+													data-pet="<%= depoimento.pet %>"
+													data-imagem="<%= depoimento.imagem %>"
+													data-alt="<%= depoimento.alt %>"
+													data-texto="<%= encodeURIComponent(depoimento.texto) %>"
 												>
 													<i class="bi bi-pencil me-1"></i>Editar
 												</button>
 												<button
 													type="button"
 													id="btn-toggle-<%= depoimento.id %>"
-													class="btn btn-sm <%= depoimento.ativo ? 'btn-outline-danger' : 'btn-outline-success' %> rounded-pill px-3"
-													onclick="toggleStatus('<%= depoimento.id %>')"
+													class="btn btn-sm <%= depoimento.ativo ? 'btn-outline-danger' : 'btn-outline-success' %> rounded-pill px-3 btn-toggle"
+													data-id="<%= depoimento.id %>"
 												>
 													<i class="bi <%= depoimento.ativo ? 'bi-eye-slash' : 'bi-eye' %> me-1"></i
 													><%= depoimento.ativo ? 'Desativar' : 'Ativar' %>
@@ -222,11 +217,7 @@
 
 		<footer class="bg-light text-center"><%- include ('partials/footer') %></footer>
 
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"
-		></script>
+		<%- include ('partials/script') %>
 
 		<%- include ('partials/modal') %>
 
@@ -306,11 +297,11 @@
 									id="btn-salvar-edicao"
 								>
 									<span id="btn-edit-text">Salvar Alterações 🐾</span>
-									<div
+									<output
 										id="edit-spinner"
 										class="spinner-border spinner-border-sm d-none"
-										role="status"
-									></div>
+										aria-label="status"
+									></output>
 								</button>
 							</div>
 						</form>

@@ -25,9 +25,9 @@ if (formLogin) {
 				sessionStorage.setItem('emailLogado', usuario.toLowerCase().trim());
 				globalThis.location.href = '/painel';
 			} else {
-				const modalErroEl = document.getElementById('modalEmailErro');
-				const textoModal = document.getElementById('modalText');
+				const textoModal = document.getElementById('modalErroTexto');
 				if (textoModal) textoModal.innerText = 'Usuário ou senha incorretos.';
+				const modalErroEl = document.getElementById('modalErro');
 				if (modalErroEl) new bootstrap.Modal(modalErroEl).show();
 			}
 		} catch (err) {
@@ -97,7 +97,7 @@ function linhaTabela(pedido, index) {
             <td class="fw-bold titulos-rosa">R$ ${valor.toFixed(2).replace('.', ',')}</td>
             <td class="text-secondary small">${data}</td>
             <td class="text-center">
-                <button onclick="abrirDetalhesPedido(${pedido.id})" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 btn-detalhes" data-id="${pedido.id}">
                     Detalhes
                 </button>
             </td>
@@ -210,13 +210,19 @@ function preencherClientes(pedidos) {
 		)
 		.join('');
 
-	document.querySelectorAll('.btn-filtrar').forEach((btn) => {
-		btn.addEventListener('click', () => {
-			const email = btn.dataset.email;
-			document.getElementById('searchBar').value = email;
-			filtrarTabela(email);
-			document.getElementById('tabelaPedidos').scrollIntoView({ behavior: 'smooth' });
-		});
+}
+
+function ativarFiltroPorCliente() {
+	const lista = document.getElementById('listaClientes');
+	if (!lista) return;
+
+	lista.addEventListener('click', (e) => {
+		const btn = e.target.closest('.btn-filtrar');
+		if (!btn) return;
+		const email = btn.dataset.email;
+		document.getElementById('searchBar').value = email;
+		filtrarTabela(email);
+		document.getElementById('tabelaPedidos').scrollIntoView({ behavior: 'smooth' });
 	});
 }
 
@@ -224,7 +230,7 @@ function filtrarTabela(termo) {
 	const linhas = document.querySelectorAll('#corpoTabelaPedidos tr[data-email]');
 	linhas.forEach((tr) => {
 		const email = tr.dataset.email || '';
-		tr.style.display = email.includes(termo.toLowerCase()) ? '' : 'none';
+		tr.style.display = termo === '' || email === termo.toLowerCase() ? '' : 'none';
 	});
 }
 
@@ -277,15 +283,15 @@ async function carregarUsuarios() {
                 <td class="text-secondary">${user.usuario}</td>
                 <td>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" onchange="alternarAdmin(${user.id}, this.checked)" ${adminCheck}>
+                        <input class="form-check-input chk-admin" type="checkbox" data-id="${user.id}" ${adminCheck}>
                     </div>
                 </td>
                 <td>
                     <div class="d-flex gap-2 justify-content-center">
-                        <button onclick="atualizarNomeUsuario(${user.id}, '${nomeSeguro}')" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 btn-editar-user" data-id="${user.id}" data-nome="${nomeSeguro}">
                             Editar
                         </button>
-                        <button onclick="deletarUsuario(${user.id})" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3 btn-deletar-user" data-id="${user.id}">
                             Excluir
                         </button>
                     </div>
@@ -312,9 +318,9 @@ async function executarAtualizacaoNome() {
 	const novoNome = document.getElementById('editAdminNome').value.trim();
 
 	if (!novoNome) {
-		const modalErroEl = document.getElementById('modalEmailErro');
-		const textoModal = document.getElementById('modalText');
+		const textoModal = document.getElementById('modalErroTexto');
 		if (textoModal) textoModal.innerText = 'O nome não pode estar vazio.';
+		const modalErroEl = document.getElementById('modalErro');
 		if (modalErroEl) new bootstrap.Modal(modalErroEl).show();
 		return;
 	}
@@ -431,6 +437,7 @@ async function executarAdicionarAdmin() {
 
 document.addEventListener('DOMContentLoaded', () => {
 	carregarPainel();
+	ativarFiltroPorCliente();
 
 	const corpoUsuarios = document.getElementById('corpoTabelaUsuarios');
 	if (corpoUsuarios) carregarUsuarios();
@@ -438,4 +445,26 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('btnSalvarNomeAdmin')?.addEventListener('click', executarAtualizacaoNome);
 	document.getElementById('btnConfirmarDelecao')?.addEventListener('click', executarDelecaoUsuario);
 	document.getElementById('btnSalvarNovoAdmin')?.addEventListener('click', executarAdicionarAdmin);
+
+	document.getElementById('tabelaPedidos')?.addEventListener('click', (e) => {
+		const btn = e.target.closest('.btn-detalhes');
+		if (btn) abrirDetalhesPedido(Number(btn.dataset.id));
+	});
+
+	document.getElementById('corpoTabelaUsuarios')?.addEventListener('click', (e) => {
+		const btnEditar = e.target.closest('.btn-editar-user');
+		if (btnEditar) {
+			atualizarNomeUsuario(Number(btnEditar.dataset.id), btnEditar.dataset.nome);
+			return;
+		}
+		const btnDeletar = e.target.closest('.btn-deletar-user');
+		if (btnDeletar) {
+			deletarUsuario(Number(btnDeletar.dataset.id));
+		}
+	});
+
+	document.getElementById('corpoTabelaUsuarios')?.addEventListener('change', (e) => {
+		const chk = e.target.closest('.chk-admin');
+		if (chk) alternarAdmin(Number(chk.dataset.id), chk.checked);
+	});
 });

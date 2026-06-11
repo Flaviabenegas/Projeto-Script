@@ -1,18 +1,19 @@
-const modalEmailSucessoEl = document.getElementById('modalEmailSucesso');
-const modalEmailErroEl = document.getElementById('modalEmailErro');
-const modalEmailSucesso = modalEmailSucessoEl ? new bootstrap.Modal(modalEmailSucessoEl) : null;
-const modalEmailErro = modalEmailErroEl ? new bootstrap.Modal(modalEmailErroEl) : null;
+{
+const modalSucessoEl = document.getElementById('modalSucesso');
+const modalErroEl = document.getElementById('modalErro');
+const modalSucesso = modalSucessoEl ? new bootstrap.Modal(modalSucessoEl) : null;
+const modalErro = modalErroEl ? new bootstrap.Modal(modalErroEl) : null;
 
 function mostrarModalSucesso(mensagem) {
-	const el = document.getElementById('modalEmailSucessoText');
+	const el = document.getElementById('modalSucessoTexto');
 	if (el) el.innerText = mensagem;
-	modalEmailSucesso?.show();
+	modalSucesso?.show();
 }
 
 function mostrarModalErro(mensagem) {
-	const el = document.getElementById('modalText');
+	const el = document.getElementById('modalErroTexto');
 	if (el) el.innerText = mensagem;
-	modalEmailErro?.show();
+	modalErro?.show();
 }
 
 document.getElementById('enviar').addEventListener('submit', async function (event) {
@@ -49,3 +50,4 @@ document.getElementById('enviar').addEventListener('submit', async function (eve
 		botao.disabled = false;
 	}
 });
+}

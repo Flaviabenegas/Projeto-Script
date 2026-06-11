@@ -62,7 +62,7 @@
 						Não possui usuário?
 						<a href="/users" class="fw-medium">Clique aqui para criar</a>
 					</p>
-					<!-- Link para esqueci minha senha — fecha o login e abre o modal de reset -->
+
 					<p class="text-center mt-2 mb-0 small">
 						<a
 							href="#"
@@ -87,11 +87,11 @@
 	</div>
 </div>
 
-<div class="modal fade" id="modalEmailSucesso" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalSucesso" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
 			<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
-				<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
+				<h5 class="modal-title fw-bold" id="modalSucessoTitulo">Sucesso! 🎉</h5>
 				<button
 					type="button"
 					class="btn-close btn-close-white"
@@ -100,7 +100,7 @@
 				></button>
 			</div>
 			<div class="modal-body p-4 text-center">
-				<p class="fs-5 mb-0 text-secondary">Inscrita com sucesso!</p>
+				<p class="fs-5 mb-0 text-secondary" id="modalSucessoTexto"></p>
 			</div>
 			<div class="modal-footer border-0 justify-content-center pb-4">
 				<button
@@ -115,39 +115,11 @@
 	</div>
 </div>
 
-<div class="modal fade" id="modalSucessoPainel" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content border-0 rounded-4 shadow-lg">
-			<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
-				<h5 class="modal-title fw-bold">Sucesso! 🎉</h5>
-				<button
-					type="button"
-					class="btn-close btn-close-white"
-					data-bs-dismiss="modal"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body p-4 text-center">
-				<p class="fs-5 mb-0 text-secondary" id="modalSucessoText">Login realizado com sucesso!</p>
-			</div>
-			<div class="modal-footer border-0 justify-content-center pb-4">
-				<button
-					type="button"
-					class="btn btn-success rounded-pill px-4 fw-bold"
-					data-bs-dismiss="modal"
-				>
-					Entendi
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="modalEmailErro" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalErro" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
 			<div class="modal-header bg-danger text-white border-0 rounded-top-4 p-4">
-				<h5 class="modal-title fw-bold">Atenção ❌</h5>
+				<h5 class="modal-title fw-bold" id="modalErroTitulo">Atenção ❌</h5>
 				<button
 					type="button"
 					class="btn-close btn-close-white"
@@ -156,7 +128,7 @@
 				></button>
 			</div>
 			<div class="modal-body p-4 text-center">
-				<p class="fs-5 mb-0 text-secondary" id="modalText">Houve algum erro, tente novamente</p>
+				<p class="fs-5 mb-0 text-secondary" id="modalErroTexto"></p>
 			</div>
 			<div class="modal-footer border-0 justify-content-center pb-4">
 				<button
@@ -170,7 +142,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="modal fade" id="modalEditarNome" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content rounded-4 border-0 shadow">
@@ -321,7 +292,6 @@
 	</div>
 </div>
 
-<!-- Modal: Esqueci minha senha -->
 <div class="modal fade" id="modalEsqueciSenha" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 rounded-4 shadow-lg">
@@ -370,37 +340,6 @@
 						</a>
 					</p>
 				</form>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Modal: Confirmação de envio do e-mail de reset -->
-<div class="modal fade" id="modalResetEnviado" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content border-0 rounded-4 shadow-lg">
-			<div class="modal-header bg-success text-white border-0 rounded-top-4 p-4">
-				<h5 class="modal-title fw-bold">E-mail enviado 📧</h5>
-				<button
-					type="button"
-					class="btn-close btn-close-white"
-					data-bs-dismiss="modal"
-					aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body p-4 text-center">
-				<p class="fs-5 mb-0 text-secondary">
-					Um e-mail chegará em instantes se você estiver cadastrado em nosso banco de dados.
-				</p>
-			</div>
-			<div class="modal-footer border-0 justify-content-center pb-4">
-				<button
-					type="button"
-					class="btn btn-success rounded-pill px-4 fw-bold"
-					data-bs-dismiss="modal"
-				>
-					Entendi
-				</button>
 			</div>
 		</div>
 	</div>

@@ -39,7 +39,7 @@ app.use(
 					'https://loremflickr.com',
 					'https://loremflickr.com/400/600/cat',
 				],
-				connectSrc: ["'self'", 'https://cdn.jsdelivr.net'],
+				connectSrc: ["'self'", 'https://cdn.jsdelivr.net', 'https://brasilapi.com.br'],
 				objectSrc: ["'none'"],
 				frameSrc: ["'none'"],
 				upgradeInsecureRequests: [],
@@ -60,8 +60,10 @@ app.use(injetarLocals);
 app.use(rotas);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-	res.status(404).render('404', {
+	res.status(404).render('erro', {
 		url: req.originalUrl,
+		status: 404,
+		titulo: 'Página Não Encontrada',
 		mensagem: 'Ops! A página que você procura não foi encontrada.',
 	});
 });
@@ -73,10 +75,10 @@ app.use((erro: any, req: Request, res: Response, next: NextFunction) => {
 	res.status(status).render('erro', {
 		url: req.originalUrl,
 		status,
+		titulo: 'Erro Interno',
 		mensagem: erro.message || 'Desculpe, ocorreu um erro interno no servidor.',
 	});
 });
-
 app.listen(process.env.PORT || 3000, () => {
 	console.log(`🚀 Servidor rodando na porta http://localhost:${process.env.PORT}`);
 });

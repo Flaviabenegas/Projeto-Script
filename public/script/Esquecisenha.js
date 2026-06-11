@@ -1,8 +1,6 @@
-// esqueciSenha.js
-
 document.addEventListener('DOMContentLoaded', () => {
 	const modalEsqueciEl = document.getElementById('modalEsqueciSenha');
-	const modalConfirmacaoEl = document.getElementById('modalResetEnviado');
+	const modalConfirmacaoEl = document.getElementById('modalSucesso');
 
 	if (!modalEsqueciEl || !modalConfirmacaoEl) return;
 
@@ -39,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	modalEsqueciEl.addEventListener('hidden.bs.modal', () => {
 		if (abrirConfirmacao) {
 			abrirConfirmacao = false;
+			const textoSucesso = document.getElementById('modalSucessoTexto');
+			if (textoSucesso)
+				textoSucesso.innerText =
+					'Um e-mail chegará em instantes se você estiver cadastrado em nosso banco de dados.';
 			modalConfirmacao.show();
 		}
 		resetarModal();

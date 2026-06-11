@@ -8,8 +8,8 @@ const editSpinner = document.getElementById('edit-spinner');
 const btnSalvarEdicao = document.getElementById('btn-salvar-edicao');
 const btnEditText = document.getElementById('btn-edit-text');
 
-const modalSucessoEl = document.getElementById('modalSucessoPainel');
-const modalErroEl = document.getElementById('modalEmailErro');
+const modalSucessoEl = document.getElementById('modalSucesso');
+const modalErroEl = document.getElementById('modalErro');
 const modalEditarEl = document.getElementById('modalEditarDepoimento');
 
 const modalSucesso = modalSucessoEl ? new bootstrap.Modal(modalSucessoEl) : null;
@@ -17,13 +17,13 @@ const modalErro = modalErroEl ? new bootstrap.Modal(modalErroEl) : null;
 const modalEditar = modalEditarEl ? new bootstrap.Modal(modalEditarEl) : null;
 
 function mostrarErro(mensagem) {
-	const textoModal = document.getElementById('modalText');
+	const textoModal = document.getElementById('modalErroTexto');
 	if (textoModal) textoModal.innerText = mensagem;
 	if (modalErro) modalErro.show();
 }
 
 function mostrarSucesso(mensagem) {
-	const textoSucesso = document.getElementById('modalSucessoText');
+	const textoSucesso = document.getElementById('modalSucessoTexto');
 	if (textoSucesso) textoSucesso.innerText = mensagem;
 	if (modalSucesso) modalSucesso.show();
 }
@@ -94,7 +94,7 @@ if (formDepoimento) {
 	});
 }
 
-globalThis.abrirModalEdicao = function (id, tutor, pet, imagem, alt, texto) {
+function abrirModalEdicao(id, tutor, pet, imagem, alt, texto) {
 	const campos = {
 		'edit-id': id,
 		'edit-tutor': tutor,
@@ -108,7 +108,7 @@ globalThis.abrirModalEdicao = function (id, tutor, pet, imagem, alt, texto) {
 		if (el) el.value = valor;
 	}
 	if (modalEditar) modalEditar.show();
-};
+}
 
 async function salvarEdicao() {
 	const id = document.getElementById('edit-id').value;
@@ -163,7 +163,7 @@ function atualizarBotaoToggle(btnToggle, isAtivo) {
 	btnToggle.innerHTML = `<i class="bi ${isAtivo ? 'bi-eye-slash' : 'bi-eye'} me-1"></i>${isAtivo ? 'Desativar' : 'Ativar'}`;
 }
 
-globalThis.toggleStatus = async function (id) {
+async function toggleStatus(id) {
 	const btnToggle = document.getElementById(`btn-toggle-${id}`);
 	if (btnToggle) btnToggle.disabled = true;
 
@@ -186,4 +186,36 @@ globalThis.toggleStatus = async function (id) {
 	} finally {
 		if (btnToggle) btnToggle.disabled = false;
 	}
-};
+}
+
+
+const tabelaDepoimentos = document.getElementById('tabela-depoimentos');
+if (tabelaDepoimentos) {
+	tabelaDepoimentos.addEventListener('click', (e) => {
+		const btnEditar = e.target.closest('.btn-editar');
+		if (btnEditar) {
+			const d = btnEditar.dataset;
+			abrirModalEdicao(
+				d.id,
+				d.tutor,
+				d.pet,
+				d.imagem,
+				d.alt,
+				decodeURIComponent(d.texto),
+			);
+			return;
+		}
+
+		const btnToggle = e.target.closest('.btn-toggle');
+		if (btnToggle) {
+			toggleStatus(btnToggle.dataset.id);
+		}
+	});
+}
+
+
+document.querySelectorAll('.img-depoimento').forEach((img) => {
+	img.addEventListener('error', () => {
+		img.src = '/img/logo.webp';
+	});
+});

@@ -1,3 +1,79 @@
+function validarCPF(cpfDigitado) {
+	const cpfLimpo = String(cpfDigitado).replace(/[^\d]+/g, '');
+
+	if (cpfLimpo.length !== 11) return false;
+	if (/(\d)\1{10}/.exec(cpfLimpo)) return false;
+
+	const cpfsplit = cpfLimpo.split('').map(Number);
+
+	let somaB1 = 0;
+	for (let i = 0; i < 9; i++) somaB1 += cpfsplit[i] * (i + 1);
+	let b1 = somaB1 % 11;
+	if (b1 === 10) b1 = 0;
+
+	let somaB2 = 0;
+	for (let i = 0; i < 9; i++) somaB2 += cpfsplit[i] * (9 - i);
+	let b2 = somaB2 % 11;
+	if (b2 === 10) b2 = 0;
+
+	return b1 === cpfsplit[9] && b2 === cpfsplit[10];
+}
+
+function mostrarErro(modalErro, mensagem) {
+	const textoModal = document.getElementById('modalErroTexto');
+	if (textoModal) textoModal.innerText = mensagem;
+	if (modalErro) modalErro.show();
+}
+
+function calcularFrete(valorFreteInput) {
+	if (!valorFreteInput?.value) return 0;
+	const valor = Number.parseFloat(valorFreteInput.value.replace(',', '.'));
+	return Number.isNaN(valor) ? 0 : valor;
+}
+
+function coletarDadosPedido(inputQtdCao, inputQtdGato, inputValorTotal, valorFreteInput) {
+	return {
+		nome: document.getElementById('nome').value,
+		cpf: document.getElementById('cpf').value,
+		telefone: document.getElementById('telefone').value,
+		email: document.getElementById('form-email').value,
+		cep: document.getElementById('cep').value,
+		logradouro: document.getElementById('logradouro').value,
+		numero: document.getElementById('numero').value,
+		complemento: document.getElementById('complemento').value,
+		bairro: document.getElementById('bairro').value,
+		cidade: document.getElementById('cidade').value,
+		uf: document.getElementById('uf').value,
+		qtdCao: Number.parseInt(inputQtdCao.value),
+		qtdGato: Number.parseInt(inputQtdGato.value),
+		valorTotal: inputValorTotal.value,
+		nomePets: document.getElementById('nomePets').value,
+		telGravacao: document.getElementById('telGravacao').value,
+		valorFrete: calcularFrete(valorFreteInput),
+	};
+}
+
+function mostrarSucesso(modalSucesso, formPedido, atualizarValorTotal) {
+	const textoModal = document.getElementById('modalSucessoTexto');
+	if (textoModal) textoModal.innerText = 'Seu pedido foi enviado com sucesso! Em breve entraremos em contato. 🐾';
+
+	const elModal = document.getElementById('modalSucesso');
+	elModal.addEventListener('hidden.bs.modal', () => {
+		globalThis.location.href = '/';
+	}, { once: true });
+
+	if (modalSucesso) modalSucesso.show();
+	formPedido.reset();
+	atualizarValorTotal();
+}
+
+function setBtnEstado(btnComprar, btnText, spinner, enviando) {
+	btnComprar.disabled = enviando;
+	if (btnText) btnText.textContent = enviando ? 'ENVIANDO...' : 'ENVIAR PEDIDO';
+	if (spinner) spinner.classList.toggle('d-none', !enviando);
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
 	const formPedido = document.getElementById('formPedido');
 	const btnComprar = document.getElementById('btn-comprar');
@@ -30,15 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (qtdGato < 0) qtdGato = 0;
 
 		const totalPlacas = qtdCao + qtdGato;
-
-		let valorFrete = 0;
-
-		if (valorFreteInput?.value) {
-			valorFrete = Number.parseFloat(valorFreteInput.value.replace(',', '.'));
-
-			if (Number.isNaN(valorFrete)) valorFrete = 0;
-		}
-
+		const valorFrete = calcularFrete(valorFreteInput);
 		const valorTotal = totalPlacas * precoUnitario + valorFrete;
 
 		if (inputValorTotal) {
@@ -58,39 +126,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	atualizarValorTotal();
 
+	function validarFormulario() {
+		const totalPedidos =
+			(Number.parseInt(inputQtdCao.value) || 0) + (Number.parseInt(inputQtdGato.value) || 0);
+
+		if (totalPedidos === 0) {
+			mostrarErro(modalErro, 'Você precisa pedir pelo menos 1 plaquinha para continuar.');
+			return false;
+		}
+
+		if (!validarCPF(inputCpf.value)) {
+			mostrarErro(modalErro, 'CPF inválido. Por favor, verifique os números digitados.');
+			inputCpf.focus();
+			return false;
+		}
+
+		return true;
+	}
+
 	if (formPedido) {
 		formPedido.addEventListener('submit', async (event) => {
 			event.preventDefault();
 
 			if (!validarFormulario()) return;
 
-			btnComprar.disabled = true;
-			if (btnText) btnText.textContent = 'ENVIANDO...';
-			if (spinner) spinner.classList.remove('d-none');
+			setBtnEstado(btnComprar, btnText, spinner, true);
 
-			const dadosDoPedido = {
-				nome: document.getElementById('nome').value,
-				cpf: inputCpf.value,
-				telefone: document.getElementById('telefone').value,
-				email: document.getElementById('form-email').value,
-				cep: document.getElementById('cep').value,
-				logradouro: document.getElementById('logradouro').value,
-				numero: document.getElementById('numero').value,
-				complemento: document.getElementById('complemento').value,
-				bairro: document.getElementById('bairro').value,
-				cidade: document.getElementById('cidade').value,
-				uf: document.getElementById('uf').value,
-				// S7773: parseInt → Number.parseInt
-				qtdCao: Number.parseInt(inputQtdCao.value),
-				qtdGato: Number.parseInt(inputQtdGato.value),
-				valorTotal: inputValorTotal.value,
-				nomePets: document.getElementById('nomePets').value,
-				telGravacao: document.getElementById('telGravacao').value,
-
-				valorFrete: valorFreteInput.value
-					? Number.parseFloat(valorFreteInput.value.replace(',', '.'))
-					: 0,
-			};
+			const dadosDoPedido = coletarDadosPedido(inputQtdCao, inputQtdGato, inputValorTotal, valorFreteInput);
 
 			try {
 				const resposta = await fetch('/api/pedidos', {
@@ -100,72 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
 				});
 
 				if (resposta.ok) {
-					if (modalSucesso) modalSucesso.show();
-					formPedido.reset();
-					atualizarValorTotal();
+					mostrarSucesso(modalSucesso, formPedido, atualizarValorTotal);
 				} else {
 					throw new Error('Erro ao salvar no servidor');
 				}
 			} catch (error) {
 				console.error('Erro na requisição:', error);
-				const textoModal = document.getElementById('modalText');
-				if (textoModal)
-					textoModal.innerText = 'Houve um erro ao processar seu pedido. Tente novamente.';
-				if (modalErro) modalErro.show();
+				mostrarErro(modalErro, 'Houve um erro ao processar seu pedido. Tente novamente.');
 			} finally {
-				btnComprar.disabled = false;
-				if (btnText) btnText.textContent = 'ENVIAR PEDIDO';
-				if (spinner) spinner.classList.add('d-none');
+				setBtnEstado(btnComprar, btnText, spinner, false);
 			}
 		});
 	}
-
-	function validarFormulario() {
-		const totalPedidos =
-			(Number.parseInt(inputQtdCao.value) || 0) + (Number.parseInt(inputQtdGato.value) || 0);
-		if (totalPedidos === 0) {
-			const textoModal = document.getElementById('modalText');
-			if (textoModal)
-				textoModal.innerText = 'Você precisa pedir pelo menos 1 plaquinha para continuar.';
-			if (modalErro) modalErro.show();
-			return false;
-		}
-
-		if (!validarCPF(inputCpf.value)) {
-			const textoModal = document.getElementById('modalText');
-			if (textoModal)
-				textoModal.innerText = 'CPF inválido. Por favor, verifique os números digitados.';
-			if (modalErro) modalErro.show();
-			inputCpf.focus();
-			return false;
-		}
-
-		return true;
-	}
 });
-
-function validarCPF(cpfDigitado) {
-	const cpfLimpo = String(cpfDigitado).replace(/[^\d]+/g, '');
-
-	if (cpfLimpo.length !== 11) return false;
-
-	if (/(\d)\1{10}/.exec(cpfLimpo)) return false;
-
-	const cpfsplit = cpfLimpo.split('').map(Number);
-
-	let somaB1 = 0;
-	for (let i = 0; i < 9; i++) {
-		somaB1 += cpfsplit[i] * (i + 1);
-	}
-	let b1 = somaB1 % 11;
-	if (b1 === 10) b1 = 0;
-
-	let somaB2 = 0;
-	for (let i = 0; i < 9; i++) {
-		somaB2 += cpfsplit[i] * (9 - i);
-	}
-	let b2 = somaB2 % 11;
-	if (b2 === 10) b2 = 0;
-
-	return b1 === cpfsplit[9] && b2 === cpfsplit[10];
-}

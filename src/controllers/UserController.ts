@@ -7,8 +7,15 @@ import { handleZodError } from '../utils/errorHandler.js';
 import { sendResetEmail } from '../utils/mailer.js';
 
 const createUserSchema = z.object({
-	usuario: z.string().min(1, 'O nome é obrigatório.'),
-	senha: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres.'),
+	usuario: z
+		.string()
+		.min(1, 'O nome é obrigatório.')
+		.regex(/^[a-zA-ZÀ-ÿ\s]*$/, 'O nome não deve conter caracteres especiais.'),
+
+	senha: z
+		.string()
+		.min(6, 'A senha deve ter no mínimo 6 caracteres.')
+		.max(24, 'A senha deve ter no máximo 24 caracteres.'),
 });
 
 export const criarUsuarioView = (req: Request, res: Response, next: NextFunction): void => {

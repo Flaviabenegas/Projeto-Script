@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		erroEl.classList.remove('d-none');
 	}
 
-	const modalResetEnviadoEl = document.getElementById('modalResetEnviado');
-	if (modalResetEnviadoEl) {
-		const instancia = bootstrap.Modal.getInstance(modalResetEnviadoEl);
+	const modalSucessoEl = document.getElementById('modalSucesso');
+	if (modalSucessoEl) {
+		const instancia = bootstrap.Modal.getInstance(modalSucessoEl);
 		instancia?.hide();
 	}
 

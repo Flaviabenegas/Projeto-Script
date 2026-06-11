@@ -3,7 +3,6 @@
 	<head>
 		<title>Apaixonados por Focinhos - Crie seu usuário</title>
 		<%- include ('partials/head') %>
-		<title>Criar Usuário</title>
 	</head>
 	<body>
 		<header><%- include ('partials/header') %></header>
@@ -26,6 +25,7 @@
 											name="usuario"
 											placeholder="Digite seu usuário"
 											required
+											maxlength="60"
 										/>
 									</div>
 								</div>
@@ -41,6 +41,7 @@
 											name="senha"
 											placeholder="Digite sua senha"
 											required
+											maxlength="24"
 										/>
 									</div>
 								</div>
@@ -63,11 +64,7 @@
 		</main>
 		<footer><%- include ('partials/footer') %></footer>
 
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"
-		></script>
+		<%- include('partials/script') %>
 
 		<%- include ('partials/modal') %>
 		<script src="/script/email.js" defer></script>
