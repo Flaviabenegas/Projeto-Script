@@ -92,6 +92,37 @@ document.addEventListener('DOMContentLoaded', () => {
 		? new bootstrap.Modal(document.getElementById('modalErro'))
 		: null;
 
+inputCpf.addEventListener('input', () => {
+    let v = inputCpf.value.replace(/\D/g, '').slice(0, 11);
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    inputCpf.value = v;
+});
+
+const inputTelefone = document.getElementById('telefone');
+inputTelefone.addEventListener('input', () => {
+    let v = inputTelefone.value.replace(/\D/g, '').slice(0, 11);
+    v = v.replace(/(\d{2})(\d)/, '($1) $2');
+    v = v.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+    inputTelefone.value = v;
+});
+
+const inputTelefoneGravacao = document.getElementById('telGravacao');
+inputTelefoneGravacao.addEventListener('input', () => {
+    let v = inputTelefoneGravacao.value.replace(/\D/g, '').slice(0, 11);
+    v = v.replace(/(\d{2})(\d)/, '($1) $2');
+    v = v.replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+    inputTelefoneGravacao.value = v;
+});
+
+
+const inputCep = document.getElementById('cep');
+inputCep.addEventListener('input', () => {
+    let v = inputCep.value.replace(/\D/g, '').slice(0, 8);
+    v = v.replace(/(\d{5})(\d{1,3})$/, '$1-$2');
+    inputCep.value = v;
+});
 	const precoUnitario = 15;
 
 	if (inputQtdCao) inputQtdCao.value = 0;
@@ -155,23 +186,25 @@ document.addEventListener('DOMContentLoaded', () => {
 			const dadosDoPedido = coletarDadosPedido(inputQtdCao, inputQtdGato, inputValorTotal, valorFreteInput);
 
 			try {
-				const resposta = await fetch('/api/pedidos', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(dadosDoPedido),
-				});
+    const resposta = await fetch('/api/pedidos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosDoPedido),
+    });
 
-				if (resposta.ok) {
-					mostrarSucesso(modalSucesso, formPedido, atualizarValorTotal);
-				} else {
-					throw new Error('Erro ao salvar no servidor');
-				}
-			} catch (error) {
-				console.error('Erro na requisição:', error);
-				mostrarErro(modalErro, 'Houve um erro ao processar seu pedido. Tente novamente.');
-			} finally {
-				setBtnEstado(btnComprar, btnText, spinner, false);
-			}
-		});
+    const data = await resposta.json();
+
+    if (resposta.ok && data.sucesso) {
+        mostrarSucesso(modalSucesso, formPedido, atualizarValorTotal);
+    } else {
+        mostrarErro(modalErro, data.mensagem || 'Erro ao processar seu pedido. Tente novamente.');
+    }
+} catch (error) {
+    console.error('Erro na requisição:', error);
+    mostrarErro(modalErro, 'Houve um erro de conexão. Tente novamente.');
+} finally {
+    setBtnEstado(btnComprar, btnText, spinner, false);
+}		
+});
 	}
 });

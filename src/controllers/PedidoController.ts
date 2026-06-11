@@ -18,8 +18,14 @@ const createPedidoSchema = z.object({
 		.refine((val) => val.length === 11, { message: 'O CPF tem de conter exatamente 11 números.' }),
 	qtdCao: z.number().int().min(0, 'A quantidade deve ser 0 ou mais.').nonnegative(),
 	qtdGato: z.number().int().min(0, 'A quantidade deve ser 0 ou mais.').nonnegative(),
-	telefone: z.string().min(10, 'O telefone deve conter pelo menos 10 dígitos.'),
-	cep: z.string().min(8, 'O CEP deve conter pelo menos 8 caracteres.'),
+	telefone: z
+		.string()
+		.min(10, 'O telefone deve conter pelo menos 10 dígitos.')
+		.transform((val) => val.replace(/\D/g, '')),
+	cep: z
+		.string()
+		.min(8, 'O CEP deve conter pelo menos 8 caracteres.')
+		.transform((val) => val.replace(/\D/g, '')),
 	logradouro: z.string().min(1, 'O logradouro é obrigatório.'),
 	numero: z.string().min(1, 'O número é obrigatório.'),
 	complemento: z.string().optional(),
@@ -32,7 +38,10 @@ const createPedidoSchema = z.object({
 		.transform((val) => val.toLowerCase().trim()),
 	valorTotal: z.string().min(1, 'O valor total é obrigatório'),
 	nomePets: z.string().min(1, 'O nome dos pets é obrigatório'),
-	telGravacao: z.string().min(10, 'O telefone para gravação deve conter pelo menos 10 dígitos'),
+	telGravacao: z
+		.string()
+		.min(10, 'O telefone deve conter pelo menos 10 dígitos.')
+		.transform((val) => val.replace(/\D/g, '')),
 	valorFrete: z.number().min(0, 'O valor de frete é obrigatório').nonnegative(),
 });
 
