@@ -209,7 +209,7 @@ export const listarPedidosPainel = async (
 
 		const isAdmin = user?.isAdmin || ADMINS.has(usuario ?? '');
 
-		const where = isAdmin ? {} : { email: usuario };
+		const where = isAdmin ? {} : { email: usuario?.toLowerCase().trim() };
 
 		const pedidos = await Pedido.findAll({ where, order: [['createdAt', 'DESC']] });
 

@@ -26,7 +26,10 @@ const createPedidoSchema = z.object({
 	bairro: z.string().min(1, 'Bairro é obrigatório'),
 	cidade: z.string().min(1, 'Cidade é obrigatória'),
 	uf: z.string().length(2, 'A UF deve conter exatamente 2 caracteres'),
-	email: z.email('O email é inválido.').min(1, 'O email é obrigatório'),
+	email: z
+		.email('O email é inválido.')
+		.min(1, 'O email é obrigatório')
+		.transform((val) => val.toLowerCase().trim()),
 	valorTotal: z.string().min(1, 'O valor total é obrigatório'),
 	nomePets: z.string().min(1, 'O nome dos pets é obrigatório'),
 	telGravacao: z.string().min(10, 'O telefone para gravação deve conter pelo menos 10 dígitos'),

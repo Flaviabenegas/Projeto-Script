@@ -58,20 +58,28 @@ async function carregarPainel() {
 }
 
 function preencherEstatisticas(pedidos) {
-	const hoje = new Date().toISOString().slice(0, 10);
-	const clientesUnicos = new Set(pedidos.map((p) => p.email)).size;
+    const hoje = new Date().toISOString().slice(0, 10);
 
-	const receita = pedidos.reduce((acc, p) => {
-		const valor = Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
-		return acc + valor;
-	}, 0);
+    document.getElementById('statPedidos').textContent = pedidos.length;
 
-	const pedidosHoje = pedidos.filter((p) => p.createdAt?.slice(0, 10) === hoje).length;
+    const statClientes = document.getElementById('statClientes');
+    const statReceita = document.getElementById('statReceita');
+    const statHoje = document.getElementById('statHoje');
 
-	document.getElementById('statPedidos').textContent = pedidos.length;
-	document.getElementById('statClientes').textContent = clientesUnicos;
-	document.getElementById('statReceita').textContent = 'R$ ' + receita.toFixed(2).replace('.', ',');
-	document.getElementById('statHoje').textContent = pedidosHoje;
+    if (statClientes && statReceita && statHoje) {
+        const clientesUnicos = new Set(pedidos.map((p) => p.email)).size;
+
+        const receita = pedidos.reduce((acc, p) => {
+            const valor = Number.parseFloat(String(p.valorTotal).replace(',', '.')) || 0;
+            return acc + valor;
+        }, 0);
+
+        const pedidosHoje = pedidos.filter((p) => p.createdAt?.slice(0, 10) === hoje).length;
+
+        statClientes.textContent = clientesUnicos;
+        statReceita.textContent = 'R$ ' + receita.toFixed(2).replace('.', ',');
+        statHoje.textContent = pedidosHoje;
+    }
 }
 
 function linhaTabela(pedido, index) {

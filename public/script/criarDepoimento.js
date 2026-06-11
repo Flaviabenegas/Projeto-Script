@@ -163,31 +163,36 @@ function atualizarBotaoToggle(btnToggle, isAtivo) {
 	btnToggle.innerHTML = `<i class="bi ${isAtivo ? 'bi-eye-slash' : 'bi-eye'} me-1"></i>${isAtivo ? 'Desativar' : 'Ativar'}`;
 }
 
-async function toggleStatus(id) {
-	const btnToggle = document.getElementById(`btn-toggle-${id}`);
-	if (btnToggle) btnToggle.disabled = true;
-
-	try {
-		const resposta = await fetch(`/api/depoimentos/${id}/toggle`, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
-		});
-
-		const data = await resposta.json();
-
-		if (resposta.ok && data.sucesso) {
-			atualizarBadge(id, data.ativo);
-			if (btnToggle) atualizarBotaoToggle(btnToggle, data.ativo);
-		} else {
-			mostrarErro(data.mensagem || 'Erro ao alternar o status do depoimento.');
-		}
-	} catch {
-		mostrarErro('Houve um erro de rede. Tente novamente.');
-	} finally {
-		if (btnToggle) btnToggle.disabled = false;
-	}
+function aplicarEstadoToggle(btnToggle, ativo) {
+    if (!btnToggle) return;
+    btnToggle.className = `btn btn-sm ${ativo ? 'btn-outline-danger' : 'btn-outline-success'} rounded-pill px-3 btn-toggle`;
+    btnToggle.innerHTML = `<i class="bi ${ativo ? 'bi-eye-slash' : 'bi-eye'} me-1"></i>${ativo ? 'Desativar' : 'Ativar'}`;
 }
 
+async function toggleStatus(id) {
+    const btnToggle = document.getElementById(`btn-toggle-${id}`);
+    if (btnToggle) btnToggle.disabled = true;
+
+    try {
+        const resposta = await fetch(`/api/depoimentos/${id}/toggle`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        const data = await resposta.json();
+
+        if (resposta.ok && data.sucesso) {
+            atualizarBadge(id, data.ativo);
+            aplicarEstadoToggle(btnToggle, data.ativo);
+        } else {
+            mostrarErro(data.mensagem || 'Erro ao alternar o status do depoimento.');
+        }
+    } catch {
+        mostrarErro('Houve um erro de rede. Tente novamente.');
+    } finally {
+        if (btnToggle) btnToggle.disabled = false;
+    }
+}
 
 const tabelaDepoimentos = document.getElementById('tabela-depoimentos');
 if (tabelaDepoimentos) {
