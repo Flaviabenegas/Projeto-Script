@@ -35,7 +35,7 @@ async function seed() {
 			imagem: '/img/sol.webp',
 			alt: 'Foto do Carlos com a Mimi',
 			texto:
-				'A qualidade da plaquinha é excelente, não desbotou nem com chuva. A Mimi usa há meses e continua perfeita.',
+				'A Sol aproveitou um descuido durante a mudança e saiu para a rua. Foram as duas horas mais desesperadoras da minha vida. Por sorte, ela estava com a medalhinha de identificação. Uma vizinha de dois quarteirões a encontrou e, em segundos, conseguiu acessar meu contato. Se não fosse por essa tecnologia, não sei se ela estaria dormindo no sofá hoje. É um investimento minúsculo perto da paz de espírito que traz.',
 			ativo: true,
 		},
 		{
@@ -44,7 +44,7 @@ async function seed() {
 			imagem: '/img/simba.webp',
 			alt: 'Foto da Fernanda com o Thor',
 			texto:
-				'Atendimento super atencioso e entrega rápida. O Thor já chegou com a plaquinha no pescoço!',
+				'O Simba fugiu de casa duas vezes e, em ambas, o desespero durou pouco. Na primeira, ele se perdeu na vizinhança; na segunda, atravessou avenidas e foi parar em outro bairro. O que eu aprendi? Que amor e muros altos não bastam. Se não fosse pela placa de identificação, ele seria apenas mais um gato laranja anônimo na rua. Quem o encontrou não precisou de tecnologia ou postagens em redes sociais: bastou ler o nome dele e o meu telefone gravados ali. A plaquinha deu voz ao Simba quando ele estava perdido e garantiu que ele voltasse para os meus braços em minutos. É o investimento mais barato e vital que já fiz.',
 			ativo: true,
 		},
 		{
@@ -53,7 +53,7 @@ async function seed() {
 			imagem: '/img/lua.webp',
 			alt: 'Foto do Roberto com a Mel',
 			texto:
-				'Comprei para minha gata e ficou lindinha. As informações são bem legíveis e o material é resistente.',
+				'Durante um passeio no final de semana, a Lua se assustou com um barulho de escapamento e saiu em disparada para uma área de mata. Foram momentos de pânico absoluto. Menos de 15 minutos depois, recebi uma notificação no meu celular: alguém tinha lido a identificação dela. Um casal a encontrou e, pelas informações gravadas na plaquinha, já sabiam o nome dela e que ela era medrosa. Eles me ligaram na hora e o reencontro foi emocionante. Hoje eu não saio de casa sem conferir se a medalhinha está no pescoço dela. Salvou a nossa família..',
 			ativo: true,
 		},
 	]);
