@@ -119,10 +119,10 @@ PORT=3000
 SESSION_SECRET='coloque-aqui-uma-chave-secreta-longa'
 
 # E-mail(s) com acesso administrativo (separados por vírgula)
-ADMIN_USERS=teste@teste
+ADMIN_USERS=seuemail@exemplo.com
 
 # Senha do usuário admin criado pelo seed
-ADMIN_PASSWORD=teste
+ADMIN_PASSWORD=suasenha
 
 # Configurações SMTP para envio de e-mails (reset de senha, etc.)
 SMTP_HOST=smtp.seuservidor.com
