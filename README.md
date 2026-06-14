@@ -119,10 +119,10 @@ PORT=3000
 SESSION_SECRET='coloque-aqui-uma-chave-secreta-longa'
 
 # E-mail(s) com acesso administrativo (separados por vírgula)
-ADMIN_USERS=seuemail@exemplo.com
+ADMIN_USERS=teste@teste
 
 # Senha do usuário admin criado pelo seed
-ADMIN_PASSWORD=suasenha
+ADMIN_PASSWORD=teste
 
 # Configurações SMTP para envio de e-mails (reset de senha, etc.)
 SMTP_HOST=smtp.seuservidor.com
@@ -143,7 +143,19 @@ SUA_API_KEY=sua_api_key_mailchimp
 
 ---
 
-### Passo 4 — Rodar a aplicação
+### Passo 4 — Popular o banco de dados ⚠️
+
+Este passo é **obrigatório** na primeira vez. Ele cria o usuário administrador definido no `.env` e inicializa o banco de dados:
+
+```bash
+npm run seed
+```
+
+> **Execute este comando apenas uma vez.** Rodá-lo novamente pode duplicar dados no banco.
+
+---
+
+### Passo 5 — Rodar a aplicação
 
 #### Modo desenvolvimento (recomendado para uso local)
 
@@ -154,18 +166,6 @@ npm run dev
 ```
 
 Acesse no navegador: [http://localhost:3000](http://localhost:3000)
-
----
-
-### (Opcional) Popular o banco com o usuário administrador
-
-Se quiser criar o usuário admin definido no `.env` automaticamente:
-
-```bash
-npm run seed
-```
-
-Execute este comando apenas uma vez, após configurar o `.env`.
 
 ---
 
@@ -185,13 +185,13 @@ npm start
 
 ## 📦 Scripts Disponíveis
 
-| Comando          | Descrição                                                 |
-| ---------------- | --------------------------------------------------------- |
-| `npm run dev`    | Inicia em modo desenvolvimento com hot-reload (tsx watch) |
-| `npm run build`  | Compila o TypeScript para a pasta `dist/`                 |
-| `npm start`      | Executa o servidor a partir do build compilado            |
-| `npm run seed`   | Cria o usuário admin no banco de dados                    |
-| `npm run format` | Formata o código com Prettier                             |
+| Comando          | Descrição                                                            |
+| ---------------- | -------------------------------------------------------------------- |
+| `npm run dev`    | Inicia em modo desenvolvimento com hot-reload (tsx watch)            |
+| `npm run build`  | Compila o TypeScript para a pasta `dist/`                            |
+| `npm start`      | Executa o servidor a partir do build compilado                       |
+| `npm run seed`   | **Cria o usuário admin no banco — obrigatório na primeira execução** |
+| `npm run format` | Formata o código com Prettier                                        |
 
 ---
 
@@ -209,7 +209,7 @@ npm start
 | `GET`  | `/api/pedidos`         | Listar pedidos (admin)                  |
 | `POST` | `/api/criar`           | Criar novo usuário                      |
 | `POST` | `/api/solicitar-reset` | Solicitar reset de senha por e-mail     |
-| `POST` | `/api/resetar-senha`   | Confirmar nova senha com token          |
+|        |
 | `POST` | `/api/subscribe`       | Inscrição na newsletter (Mailchimp)     |
 | `POST` | `/api/depoimentos`     | Criar depoimento                        |
 | `GET`  | `/api/admin/usuarios`  | Listar usuários (somente admin)         |
