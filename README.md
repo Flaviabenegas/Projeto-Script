@@ -1,4 +1,4 @@
-# 🐾 Apaixonados por Focinhos — Projeto Script
+# 🐾 Apaixonados por Focinhos
 
 ![Status](https://img.shields.io/badge/Status-Em%20andamento-yellow)
 ![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-339933?style=flat&logo=node.js&logoColor=white)
@@ -55,137 +55,143 @@ projeto-script---typescript/
 │   ├── script/         # JavaScript do lado cliente
 │   ├── style/          # CSS personalizado
 │   └── img/            # Imagens e assets estáticos
-├── .env.example        # Modelo de variáveis de ambiente
+├── .env.example        # Modelo de variáveis de ambiente ← copie este arquivo!
 ├── tsconfig.json
 └── package.json
 ```
 
 ---
 
-## ⚙️ Configuração do Ambiente
+## 🚀 Como Instalar e Rodar Localmente
 
-### 1. Pré-requisitos
+### Pré-requisitos
 
-- **Node.js** versão **18 ou superior** — [nodejs.org](https://nodejs.org)
-- **npm** (incluso com o Node.js)
+Antes de começar, certifique-se de ter instalado:
 
-### 2. Clonar o repositório
+- **Node.js** versão **18 ou superior** → [nodejs.org](https://nodejs.org)
+- **npm** (já vem junto com o Node.js)
+- **Git** → [git-scm.com](https://git-scm.com)
+
+---
+
+### Passo 1 — Clonar o repositório
 
 ```bash
 git clone https://github.com/Flaviabenegas/Projeto-Script.git
 cd Projeto-Script
 ```
 
-### 3. Instalar as dependências
+---
+
+### Passo 2 — Instalar as dependências
 
 ```bash
 npm install
 ```
 
-### 4. Criar o arquivo `.env`
+---
 
-Copie o arquivo de exemplo e preencha com os seus valores:
+### Passo 3 — Configurar o arquivo `.env` ⚠️
+
+O projeto utiliza variáveis de ambiente para guardar configurações sensíveis (senhas, chaves de API, etc.). Essas configurações ficam em um arquivo chamado `.env` que **você precisa criar** a partir do modelo `.env.example` já incluído no projeto.
+
+> **O projeto não vai funcionar sem este passo.**
+
+#### No Windows (Prompt de Comando ou PowerShell):
+
+```powershell
+copy .env.example .env
+```
+
+#### No Linux / macOS (Terminal):
 
 ```bash
 cp .env.example .env
 ```
 
-Abra o `.env` criado e edite cada variável:
+Após copiar, abra o arquivo `.env` em qualquer editor de texto e preencha as variáveis com os seus próprios valores:
 
 ```env
-# Porta em que o servidor vai escutar
+# Porta em que o servidor vai escutar (padrão: 3000)
 PORT=3000
 
-# Chave secreta para assinar as sessões (use uma string longa e aleatória)
-SESSION_SECRET='chave-super-secreta-dos-focinhos'
+# Chave secreta para assinar as sessões — use uma string longa e aleatória
+SESSION_SECRET='coloque-aqui-uma-chave-secreta-longa'
 
-# Usuário(s) com acesso administrativo via variável de ambiente (separados por vírgula)
+# E-mail(s) com acesso administrativo (separados por vírgula)
 ADMIN_USERS=seuemail@exemplo.com
 
-# Senha padrão do admin definido acima (usado somente no seed)
+# Senha do usuário admin criado pelo seed
 ADMIN_PASSWORD=suasenha
 
-# Configurações do servidor SMTP para envio de e-mails (reset de senha, etc.)
+# Configurações SMTP para envio de e-mails (reset de senha, etc.)
 SMTP_HOST=smtp.seuservidor.com
 SMTP_PORT=587
 SMTP_USER=seuemail@dominio.com
-SMTP_PASS=suasenha
+SMTP_PASS=suasenhasmtp
 
-# URL base da aplicação (usada no link de reset de senha enviado por e-mail)
+# URL base da aplicação (usada nos links enviados por e-mail)
 APP_URL=http://localhost:3000
 
-# Configurações do Mailchimp (opcional — para inscrição na newsletter)
+# Mailchimp — somente se for usar a funcionalidade de newsletter (opcional)
 DATACENTER=us21
 LIST_ID=seu_list_id
-SUA_API_KEY=sua_api_key
+SUA_API_KEY=sua_api_key_mailchimp
 ```
 
-> **Atenção:** o arquivo `.env` **nunca** deve ser commitado no repositório. Ele já está listado no `.gitignore`.
+> **⚠️ Importante:** nunca envie o arquivo `.env` para o repositório. Ele já está no `.gitignore` justamente por conter dados sensíveis.
 
 ---
 
-## 🚀 Rodando a Aplicação
+### Passo 4 — Rodar a aplicação
 
-### Modo desenvolvimento (com hot-reload)
+#### Modo desenvolvimento (recomendado para uso local)
 
-Ideal para desenvolvimento local. O servidor reinicia automaticamente ao salvar arquivos.
+O servidor reinicia automaticamente sempre que você salvar um arquivo:
 
 ```bash
 npm run dev
 ```
 
-O servidor estará disponível em: [http://localhost:3000](http://localhost:3000)
+Acesse no navegador: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-### Modo produção (build + start)
+### (Opcional) Popular o banco com o usuário administrador
 
-#### Passo 1 — Compilar o TypeScript
-
-```bash
-npm run build
-```
-
-Este comando executa o compilador TypeScript (`tsc`) e gera os arquivos JavaScript compilados na pasta `dist/`.
-
-#### Passo 2 — Executar o build compilado
-
-```bash
-npm start
-```
-
-Este comando inicia o servidor a partir dos arquivos compilados em `dist/`, carregando as variáveis de ambiente do `.env` automaticamente via `--import dotenv/config`.
-
-#### Em resumo (sequência completa para produção local):
-
-```bash
-cp .env.example .env   # 1. Configure as variáveis de ambiente
-npm install            # 2. Instale as dependências
-npm run build          # 3. Compile o TypeScript
-npm start              # 4. Inicie o servidor
-```
-
-Acesse: [http://localhost:3000](http://localhost:3000)
-
----
-
-### Popular o banco com dados iniciais (opcional)
-
-Para criar o usuário administrador padrão definido no `.env`:
+Se quiser criar o usuário admin definido no `.env` automaticamente:
 
 ```bash
 npm run seed
+```
+
+Execute este comando apenas uma vez, após configurar o `.env`.
+
+---
+
+## 🏗️ Build para Produção
+
+Caso queira compilar e rodar o projeto em modo produção:
+
+```bash
+# 1. Compilar o TypeScript
+npm run build
+
+# 2. Iniciar o servidor a partir do build
+npm start
 ```
 
 ---
 
 ## 📦 Scripts Disponíveis
 
-| Comando         | Descrição                                                 |
-| --------------- | --------------------------------------------------------- |
-| `npm run dev`   | Inicia em modo desenvolvimento com hot-reload (tsx watch) |
-| `npm run build` | Compila o TypeScript para a pasta `dist/`                 |
-| `npm start`     | Executa o servidor a partir do build compilado            |
+| Comando          | Descrição                                                 |
+| ---------------- | --------------------------------------------------------- |
+| `npm run dev`    | Inicia em modo desenvolvimento com hot-reload (tsx watch) |
+| `npm run build`  | Compila o TypeScript para a pasta `dist/`                 |
+| `npm start`      | Executa o servidor a partir do build compilado            |
+| `npm run seed`   | Cria o usuário admin no banco de dados                    |
+| `npm run format` | Formata o código com Prettier                             |
 
 ---
 
@@ -236,7 +242,7 @@ Aluna do curso de **Análise e Desenvolvimento de Sistemas**
 **FATEC Arthur de Azevedo — Mogi Mirim, SP**
 
 - GitHub: [@Flaviabenegas](https://github.com/Flaviabenegas)
-- LinkedIN: [Flavia Benegas](https://www.linkedin.com/in/flaviabenegas/)
+- LinkedIn: [Flavia Benegas](https://www.linkedin.com/in/flaviabenegas/)
 
 ---
 
