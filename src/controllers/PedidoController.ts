@@ -1,6 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { z } from 'zod';
 import { Pedido } from '../models/Pedido.js';
+import { isValidCPF } from '../utils/validadorCpf.js';
 import { handleZodError } from '../utils/errorHandler.js';
 
 declare module 'express-session' {
@@ -11,11 +12,11 @@ declare module 'express-session' {
 }
 
 const createPedidoSchema = z.object({
-	nome: z.string().trim().min(1, 'O nome é obrigatório.'),
-	cpf: z
-		.string()
-		.transform((val) => val.replace(/\D/g, ''))
-		.refine((val) => val.length === 11, { message: 'O CPF tem de conter exatamente 11 números.' }),
+    nome: z.string().trim().min(1, 'O nome é obrigatório.'),
+    cpf: z
+        .string()
+        .transform((val) => val.replace(/\D/g, ''))
+        .refine(isValidCPF, { message: 'CPF inválido.' }),
 	qtdCao: z.number().int().min(0, 'A quantidade deve ser 0 ou mais.').nonnegative(),
 	qtdGato: z.number().int().min(0, 'A quantidade deve ser 0 ou mais.').nonnegative(),
 	telefone: z
